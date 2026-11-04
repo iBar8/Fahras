@@ -155,5 +155,6 @@ impl Preferences {
         self.list_column_order = sanitize_list_column_order(&self.list_column_order);
         self.list_hidden_columns = sanitize_list_hidden_columns(&self.list_hidden_columns);
         self.interface_font = normalized_font_family(self.interface_font.take());
+        self.arabic_font = normalized_font_family(self.arabic_font.take());
     }
 }

@@ -74,8 +74,8 @@ fn set_enum_setting(settings: &gtk::Settings, property: &str, nick: &str) {
     }
 }
 
-pub(super) fn apply_interface_font(family: Option<&str>, root_font_px: f64) {
+pub(super) fn apply_interface_font(family: Option<&str>, arabic: Option<&str>, root_font_px: f64) {
     if let Some(settings) = gtk::Settings::default() {
-        settings.set_gtk_font_name(Some(&font::font_name(family, root_font_px)));
+        settings.set_gtk_font_name(Some(&font::font_name(family, arabic, root_font_px)));
     }
 }

@@ -64,6 +64,7 @@ impl Default for Preferences {
             text_size: TextSize::default(),
             corner_roundness: CornerRoundness::default(),
             interface_font: None,
+            arabic_font: None,
             interface_renderer: InterfaceRenderer::default(),
             language: crate::i18n::Language::default(),
             folders_first: true,

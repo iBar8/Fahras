@@ -25,6 +25,32 @@ regeneration instructions are in [`packaging/math-renderer/`](packaging/math-ren
 
 The font is distributed unmodified. Strata materializes the embedded font in its private cache at runtime so it is available without changing the user's system font installation.
 
+## Arabic fonts (Fahras)
+
+Fahras bundles these families, all from the Google Fonts repository and licensed under the SIL Open Font License 1.1, under `data/fahras/fonts/arabic/`. They are distributed unmodified and materialized in the private font cache at runtime, without changing the user's system font installation.
+
+| Family | Copyright | Included files | Full license |
+|---|---|---|---|
+| IBM Plex Sans Arabic | 2017 IBM Corp. with Reserved Font Name "Plex" | `IBMPlexSansArabic-Regular.ttf`, `IBMPlexSansArabic-Bold.ttf` | [`ibmplexsansarabic.txt`](data/fahras/fonts/arabic/licenses/ibmplexsansarabic.txt) |
+| Noto Sans Arabic | 2022 The Noto Project Authors (https://github.com/notofonts/arabic) | `NotoSansArabic[wdth,wght].ttf` | [`notosansarabic.txt`](data/fahras/fonts/arabic/licenses/notosansarabic.txt) |
+| Noto Naskh Arabic | 2022 The Noto Project Authors (https://github.com/notofonts/arabic) | `NotoNaskhArabic[wght].ttf` | [`notonaskharabic.txt`](data/fahras/fonts/arabic/licenses/notonaskharabic.txt) |
+| Noto Kufi Arabic | 2022 The Noto Project Authors (https://github.com/notofonts/arabic) | `NotoKufiArabic[wght].ttf` | [`notokufiarabic.txt`](data/fahras/fonts/arabic/licenses/notokufiarabic.txt) |
+| Cairo | 2009 The Cairo Project Authors (https://github.com/Gue3bara/Cairo) | `Cairo[slnt,wght].ttf` | [`cairo.txt`](data/fahras/fonts/arabic/licenses/cairo.txt) |
+| Tajawal | 2018 Boutros International. (http://www.boutrosfonts.com) | `Tajawal-Regular.ttf`, `Tajawal-Bold.ttf` | [`tajawal.txt`](data/fahras/fonts/arabic/licenses/tajawal.txt) |
+| Almarai | 2019 The Almarai Project Authors (https://github.com/JuergenWillrodt/Almarai) | `Almarai-Regular.ttf`, `Almarai-Bold.ttf` | [`almarai.txt`](data/fahras/fonts/arabic/licenses/almarai.txt) |
+| Readex Pro | 2018 The Readex Pro Project Authors (https://github.com/ThomasJockin/readexpro), with Reserved Font Name “RevReading Lexend” | `ReadexPro[HEXP,wght].ttf` | [`readexpro.txt`](data/fahras/fonts/arabic/licenses/readexpro.txt) |
+| Vazirmatn | 2015 The Vazirmatn Project Authors (https://github.com/rastikerdar/vazirmatn) | `Vazirmatn[wght].ttf` | [`vazirmatn.txt`](data/fahras/fonts/arabic/licenses/vazirmatn.txt) |
+| Rubik | 2015 The Rubik Project Authors (https://github.com/googlefonts/rubik) | `Rubik[wght].ttf` | [`rubik.txt`](data/fahras/fonts/arabic/licenses/rubik.txt) |
+| Alexandria | 2022 The Alexandria Project Authors (https://github.com/Gue3bara/Alexandria) | `Alexandria[wght].ttf` | [`alexandria.txt`](data/fahras/fonts/arabic/licenses/alexandria.txt) |
+| Mada | 2015-2022 The Mada Project Authors (https://github.com/aliftype/mada), with Reserved Font Name "Source" | `Mada[wght].ttf` | [`mada.txt`](data/fahras/fonts/arabic/licenses/mada.txt) |
+| Changa | 2018 The Changa Project Authors (https://github.com/googlefonts/changa-vf) | `Changa[wght].ttf` | [`changa.txt`](data/fahras/fonts/arabic/licenses/changa.txt) |
+| El Messiri | 2015 The El Messiri Project Authors (https://github.com/Gue3bara/El-Messiri) | `ElMessiri[wght].ttf` | [`elmessiri.txt`](data/fahras/fonts/arabic/licenses/elmessiri.txt) |
+| Amiri | 2010-2022 The Amiri Project Authors (https://github.com/aliftype/amiri) | `Amiri-Regular.ttf`, `Amiri-Bold.ttf` | [`amiri.txt`](data/fahras/fonts/arabic/licenses/amiri.txt) |
+| Markazi Text | 2017 The Markazi Text Project Authors (https://github.com/BornaIz/markazitext) | `MarkaziText[wght].ttf` | [`markazitext.txt`](data/fahras/fonts/arabic/licenses/markazitext.txt) |
+| Reem Kufi | 2015-2022 The Reem Kufi Project Authors (https://github.com/aliftype/reem-kufi), with Reserved Font Name "Josefin Sans" | `ReemKufi[wght].ttf` | [`reemkufi.txt`](data/fahras/fonts/arabic/licenses/reemkufi.txt) |
+| Baloo Bhaijaan 2 | 2019 The Baloo 2 Project Authors (https://github.com/EkType/Baloo2) | `BalooBhaijaan2[wght].ttf` | [`baloobhaijaan2.txt`](data/fahras/fonts/arabic/licenses/baloobhaijaan2.txt) |
+| Zain | 2024 The Zain Project Authors (https://github.com/googlefonts/zain) | `Zain-Regular.ttf`, `Zain-Bold.ttf` | [`zain.txt`](data/fahras/fonts/arabic/licenses/zain.txt) |
+
 ## Lucide
 
 - Project: <https://github.com/lucide-icons/lucide>

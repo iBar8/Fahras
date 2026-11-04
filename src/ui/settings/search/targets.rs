@@ -261,6 +261,12 @@ pub(super) const TARGETS: &[Target] = &[
         aliases: "appearance font typeface family typography",
     },
     Target {
+        id: "arabic-font",
+        page: "theme",
+        title: "Arabic font",
+        aliases: "appearance font typeface arabic script naskh kufi",
+    },
+    Target {
         id: "text",
         page: "theme",
         title: "Text size",

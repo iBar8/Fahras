@@ -384,6 +384,11 @@ fn append_text_size_option(content: &gtk::Box, preferences: &Rc<PreferenceManage
         "The typeface for menus, file lists, and dialogs. File previews keep a monospace font.",
         &interface_font_choice(preferences),
     ));
+    group.append(&super::control_row(
+        "Arabic font",
+        "Arabic text uses this typeface. Other text keeps the interface font.",
+        &super::arabic_font::arabic_font_choice(preferences),
+    ));
     let text_size_control = number_stepper(TextSize::MIN, TextSize::MAX, 1);
     crate::ui::accessibility::set_label(
         &text_size_control,

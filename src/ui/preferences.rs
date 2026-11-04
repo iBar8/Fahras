@@ -28,6 +28,7 @@ use super::icons_cell::{MAX_ICONS_THUMBNAIL_SIZE, MIN_ICONS_THUMBNAIL_SIZE};
 pub(in crate::ui) const SEND_TO_RECENT_DESTINATIONS_LIMIT: usize = 3;
 
 mod appearance_settings;
+mod arabic_font;
 mod bindings;
 mod corner_roundness;
 mod defaults;
@@ -237,6 +238,8 @@ pub(in crate::ui) struct Preferences {
     corner_roundness: CornerRoundness,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     interface_font: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    arabic_font: Option<String>,
     #[serde(default)]
     interface_renderer: InterfaceRenderer,
     #[serde(default)]

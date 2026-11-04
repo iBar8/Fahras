@@ -17,6 +17,7 @@ mod tests;
 
 mod about;
 mod actions;
+mod arabic_font;
 mod bindings;
 mod channel;
 mod compact_bin;

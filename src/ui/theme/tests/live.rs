@@ -419,3 +419,30 @@ fn gtk_font_name() -> String {
         .map(|name| name.to_string())
         .unwrap_or_default()
 }
+
+#[test]
+fn arabic_font_follows_the_latin_fonts_before_settings_open_and_live() {
+    gtk_test(
+        "ui::theme::tests::live::arabic_font_follows_the_latin_fonts_before_settings_open_and_live",
+        || {
+            seed_settings("interface_font = \"Fixture Sans\"\narabic_font = \"Amiri\"\n");
+            let preferences = PreferenceManager::shared();
+            let _manager = ThemeManager::shared();
+            let expect_stack = |expected: &str| {
+                let actual = gtk_font_name();
+                assert!(
+                    actual.starts_with(expected),
+                    "{actual:?} should start with {expected:?}"
+                );
+            };
+            expect_stack("Fixture Sans,JetBrains Mono,Amiri,JetBrainsMono Nerd Font");
+
+            preferences.set_arabic_font(Some("Cairo".into()));
+            expect_stack("Fixture Sans,JetBrains Mono,Cairo,");
+
+            preferences.set_interface_font(None);
+            preferences.set_arabic_font(None);
+            expect_stack("JetBrains Mono,IBM Plex Sans Arabic,JetBrainsMono Nerd Font");
+        },
+    );
+}

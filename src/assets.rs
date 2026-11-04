@@ -279,7 +279,8 @@ pub fn prepare() -> Result<(), Box<dyn std::error::Error>> {
 
     let regular = font_directory.join("JetBrainsMono.ttf");
     write_if_changed(&regular, JETBRAINS_MONO)?;
-    register_application_fonts([regular])?;
+    let arabic = crate::fahras::arabic_fonts::materialize(&font_directory, write_if_changed)?;
+    register_application_fonts(std::iter::once(regular).chain(arabic))?;
 
     Ok(())
 }

@@ -12,6 +12,7 @@ mod app;
 mod assets;
 mod build_info;
 mod child_environment;
+mod fahras;
 mod i18n;
 mod logging;
 mod media;

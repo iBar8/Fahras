@@ -145,6 +145,7 @@ struct AppearancePreferences {
     text_size: TextSize,
     corner_roundness: CornerRoundness,
     interface_font: Option<String>,
+    arabic_font: Option<String>,
     element_glow: bool,
     file_icon_colors: FileIconColors,
 }
@@ -158,6 +159,7 @@ impl AppearancePreferences {
             text_size: preferences.text_size(),
             corner_roundness: preferences.corner_roundness(),
             interface_font: preferences.interface_font(),
+            arabic_font: preferences.arabic_font(),
             element_glow: preferences.element_glow(),
             file_icon_colors: preferences.file_icon_colors(),
         }
@@ -645,9 +647,10 @@ impl ThemeManager {
             tokens_css(tokens, root_font_px)
         ));
         let family = self.preferences.interface_font();
+        let arabic = self.preferences.arabic_font();
         self.font_provider
-            .load_from_string(&font::stylesheet(family.as_deref()));
-        apply_interface_font(family.as_deref(), root_font_px);
+            .load_from_string(&font::stylesheet(family.as_deref(), arabic.as_deref()));
+        apply_interface_font(family.as_deref(), arabic.as_deref(), root_font_px);
         crate::assets::set_interface_icon_scale(root_font_px / 13.0);
         let dark_background =
             parse_rgb_channels(&tokens.background).is_none_or(|[red, green, blue]| {
