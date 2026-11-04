@@ -72,6 +72,7 @@ function Wait-Until([scriptblock] $condition, [int] $seconds = 20) {
 
 function Start-Fahras([string] $folder, [string] $label) {
     $log = Join-Path $Evidence "app-$label.log"
+    $env:RUST_LOG = 'strata=debug'
     $script:process = Start-Process -FilePath (Join-Path $App 'bin\Fahras.exe') `
         -ArgumentList "`"$folder`"" -PassThru `
         -RedirectStandardError $log -RedirectStandardOutput (Join-Path $Evidence "app-$label.out")
@@ -131,6 +132,9 @@ function Run-Suite([string] $root, [string] $label) {
     Shot "$label-02-drive-c"
     Go $ops.arabic
     Shot "$label-03-arabic-names"
+    Set-Content (Join-Path $ops.arabic 'created-outside.txt') 'live refresh'
+    Start-Sleep -Seconds 4
+    Shot "$label-03b-created-outside"
 
     Go $ops.rename
     Keys '^a' 500
