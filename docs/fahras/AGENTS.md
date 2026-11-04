@@ -30,8 +30,9 @@ future merge conflict.
 - Never reuse upstream's update signing key or release infrastructure.
 - Dependabot is removed (`.github/dependabot.yml`); dependency updates arrive
   through upstream syncs. Keep it deleted when a sync touches it.
-- Do not delete or edit upstream workflows; they are disabled in the GitHub
-  Actions settings. Fahras workflows use the `fahras-` filename prefix.
+- Upstream's GitHub workflows are removed: they depend on Strata's secrets,
+  servers and containers. Keep them deleted when a sync touches them. Fahras
+  workflows use the `fahras-` filename prefix.
 
 ## Languages
 
@@ -51,5 +52,6 @@ git merge upstream/main
 ```
 
 Resolve conflicts by keeping upstream's change and re-applying ours on top.
-For `README.md` and `LICENSE`, keep the Fahras version. Build and test both
+For `README.md` and `LICENSE`, keep the Fahras version; for deleted upstream
+workflows and Dependabot, keep them deleted. Build and test both
 Linux and Windows before pushing, and summarise what upstream changed.
