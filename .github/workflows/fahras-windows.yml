@@ -28,27 +28,27 @@ jobs:
       - name: Set up MSYS2 with GTK 4
         uses: msys2/setup-msys2@v2
         with:
-          msystem: MINGW64
+          msystem: UCRT64
           update: true
-          path-type: inherit
           install: >-
-            mingw-w64-x86_64-gcc
-            mingw-w64-x86_64-pkgconf
-            mingw-w64-x86_64-gtk4
-            mingw-w64-x86_64-gtksourceview5
-            mingw-w64-x86_64-poppler
-            mingw-w64-x86_64-gstreamer
-            mingw-w64-x86_64-gst-plugins-base
-            mingw-w64-x86_64-librsvg
-            mingw-w64-x86_64-adwaita-icon-theme
-            mingw-w64-x86_64-hicolor-icon-theme
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-rust
+            mingw-w64-ucrt-x86_64-pkgconf
+            mingw-w64-ucrt-x86_64-gtk4
+            mingw-w64-ucrt-x86_64-gtksourceview5
+            mingw-w64-ucrt-x86_64-poppler
+            mingw-w64-ucrt-x86_64-gstreamer
+            mingw-w64-ucrt-x86_64-gst-plugins-base
+            mingw-w64-ucrt-x86_64-librsvg
+            mingw-w64-ucrt-x86_64-adwaita-icon-theme
+            mingw-w64-ucrt-x86_64-hicolor-icon-theme
             zip
 
-      - name: Install Rust 1.98.1 for windows-gnu
+      - name: Show toolchain
         run: |
-          rustup toolchain install 1.98.1 --profile minimal --target x86_64-pc-windows-gnu
-          rustup default 1.98.1
+          which rustc cargo gcc
           rustc --version
+          cargo --version
 
       - name: Cache Cargo
         uses: actions/cache@v4
@@ -61,29 +61,29 @@ jobs:
           restore-keys: windows-cargo-
 
       - name: Build
-        run: cargo build --release --locked --target x86_64-pc-windows-gnu
+        run: cargo build --release --locked
 
       - name: Package with the GTK runtime
         run: |
           set -euo pipefail
           out="dist/Fahras"
           mkdir -p "$out/bin" "$out/lib" "$out/share/glib-2.0"
-          cp target/x86_64-pc-windows-gnu/release/strata.exe "$out/bin/Fahras.exe"
+          cp target/release/strata.exe "$out/bin/Fahras.exe"
 
           # Image loaders (SVG via librsvg) and their cache.
-          cp -r /mingw64/lib/gdk-pixbuf-2.0 "$out/lib/"
+          cp -r /ucrt64/lib/gdk-pixbuf-2.0 "$out/lib/"
 
           # Every MinGW DLL the program and the loaders link against.
-          deps() { ldd "$@" | awk '$3 ~ /^\/mingw64\// { print $3 }'; }
+          deps() { ldd "$@" | awk '$3 ~ /^\/ucrt64\// { print $3 }'; }
           deps "$out/bin/Fahras.exe" "$out"/lib/gdk-pixbuf-2.0/2.10.0/loaders/*.dll \
             | sort -u | xargs -I{} cp {} "$out/bin/"
 
           # Settings schemas, icons and source-view styles GTK loads at run time.
-          cp -r /mingw64/share/glib-2.0/schemas "$out/share/glib-2.0/"
+          cp -r /ucrt64/share/glib-2.0/schemas "$out/share/glib-2.0/"
           glib-compile-schemas "$out/share/glib-2.0/schemas"
           mkdir -p "$out/share/icons"
-          cp -r /mingw64/share/icons/hicolor /mingw64/share/icons/Adwaita "$out/share/icons/"
-          cp -r /mingw64/share/gtksourceview-5 "$out/share/"
+          cp -r /ucrt64/share/icons/hicolor /ucrt64/share/icons/Adwaita "$out/share/icons/"
+          cp -r /ucrt64/share/gtksourceview-5 "$out/share/"
           cp branding/fahras.ico LICENSE THIRD_PARTY_LICENSES.md "$out/"
 
           (cd dist && zip -qr Fahras-windows-x64.zip Fahras)

@@ -1,5 +1,12 @@
 // SPDX-License-Identifier: MIT
 
+// Fahras: Linux-only features (portal service, sandbox helpers) are compiled
+// but unreachable on Windows; Linux builds keep the strict lints.
+#![cfg_attr(
+    windows,
+    allow(dead_code, unused_imports, unused_mut, unfulfilled_lint_expectations)
+)]
+
 // build.rs embeds data/locales; this path holds no catalogs, so the macro adds none itself.
 rust_i18n::i18n!(
     "src/i18n/no-catalogs",
