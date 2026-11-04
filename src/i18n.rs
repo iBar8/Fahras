@@ -146,7 +146,12 @@ impl Catalogs {
         Self(
             compiled::CATALOGS
                 .iter()
-                .map(|&(locale, messages)| (locale, messages.iter().copied().collect()))
+                .map(|&(locale, messages)| {
+                    let messages = messages
+                        .iter()
+                        .map(|&(key, text)| (key, crate::fahras::branding::rebrand(locale, text)));
+                    (locale, messages.collect())
+                })
                 .collect(),
         )
     }
