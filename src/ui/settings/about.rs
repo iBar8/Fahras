@@ -25,7 +25,7 @@ pub(super) fn about_page() -> gtk::Widget {
     copy.set_hexpand(true);
     copy.set_valign(gtk::Align::Center);
     let heading = gtk::Box::new(gtk::Orientation::Horizontal, 10);
-    let name = gtk::Label::new(Some("Strata"));
+    let name = gtk::Label::new(Some(crate::fahras::branding::DISPLAY_NAME));
     name.add_css_class("about-name");
     heading.append(&name);
     let kind = crate::build_info::build_kind();

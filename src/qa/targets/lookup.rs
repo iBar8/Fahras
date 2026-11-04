@@ -16,6 +16,12 @@ pub(crate) fn result_rows(root: &gtk::Widget) -> Vec<gtk::Widget> {
 
 /// Browser windows are titled "<folder> — Strata", so "Strata" matches every one.
 fn titled(window: &gtk::Window, title: &str) -> bool {
+    // Fahras: upstream scenarios name app windows by "Strata"; they carry the display name.
+    let title = if title == "Strata" {
+        crate::fahras::branding::DISPLAY_NAME
+    } else {
+        title
+    };
     window.title().is_some_and(|actual| {
         actual == title
             || actual

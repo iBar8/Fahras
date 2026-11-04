@@ -188,7 +188,7 @@ fn should_select_cairo(
 fn version_line() -> String {
     format!(
         "{} {}",
-        env!("CARGO_PKG_NAME"),
+        fahras::branding::DISPLAY_NAME,
         build_info::displayed_version()
     )
 }
@@ -565,7 +565,7 @@ fn leave_launch_folder() {
 
 fn install_application_identity() {
     glib::set_prgname(Some(APPLICATION_ID));
-    glib::set_application_name("Strata");
+    glib::set_application_name(fahras::branding::DISPLAY_NAME);
 }
 
 #[cfg(windows)]

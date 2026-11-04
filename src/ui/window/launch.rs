@@ -90,7 +90,7 @@ pub(in crate::ui) fn present_target(
 
     let window = gtk::ApplicationWindow::builder()
         .application(application)
-        .title("Strata")
+        .title(crate::fahras::branding::DISPLAY_NAME)
         .default_width(1200)
         .default_height(760)
         .build();

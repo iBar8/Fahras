@@ -470,8 +470,8 @@ impl TabWindow {
             .find(|tab| tab.id == self.active.get())
             .and_then(|tab| tab.folder.borrow().clone())
             .map_or_else(
-                || "Strata".to_owned(),
-                |folder| format!("{folder} — Strata"),
+                || crate::fahras::branding::DISPLAY_NAME.to_owned(),
+                |folder| format!("{folder} — {}", crate::fahras::branding::DISPLAY_NAME),
             );
         window.set_title(Some(&title));
     }

@@ -159,7 +159,7 @@ fn open_in_new_tab_reuses_the_unavailable_overlay_for_a_missing_target() {
 fn assert_names_awaited_tab(window: &gtk::ApplicationWindow, tabs: &TabWindow, name: &str) {
     assert_eq!(
         window.title().as_deref(),
-        Some(format!("{name} — Strata").as_str())
+        Some(format!("{name} — Fahras").as_str())
     );
     let tab_label = find_widget(tabs.strip.widget().upcast_ref(), &|widget| {
         widget

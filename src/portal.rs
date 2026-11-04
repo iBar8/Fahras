@@ -214,7 +214,7 @@ impl FileChooserBackend {
 
 pub(crate) fn run(#[cfg(feature = "qa")] qa: Option<crate::qa::Session>) -> glib::ExitCode {
     glib::set_prgname(Some(CHOOSER_APPLICATION_ID));
-    glib::set_application_name("Strata");
+    glib::set_application_name(crate::fahras::branding::DISPLAY_NAME);
 
     // Keep worker-thread invocations queued until GTK is ready on this thread.
     let context = glib::MainContext::default();
