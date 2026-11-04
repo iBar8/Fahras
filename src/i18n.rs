@@ -33,13 +33,15 @@ pub(crate) enum Language {
     SimplifiedChinese,
     #[serde(rename = "zh-TW")]
     TraditionalChinese,
+    #[serde(rename = "ar")]
+    Arabic,
     #[default]
     #[serde(other, rename = "auto")]
     Auto,
 }
 
 impl Language {
-    pub const CHOICES: [(&'static str, Self); 14] = [
+    pub const CHOICES: [(&'static str, Self); 15] = [
         ("Auto-detect", Self::Auto),
         ("English", Self::English),
         ("Français", Self::French),
@@ -54,6 +56,7 @@ impl Language {
         ("Русский", Self::Russian),
         ("简体中文", Self::SimplifiedChinese),
         ("正體中文", Self::TraditionalChinese),
+        ("العربية", Self::Arabic),
     ];
 
     pub fn locale(self) -> &'static str {
@@ -72,6 +75,7 @@ impl Language {
             Self::Russian => "ru",
             Self::SimplifiedChinese => "zh-CN",
             Self::TraditionalChinese => "zh-TW",
+            Self::Arabic => "ar",
         }
     }
 }
@@ -95,6 +99,7 @@ fn supported_locale(value: &str) -> Option<&'static str> {
         "vi" => Some("vi"),
         "it" => Some("it"),
         "ru" => Some("ru"),
+        "ar" => Some("ar"),
         "zh" => match value.split('-').nth(1) {
             Some("hant" | "tw" | "hk" | "mo") => Some("zh-TW"),
             _ => Some("zh-CN"),
@@ -235,8 +240,45 @@ fn plural_category(locale: &str, count: u64) -> &'static str {
         "ru" if count % 10 == 1 && count % 100 != 11 => "one",
         "ru" if (2..=4).contains(&(count % 10)) && !(12..=14).contains(&(count % 100)) => "few",
         "ru" => "many",
+        "ar" => arabic_plural_category(count),
         _ if count == 1 => "one",
         _ => "other",
+    }
+}
+
+fn arabic_plural_category(count: u64) -> &'static str {
+    match (count, count % 100) {
+        (1, _) => "one",
+        (2, _) => "two",
+        (_, 3..=10) => "few",
+        (_, 11..=99) => "many",
+        _ => "other",
+    }
+}
+
+pub(crate) fn is_right_to_left(locale: &str) -> bool {
+    locale == "ar"
+}
+
+/// GTK takes its default direction from the process locale, but the saved language may differ.
+/// Before GTK starts this does nothing; the startup handler applies it again.
+pub(crate) fn apply_text_direction(locale: &str) {
+    if !gtk::is_initialized_main_thread() {
+        return;
+    }
+    gtk::Widget::set_default_direction(if is_right_to_left(locale) {
+        gtk::TextDirection::Rtl
+    } else {
+        gtk::TextDirection::Ltr
+    });
+}
+
+pub(crate) fn day_period(morning: bool) -> &'static str {
+    match (rust_i18n::locale().as_ref(), morning) {
+        ("ar", true) => "ص",
+        ("ar", false) => "م",
+        (_, true) => "AM",
+        (_, false) => "PM",
     }
 }
 
@@ -260,14 +302,14 @@ fn count_in(locale: &str, kind: &str, count: u64) -> String {
 
 fn decimal_separator(locale: &str) -> &'static str {
     match locale {
-        "en" | "ja" | "ko" | "zh-CN" | "zh-TW" => ".",
+        "en" | "ja" | "ko" | "zh-CN" | "zh-TW" | "ar" => ".",
         _ => ",",
     }
 }
 
 fn group_separator(locale: &str) -> &'static str {
     match locale {
-        "en" | "ja" | "ko" | "zh-CN" | "zh-TW" => ",",
+        "en" | "ja" | "ko" | "zh-CN" | "zh-TW" | "ar" => ",",
         "fr" => "\u{202f}",
         "hu" | "ru" => "\u{a0}",
         _ => ".",

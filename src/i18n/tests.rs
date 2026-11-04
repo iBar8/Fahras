@@ -53,6 +53,7 @@ fn manual_language_does_not_depend_on_system_locale() {
         (Language::SimplifiedChinese, "zh-CN"),
         (Language::TraditionalChinese, "zh-TW"),
         (Language::Hungarian, "hu"),
+        (Language::Arabic, "ar"),
     ] {
         assert_eq!(choice.locale(), locale);
         assert_eq!(
@@ -96,6 +97,22 @@ fn plural_categories_cover_russian_teens_and_invariant_asian_forms() {
         ("vi", vec![(1, "other")]),
         ("zh-CN", vec![(1, "other")]),
         ("zh-TW", vec![(1, "other")]),
+        (
+            "ar",
+            vec![
+                (0, "other"),
+                (1, "one"),
+                (2, "two"),
+                (3, "few"),
+                (10, "few"),
+                (11, "many"),
+                (99, "many"),
+                (100, "other"),
+                (102, "other"),
+                (103, "few"),
+                (111, "many"),
+            ],
+        ),
     ] {
         for (count, expected) in values {
             assert_eq!(plural_category(locale, count), expected, "{locale}/{count}");

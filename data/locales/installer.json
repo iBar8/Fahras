@@ -13,7 +13,8 @@
     "it": "Programma di installazione interattivo",
     "ru": "Интерактивная установка",
     "zh-CN": "交互式安装程序",
-    "zh-TW": "互動式安裝程式"
+    "zh-TW": "互動式安裝程式",
+    "ar": "المثبت التفاعلي"
   },
   "installer.tagline": {
     "en": "Navigate every layer.",
@@ -28,7 +29,8 @@
     "it": "Naviga in ogni livello.",
     "ru": "Перемещайтесь по всем уровням.",
     "zh-CN": "穿梭每一层文件夹。",
-    "zh-TW": "穿梭每一層資料夾。"
+    "zh-TW": "穿梭每一層資料夾。",
+    "ar": "تنقل بين جميع الطبقات."
   },
   "installer.partial": {
     "en": "Strata is installed, but setup did not finish.",
@@ -43,7 +45,8 @@
     "it": "Strata è installato, ma la configurazione non è stata completata.",
     "ru": "Strata установлена, но настройка не завершена.",
     "zh-CN": "Strata 已安装，但设置尚未完成。",
-    "zh-TW": "Strata 已安裝，但設定尚未完成。"
+    "zh-TW": "Strata 已安裝，但設定尚未完成。",
+    "ar": "تم تثبيت Strata، لكن الإعداد لم يكتمل."
   },
   "installer.failed": {
     "en": "Installation did not finish.",
@@ -58,7 +61,8 @@
     "it": "L’installazione non è stata completata.",
     "ru": "Установка не завершена.",
     "zh-CN": "安装尚未完成。",
-    "zh-TW": "安裝尚未完成。"
+    "zh-TW": "安裝尚未完成。",
+    "ar": "لم يكتمل التثبيت."
   },
   "installer.details": {
     "en": "Detailed output: %{path}",
@@ -73,7 +77,8 @@
     "it": "Registro dettagliato: %{path}",
     "ru": "Подробный журнал: %{path}",
     "zh-CN": "详细日志：%{path}",
-    "zh-TW": "詳細輸出：%{path}"
+    "zh-TW": "詳細輸出：%{path}",
+    "ar": "المخرجات التفصيلية: %{path}"
   },
   "installer.cancelled": {
     "en": "Installation cancelled. No changes made.",
@@ -88,7 +93,8 @@
     "it": "Installazione annullata. Nessuna modifica effettuata.",
     "ru": "Установка отменена. Изменений нет.",
     "zh-CN": "已取消安装，未做任何更改。",
-    "zh-TW": "已取消安裝，未做任何變更。"
+    "zh-TW": "已取消安裝，未做任何變更。",
+    "ar": "تم إلغاء التثبيت. لم يتم إجراء أي تغييرات."
   },
   "installer.task_failed": {
     "en": "Failed: %{task}",
@@ -103,7 +109,8 @@
     "it": "Operazione non riuscita: %{task}",
     "ru": "Ошибка: %{task}",
     "zh-CN": "失败：%{task}",
-    "zh-TW": "失敗：%{task}"
+    "zh-TW": "失敗：%{task}",
+    "ar": "فشلت المهمة: %{task}"
   },
   "installer.read_failed": {
     "en": "Could not read your selection.",
@@ -118,7 +125,8 @@
     "it": "Impossibile leggere la selezione.",
     "ru": "Не удалось прочитать ваш выбор.",
     "zh-CN": "无法读取所选项。",
-    "zh-TW": "無法讀取你的選擇。"
+    "zh-TW": "無法讀取你的選擇。",
+    "ar": "تعذّرت قراءة اختيارك."
   },
   "installer.keys_toggle": {
     "en": "↑/↓ move · Space toggle · Enter install · Esc cancel",
@@ -133,7 +141,8 @@
     "it": "↑/↓ sposta · Spazio seleziona · Invio installa · Esc annulla",
     "ru": "↑/↓ переход · Пробел выбор · Enter установка · Esc отмена",
     "zh-CN": "↑/↓ 移动 · 空格切换 · Enter 安装 · Esc 取消",
-    "zh-TW": "↑/↓ 移動 · 空白鍵切換 · Enter 安裝 · Esc 取消"
+    "zh-TW": "↑/↓ 移動 · 空白鍵切換 · Enter 安裝 · Esc 取消",
+    "ar": "↑/↓ تنقل · Space تبديل · Enter تثبيت · Esc إلغاء"
   },
   "installer.keys_choose": {
     "en": "↑/↓ choose · Enter continue · Esc cancel",
@@ -148,7 +157,8 @@
     "it": "↑/↓ scegli · Invio continua · Esc annulla",
     "ru": "↑/↓ выбор · Enter продолжить · Esc отмена",
     "zh-CN": "↑/↓ 选择 · Enter 继续 · Esc 取消",
-    "zh-TW": "↑/↓ 選擇 · Enter 繼續 · Esc 取消"
+    "zh-TW": "↑/↓ 選擇 · Enter 繼續 · Esc 取消",
+    "ar": "↑/↓ اختيار · Enter متابعة · Esc إلغاء"
   },
   "installer.plain_toggle": {
     "en": "Toggle an option by number; Enter to install, q to cancel:",
@@ -163,7 +173,8 @@
     "it": "Seleziona per numero; Invio per installare, q per annullare:",
     "ru": "Выбор по номеру; Enter для установки, q для отмены:",
     "zh-CN": "输入编号切换选项，按 Enter 安装，输入 q 取消：",
-    "zh-TW": "輸入編號切換選項，按 Enter 安裝，輸入 q 取消："
+    "zh-TW": "輸入編號切換選項，按 Enter 安裝，輸入 q 取消：",
+    "ar": "أدخل رقم الخيار لتبديله؛ Enter للتثبيت، q للإلغاء:"
   },
   "installer.plain_choose": {
     "en": "Choose [1], or q to cancel:",
@@ -178,7 +189,8 @@
     "it": "Scegli [1], oppure q per annullare:",
     "ru": "Выберите [1] или q для отмены:",
     "zh-CN": "选择 [1]，或输入 q 取消：",
-    "zh-TW": "選擇 [1]，或輸入 q 取消："
+    "zh-TW": "選擇 [1]，或輸入 q 取消：",
+    "ar": "اختر [1]، أو q للإلغاء:"
   },
   "installer.invalid_selection": {
     "en": "Choose one of the listed options.",
@@ -193,7 +205,8 @@
     "it": "Scegli una delle opzioni elencate.",
     "ru": "Выберите один из предложенных вариантов.",
     "zh-CN": "请选择列表中的选项。",
-    "zh-TW": "請選擇列出的其中一個選項。"
+    "zh-TW": "請選擇列出的其中一個選項。",
+    "ar": "اختر أحد الخيارات المعروضة."
   },
   "installer.standard": {
     "en": "Install Strata (recommended)",
@@ -208,7 +221,8 @@
     "it": "Installa Strata (consigliato)",
     "ru": "Установить Strata (рекомендуется)",
     "zh-CN": "安装 Strata（推荐）",
-    "zh-TW": "安裝 Strata（建議）"
+    "zh-TW": "安裝 Strata（建議）",
+    "ar": "تثبيت Strata (موصى به)"
   },
   "installer.custom": {
     "en": "Customize installation",
@@ -223,7 +237,8 @@
     "it": "Personalizza l’installazione",
     "ru": "Настроить установку",
     "zh-CN": "自定义安装",
-    "zh-TW": "自訂安裝"
+    "zh-TW": "自訂安裝",
+    "ar": "تخصيص التثبيت"
   },
   "installer.standard_hint": {
     "en": "Everything this system supports: launcher, folders, file chooser, and optional integrations.",
@@ -238,7 +253,8 @@
     "it": "Tutto ciò che questo sistema supporta: launcher, cartelle, selettore di file e integrazioni opzionali.",
     "ru": "Всё, что поддерживает эта система: ярлык запуска, папки, диалог выбора файлов и дополнительные интеграции.",
     "zh-CN": "此系统支持的全部内容：启动器、文件夹、文件选择器和可选集成。",
-    "zh-TW": "此系統支援的全部內容：啟動器、資料夾、檔案選擇器和選用整合。"
+    "zh-TW": "此系統支援的全部內容：啟動器、資料夾、檔案選擇器和選用整合。",
+    "ar": "كل ما يدعمه هذا النظام: مشغل التطبيق، والمجلدات، ونافذة اختيار الملفات، وعمليات التكامل الاختيارية."
   },
   "installer.custom_hint": {
     "en": "Choose desktop integrations and optional support.",
@@ -253,7 +269,8 @@
     "it": "Scegli le integrazioni desktop e le funzionalità opzionali.",
     "ru": "Выберите интеграцию с рабочим столом и дополнительные возможности.",
     "zh-CN": "选择桌面集成和可选功能。",
-    "zh-TW": "選擇桌面整合與選用支援。"
+    "zh-TW": "選擇桌面整合與選用支援。",
+    "ar": "اختر عمليات التكامل مع سطح المكتب والدعم الاختياري."
   },
   "installer.setup_title": {
     "en": "Choose your setup",
@@ -268,7 +285,8 @@
     "it": "Scegli la configurazione",
     "ru": "Выберите вариант установки",
     "zh-CN": "选择安装方式",
-    "zh-TW": "選擇安裝方式"
+    "zh-TW": "選擇安裝方式",
+    "ar": "اختر طريقة الإعداد"
   },
   "installer.launcher": {
     "en": "Application launcher",
@@ -283,7 +301,8 @@
     "it": "Lanciatore dell’applicazione",
     "ru": "Ярлык запуска",
     "zh-CN": "应用启动图标",
-    "zh-TW": "應用程式啟動器"
+    "zh-TW": "應用程式啟動器",
+    "ar": "مشغل التطبيق"
   },
   "installer.folders": {
     "en": "Default file manager",
@@ -298,7 +317,8 @@
     "it": "Gestore di file predefinito",
     "ru": "Файловый менеджер по умолчанию",
     "zh-CN": "默认文件管理器",
-    "zh-TW": "預設檔案管理員"
+    "zh-TW": "預設檔案管理員",
+    "ar": "مدير الملفات الافتراضي"
   },
   "installer.reveal": {
     "en": "Open file location",
@@ -313,7 +333,8 @@
     "it": "Apri percorso del file",
     "ru": "Открытие расположения файла",
     "zh-CN": "打开文件位置",
-    "zh-TW": "開啟檔案位置"
+    "zh-TW": "開啟檔案位置",
+    "ar": "فتح موقع الملف"
   },
   "installer.chooser": {
     "en": "Open and Save dialogs",
@@ -328,7 +349,8 @@
     "it": "Finestre Apri e Salva",
     "ru": "Диалоги открытия и сохранения",
     "zh-CN": "打开和保存对话框",
-    "zh-TW": "開啟與儲存對話框"
+    "zh-TW": "開啟與儲存對話框",
+    "ar": "نوافذ الفتح والحفظ"
   },
   "installer.launcher_hint": {
     "en": "Add Strata to your application menu.",
@@ -343,7 +365,8 @@
     "it": "Aggiungi Strata al menu delle applicazioni.",
     "ru": "Добавить Strata в меню приложений.",
     "zh-CN": "将 Strata 添加到应用菜单。",
-    "zh-TW": "將 Strata 加入應用程式選單。"
+    "zh-TW": "將 Strata 加入應用程式選單。",
+    "ar": "إضافة Strata إلى قائمة التطبيقات."
   },
   "installer.folders_hint": {
     "en": "Use Strata for folders and Open file location. Includes the launcher.",
@@ -358,7 +381,8 @@
     "it": "Usa Strata per cartelle e percorsi dei file. Include il lanciatore.",
     "ru": "Открывать папки и расположение файлов в Strata. Включает ярлык запуска.",
     "zh-CN": "使用 Strata 打开文件夹和文件位置，并添加启动图标。",
-    "zh-TW": "使用 Strata 開啟資料夾與檔案位置，並包含啟動器。"
+    "zh-TW": "使用 Strata 開啟資料夾與檔案位置，並包含啟動器。",
+    "ar": "استخدام Strata للمجلدات ولطلبات «فتح موقع الملف». يتضمن مشغل التطبيق."
   },
   "installer.reveal_hint": {
     "en": "Reveal files from other apps without changing folder defaults.",
@@ -373,7 +397,8 @@
     "it": "Mostra file da altre applicazioni senza cambiare il gestore predefinito delle cartelle.",
     "ru": "Показывать файлы из других приложений, не меняя обработчик папок.",
     "zh-CN": "显示其他应用中的文件位置，不更改默认文件夹处理程序。",
-    "zh-TW": "從其他應用程式顯示檔案位置，不變更資料夾的預設應用程式。"
+    "zh-TW": "從其他應用程式顯示檔案位置，不變更資料夾的預設應用程式。",
+    "ar": "إظهار الملفات من التطبيقات الأخرى دون تغيير التطبيق الافتراضي للمجلدات."
   },
   "installer.reveal_ready": {
     "en": "Strata now handles \"Open file location\" requests.",
@@ -388,7 +413,8 @@
     "it": "Strata ora gestisce le richieste «Apri percorso del file».",
     "ru": "Теперь Strata обрабатывает запросы «Открытие расположения файла».",
     "zh-CN": "Strata 现在会处理“打开文件位置”请求。",
-    "zh-TW": "Strata 現在會處理“開啟檔案位置”要求。"
+    "zh-TW": "Strata 現在會處理“開啟檔案位置”要求。",
+    "ar": "يتولى Strata الآن طلبات «فتح موقع الملف»."
   },
   "installer.reveal_relogin": {
     "en": "Installed the FileManager1 service, but could not reload the session bus. Log out and back in to use Strata for \"Open file location\" requests.",
@@ -403,7 +429,8 @@
     "it": "Il servizio FileManager1 è stato installato, ma non è stato possibile ricaricare il bus di sessione. Esci e accedi di nuovo per usare Strata con le richieste «Apri percorso del file».",
     "ru": "Служба FileManager1 установлена, но перезагрузить сеансовую шину не удалось. Выйдите из системы и войдите снова, чтобы Strata обрабатывала запросы «Открытие расположения файла».",
     "zh-CN": "已安装 FileManager1 服务，但无法重新加载会话总线。请注销并重新登录，以便使用 Strata 处理“打开文件位置”请求。",
-    "zh-TW": "已安裝 FileManager1 服務，但無法重新載入工作階段匯流排。請登出並重新登入，以便使用 Strata 處理“開啟檔案位置”要求。"
+    "zh-TW": "已安裝 FileManager1 服務，但無法重新載入工作階段匯流排。請登出並重新登入，以便使用 Strata 處理“開啟檔案位置”要求。",
+    "ar": "تم تثبيت خدمة FileManager1، لكن تعذّرت إعادة تحميل ناقل الجلسة. سجّل الخروج ثم سجّل الدخول مجددًا لاستخدام Strata في طلبات «فتح موقع الملف»."
   },
   "installer.chooser_hint": {
     "en": "Use Strata for portal dialogs. Restarts the portal service; close file dialogs first.",
@@ -418,7 +445,8 @@
     "it": "Usa Strata per le finestre del portale. Riavvia il servizio; chiudi prima le finestre dei file.",
     "ru": "Использовать Strata для диалогов портала. Служба будет перезапущена; сначала закройте файловые диалоги.",
     "zh-CN": "使用 Strata 的门户对话框。此操作会重启门户服务，请先关闭文件对话框。",
-    "zh-TW": "使用 Strata 作為入口對話框。這會重新啟動入口服務，請先關閉檔案對話框。"
+    "zh-TW": "使用 Strata 作為入口對話框。這會重新啟動入口服務，請先關閉檔案對話框。",
+    "ar": "استخدام Strata لنوافذ البوابة (portal). سيُعاد تشغيل خدمة البوابة؛ أغلق نوافذ الملفات المفتوحة أولًا."
   },
   "installer.smb": {
     "en": "Windows network shares",
@@ -433,7 +461,8 @@
     "it": "Condivisioni di rete Windows",
     "ru": "Сетевые ресурсы Windows",
     "zh-CN": "Windows 网络共享",
-    "zh-TW": "Windows 網路共享"
+    "zh-TW": "Windows 網路共享",
+    "ar": "المجلدات المشتركة على شبكات Windows"
   },
   "installer.smb_hint": {
     "en": "Install optional SMB support for browsing network shares.",
@@ -448,7 +477,8 @@
     "it": "Installa il supporto SMB opzionale per esplorare le condivisioni di rete.",
     "ru": "Установить поддержку SMB для просмотра сетевых ресурсов.",
     "zh-CN": "安装可选的 SMB 支持，以浏览网络共享。",
-    "zh-TW": "安裝選用的 SMB 支援，以瀏覽網路共享。"
+    "zh-TW": "安裝選用的 SMB 支援，以瀏覽網路共享。",
+    "ar": "تثبيت دعم SMB الاختياري لتصفح المجلدات المشتركة على الشبكة."
   },
   "installer.raw": {
     "en": "Camera RAW support",
@@ -463,7 +493,8 @@
     "it": "Supporto foto RAW",
     "ru": "Поддержка фотографий RAW",
     "zh-CN": "相机 RAW 格式支持",
-    "zh-TW": "相機 RAW 支援"
+    "zh-TW": "相機 RAW 支援",
+    "ar": "دعم صور RAW من الكاميرات"
   },
   "installer.raw_hint": {
     "en": "Install optional image decoders for broader preview support.",
@@ -478,7 +509,8 @@
     "it": "Installa decodificatori opzionali per visualizzare più formati di immagini.",
     "ru": "Установить дополнительные декодеры для предпросмотра изображений.",
     "zh-CN": "安装可选的图像解码器，以预览更多格式。",
-    "zh-TW": "安裝選用的影像解碼器，以預覽更多格式。"
+    "zh-TW": "安裝選用的影像解碼器，以預覽更多格式。",
+    "ar": "تثبيت أدوات فك ترميز الصور الاختيارية لدعم معاينة أوسع."
   },
   "installer.omarchy": {
     "en": "Omarchy file-manager shortcuts",
@@ -493,7 +525,8 @@
     "it": "Scorciatoie del gestore di file Omarchy",
     "ru": "Горячие клавиши файлового менеджера Omarchy",
     "zh-CN": "Omarchy 文件管理器快捷键",
-    "zh-TW": "Omarchy 檔案管理員快捷鍵"
+    "zh-TW": "Omarchy 檔案管理員快捷鍵",
+    "ar": "اختصارات مدير الملفات في Omarchy"
   },
   "installer.omarchy_hint": {
     "en": "Replace the file-manager shortcuts. A backup is kept.",
@@ -508,7 +541,8 @@
     "it": "Sostituisci le scorciatoie del gestore di file. Viene conservata una copia di backup.",
     "ru": "Заменить горячие клавиши файлового менеджера. Резервная копия сохранится.",
     "zh-CN": "替换文件管理器快捷键，并保留备份。",
-    "zh-TW": "取代檔案管理員快捷鍵，並保留備份。"
+    "zh-TW": "取代檔案管理員快捷鍵，並保留備份。",
+    "ar": "استبدال اختصارات مدير الملفات. يتم الاحتفاظ بنسخة احتياطية."
   },
   "installer.udiskie": {
     "en": "Encrypted-drive unlock",
@@ -523,7 +557,8 @@
     "it": "Sblocco delle unità cifrate",
     "ru": "Разблокировка зашифрованных дисков",
     "zh-CN": "加密驱动器解锁",
-    "zh-TW": "加密磁碟機解鎖"
+    "zh-TW": "加密磁碟機解鎖",
+    "ar": "فتح قفل الأقراص المشفرة"
   },
   "installer.udiskie_hint": {
     "en": "Edit udiskie settings, disable LUKS automount, and restart udiskie. Restore with strata --uninstall-udiskie-unlock.",
@@ -538,7 +573,8 @@
     "it": "Configura udiskie, disattiva il montaggio automatico LUKS e riavvia udiskie. Ripristina con strata --uninstall-udiskie-unlock.",
     "ru": "Изменить настройки udiskie, отключить автомонтирование LUKS и перезапустить udiskie. Восстановление: strata --uninstall-udiskie-unlock.",
     "zh-CN": "修改 udiskie 设置、关闭 LUKS 自动挂载并重启 udiskie。可运行 strata --uninstall-udiskie-unlock 恢复。",
-    "zh-TW": "編輯 udiskie 設定、停用 LUKS 自動掛載並重新啟動 udiskie。可執行 strata --uninstall-udiskie-unlock 還原。"
+    "zh-TW": "編輯 udiskie 設定、停用 LUKS 自動掛載並重新啟動 udiskie。可執行 strata --uninstall-udiskie-unlock 還原。",
+    "ar": "تعديل إعدادات udiskie، وتعطيل الربط التلقائي لأقراص LUKS، وإعادة تشغيل udiskie. للاستعادة: strata --uninstall-udiskie-unlock."
   },
   "installer.custom_title": {
     "en": "Make Strata yours",
@@ -553,7 +589,8 @@
     "it": "Configura Strata a modo tuo",
     "ru": "Настройте Strata под себя",
     "zh-CN": "按你的需要设置 Strata",
-    "zh-TW": "打造你的 Strata"
+    "zh-TW": "打造你的 Strata",
+    "ar": "خصص Strata حسب رغبتك"
   },
   "installer.plan": {
     "en": "Installation plan",
@@ -568,7 +605,8 @@
     "it": "Piano di installazione",
     "ru": "План установки",
     "zh-CN": "安装计划",
-    "zh-TW": "安裝計畫"
+    "zh-TW": "安裝計畫",
+    "ar": "خطة التثبيت"
   },
   "installer.destination": {
     "en": "Install to %{path}",
@@ -583,7 +621,8 @@
     "it": "Installa in %{path}",
     "ru": "Установить в %{path}",
     "zh-CN": "安装到 %{path}",
-    "zh-TW": "安裝到 %{path}"
+    "zh-TW": "安裝到 %{path}",
+    "ar": "التثبيت في %{path}"
   },
   "installer.defaults_unchanged": {
     "en": "Your default apps and shortcuts will stay unchanged.",
@@ -598,7 +637,8 @@
     "it": "Le applicazioni predefinite e le scorciatoie resteranno invariate.",
     "ru": "Приложения по умолчанию и горячие клавиши не изменятся.",
     "zh-CN": "保留当前默认应用和快捷键。",
-    "zh-TW": "你的預設應用程式與快捷鍵將保持不變。"
+    "zh-TW": "你的預設應用程式與快捷鍵將保持不變。",
+    "ar": "ستبقى تطبيقاتك واختصاراتك الافتراضية دون تغيير."
   },
   "installer.dependencies_ready": {
     "en": "All selected runtime packages are already installed.",
@@ -613,7 +653,8 @@
     "it": "Tutti i pacchetti di esecuzione selezionati sono già installati.",
     "ru": "Все выбранные пакеты для работы уже установлены.",
     "zh-CN": "所选运行时软件包均已安装。",
-    "zh-TW": "所有選取的執行階段套件皆已安裝。"
+    "zh-TW": "所有選取的執行階段套件皆已安裝。",
+    "ar": "جميع حزم التشغيل المحددة مثبتة بالفعل."
   },
   "installer.dependencies": {
     "en": "Install dependencies",
@@ -628,7 +669,8 @@
     "it": "Installa le dipendenze",
     "ru": "Установка зависимостей",
     "zh-CN": "安装依赖项",
-    "zh-TW": "安裝相依套件"
+    "zh-TW": "安裝相依套件",
+    "ar": "تثبيت التبعيات"
   },
   "installer.packages": {
     "en": "Packages to install: %{packages}",
@@ -643,7 +685,8 @@
     "it": "Pacchetti da installare: %{packages}",
     "ru": "Пакеты для установки: %{packages}",
     "zh-CN": "将安装的软件包：%{packages}",
-    "zh-TW": "要安裝的套件：%{packages}"
+    "zh-TW": "要安裝的套件：%{packages}",
+    "ar": "الحزم المطلوب تثبيتها: %{packages}"
   },
   "installer.reinstall": {
     "en": "This replaces %{path}. Your saved settings are kept.",
@@ -658,7 +701,8 @@
     "it": "%{path} verrà sostituito. Le impostazioni salvate saranno conservate.",
     "ru": "%{path} будет заменён. Сохранённые настройки останутся.",
     "zh-CN": "将替换 %{path}，保留已保存的设置。",
-    "zh-TW": "這會取代 %{path}，並保留你已儲存的設定。"
+    "zh-TW": "這會取代 %{path}，並保留你已儲存的設定。",
+    "ar": "سيتم استبدال %{path}. سيتم الاحتفاظ بإعداداتك المحفوظة."
   },
   "installer.installing": {
     "en": "Installing Strata",
@@ -673,7 +717,8 @@
     "it": "Installazione di Strata",
     "ru": "Установка Strata",
     "zh-CN": "正在安装 Strata",
-    "zh-TW": "正在安裝 Strata"
+    "zh-TW": "正在安裝 Strata",
+    "ar": "جارٍ تثبيت Strata"
   },
   "installer.download": {
     "en": "Download Strata %{version}",
@@ -688,7 +733,8 @@
     "it": "Scarica Strata %{version}",
     "ru": "Загрузка Strata %{version}",
     "zh-CN": "下载 Strata %{version}",
-    "zh-TW": "下載 Strata %{version}"
+    "zh-TW": "下載 Strata %{version}",
+    "ar": "تنزيل Strata %{version}"
   },
   "installer.download_manifest": {
     "en": "Download the signed release manifest",
@@ -703,7 +749,8 @@
     "it": "Scarica il manifesto firmato della versione",
     "ru": "Загрузка подписанного манифеста выпуска",
     "zh-CN": "下载已签名的发行版清单",
-    "zh-TW": "下載已簽署的發行版本清單"
+    "zh-TW": "下載已簽署的發行版本清單",
+    "ar": "تنزيل بيان الإصدار الموقّع"
   },
   "installer.download_signatures": {
     "en": "Download the release signatures",
@@ -718,7 +765,8 @@
     "it": "Scarica le firme della versione",
     "ru": "Загрузка подписей выпуска",
     "zh-CN": "下载发行版签名",
-    "zh-TW": "下載發行版本簽章"
+    "zh-TW": "下載發行版本簽章",
+    "ar": "تنزيل توقيعات الإصدار"
   },
   "installer.signature": {
     "en": "Verify the release signature",
@@ -733,7 +781,8 @@
     "it": "Verifica della firma della versione",
     "ru": "Проверка подписи выпуска",
     "zh-CN": "验证发行版签名",
-    "zh-TW": "驗證發行版本簽章"
+    "zh-TW": "驗證發行版本簽章",
+    "ar": "التحقق من توقيع الإصدار"
   },
   "installer.digest": {
     "en": "Verify the signed SHA-256 digest",
@@ -748,7 +797,8 @@
     "it": "Verifica del digest SHA-256 firmato",
     "ru": "Проверка подписанной контрольной суммы SHA-256",
     "zh-CN": "验证已签名的 SHA-256 摘要",
-    "zh-TW": "驗證已簽署的 SHA-256 摘要"
+    "zh-TW": "驗證已簽署的 SHA-256 摘要",
+    "ar": "التحقق من بصمة SHA-256 الموقّعة"
   },
   "installer.unpack": {
     "en": "Unpack the verified release",
@@ -763,7 +813,8 @@
     "it": "Estrai la versione verificata",
     "ru": "Распаковка проверенного выпуска",
     "zh-CN": "解压已验证的发行版",
-    "zh-TW": "解壓縮已驗證的發行版本"
+    "zh-TW": "解壓縮已驗證的發行版本",
+    "ar": "استخراج الإصدار الذي تم التحقق منه"
   },
   "installer.application": {
     "en": "Install the application",
@@ -778,7 +829,8 @@
     "it": "Installa l’applicazione",
     "ru": "Установка приложения",
     "zh-CN": "安装应用",
-    "zh-TW": "安裝應用程式"
+    "zh-TW": "安裝應用程式",
+    "ar": "تثبيت التطبيق"
   },
   "installer.ready": {
     "en": "Ready to explore",
@@ -793,7 +845,8 @@
     "it": "Pronto per esplorare",
     "ru": "Всё готово к работе",
     "zh-CN": "开始探索吧",
-    "zh-TW": "開始探索吧"
+    "zh-TW": "開始探索吧",
+    "ar": "كل شيء جاهز للاستكشاف"
   },
   "installer.installed_notices": {
     "en": "Installed — review setup details",
@@ -808,7 +861,8 @@
     "it": "Installato — controlla i dettagli della configurazione",
     "ru": "Установлено — проверьте сведения о настройке",
     "zh-CN": "已安装，请查看设置详情",
-    "zh-TW": "已安裝，請查看設定詳細資訊"
+    "zh-TW": "已安裝，請查看設定詳細資訊",
+    "ar": "تم التثبيت — راجع تفاصيل الإعداد"
   },
   "installer.installed_warnings": {
     "en": "Installed with warnings",
@@ -823,7 +877,8 @@
     "it": "Installazione completata con avvisi",
     "ru": "Установлено с предупреждениями",
     "zh-CN": "已安装，但有警告",
-    "zh-TW": "已安裝，但有警告"
+    "zh-TW": "已安裝，但有警告",
+    "ar": "تم التثبيت مع وجود تحذيرات"
   },
   "installer.installed": {
     "en": "Strata %{version} is installed.",
@@ -838,7 +893,8 @@
     "it": "Strata %{version} è installato.",
     "ru": "Strata %{version} установлена.",
     "zh-CN": "已安装 Strata %{version}。",
-    "zh-TW": "已安裝 Strata %{version}。"
+    "zh-TW": "已安裝 Strata %{version}。",
+    "ar": "تم تثبيت Strata %{version}."
   },
   "installer.launch": {
     "en": "Run %{command} to get started.",
@@ -853,7 +909,8 @@
     "it": "Esegui %{command} per iniziare.",
     "ru": "Для начала работы выполните %{command}.",
     "zh-CN": "运行 %{command} 开始使用。",
-    "zh-TW": "執行 %{command} 開始使用。"
+    "zh-TW": "執行 %{command} 開始使用。",
+    "ar": "شغّل %{command} للبدء."
   },
   "installer.usage_intro": {
     "en": "Without options, choose a recommended install or customize desktop integration.",
@@ -868,7 +925,8 @@
     "it": "Senza opzioni, scegli l’installazione consigliata o personalizza l’integrazione desktop.",
     "ru": "Без параметров выберите рекомендуемую установку или настройте интеграцию с рабочим столом.",
     "zh-CN": "不带选项运行时，可选择推荐安装或自定义桌面集成。",
-    "zh-TW": "不帶選項執行時，可選擇建議的安裝方式或自訂桌面整合。"
+    "zh-TW": "不帶選項執行時，可選擇建議的安裝方式或自訂桌面整合。",
+    "ar": "عند التشغيل دون خيارات، اختر التثبيت الموصى به أو خصص التكامل مع سطح المكتب."
   },
   "installer.verbose_help": {
     "en": "Show detailed download and verification output",
@@ -883,7 +941,8 @@
     "it": "Mostra i dettagli di download e verifica",
     "ru": "Показать подробности загрузки и проверки",
     "zh-CN": "显示下载和验证的详细输出",
-    "zh-TW": "顯示詳細的下載與驗證輸出"
+    "zh-TW": "顯示詳細的下載與驗證輸出",
+    "ar": "عرض تفاصيل التنزيل والتحقق"
   },
   "installer.udiskie_requires": {
     "en": "--with-udiskie-unlock requires an Arch-based system with udiskie on PATH.",
@@ -898,7 +957,8 @@
     "it": "--with-udiskie-unlock richiede un sistema basato su Arch con udiskie nel PATH.",
     "ru": "--with-udiskie-unlock требует систему на базе Arch с udiskie в PATH.",
     "zh-CN": "--with-udiskie-unlock 需要基于 Arch 的系统，且 PATH 中包含 udiskie。",
-    "zh-TW": "--with-udiskie-unlock 需要以 Arch 為基礎、且 PATH 中有 udiskie 的系統。"
+    "zh-TW": "--with-udiskie-unlock 需要以 Arch 為基礎、且 PATH 中有 udiskie 的系統。",
+    "ar": "يتطلب --with-udiskie-unlock نظامًا مبنيًا على Arch مع وجود udiskie في PATH."
   },
   "installer.progress": {
     "en": "%{percent}%",
@@ -913,6 +973,7 @@
     "it": "%{percent}%",
     "ru": "%{percent} %",
     "zh-CN": "%{percent}%",
-    "zh-TW": "%{percent}%"
+    "zh-TW": "%{percent}%",
+    "ar": "%{percent}%"
   }
 }

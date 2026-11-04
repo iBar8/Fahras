@@ -392,6 +392,7 @@ fn main() -> gtk::glib::ExitCode {
             leave_launch_folder();
         }
     });
+    application.connect_startup(|_| i18n::apply_text_direction(&rust_i18n::locale()));
     application.connect_startup(|_| install_x11_program_class());
     application.connect_startup(export_file_manager_interface);
     application.connect_startup(|_application| ui::schedule_rollback_cleanup());

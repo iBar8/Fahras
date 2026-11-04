@@ -379,6 +379,7 @@ impl PreferenceManager {
 
         let startup_locale = preferences.language.locale();
         rust_i18n::set_locale(startup_locale);
+        crate::i18n::apply_text_direction(startup_locale);
         let manager = Rc::new_cyclic(|this| Self {
             startup_locale,
             startup_interface_renderer: preferences.interface_renderer,

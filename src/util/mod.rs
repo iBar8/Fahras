@@ -230,7 +230,7 @@ pub(crate) fn localized_date(date: &glib::DateTime, pattern: &str) -> String {
             "%b",
             &crate::i18n::tr(&format!("dates.short_month.{}", date.month())),
         )
-        .replace("%p", if date.hour() < 12 { "AM" } else { "PM" });
+        .replace("%p", crate::i18n::day_period(date.hour() < 12));
     date.format(&pattern)
         .map(|s| s.to_string())
         .unwrap_or_else(|_| "—".to_owned())

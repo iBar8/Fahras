@@ -2,9 +2,14 @@
 
 use std::{collections::BTreeSet, path::Path};
 
-const LOCALES: [&str; 13] = [
-    "en", "fr", "hu", "de", "es", "ja", "pt-BR", "ko", "vi", "it", "ru", "zh-CN", "zh-TW",
+const LOCALES: [&str; 14] = [
+    "en", "fr", "hu", "de", "es", "ja", "pt-BR", "ko", "vi", "it", "ru", "zh-CN", "zh-TW", "ar",
 ];
+
+/// Arabic singular and dual forms name the count in the word itself (عنصر واحد، عنصران).
+fn count_is_implied(file: &str, key: &str, locale: &str) -> bool {
+    file == "counts.json" && locale == "ar" && (key.ends_with(".one") || key.ends_with(".two"))
+}
 
 fn placeholders(text: &str) -> BTreeSet<&str> {
     text.split("%{")
@@ -96,11 +101,11 @@ fn catalogs_cover_all_languages_and_preserve_interpolation() {
             for locale in LOCALES {
                 let value = translations[locale].as_str().expect("translated message");
                 assert!(!value.trim().is_empty(), "{locale}: {key}");
-                assert_eq!(
-                    placeholders(value),
-                    placeholders(english),
-                    "{locale}: {key}"
-                );
+                let mut expected = placeholders(english);
+                if count_is_implied(file, &key, locale) {
+                    expected.remove("count");
+                }
+                assert_eq!(placeholders(value), expected, "{locale}: {key}");
             }
         }
     }
