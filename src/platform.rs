@@ -76,3 +76,46 @@ pub(crate) fn recycle_bin_covers(path: &std::path::Path) -> bool {
     // SAFETY: `wide` is a NUL-terminated root path that outlives the call.
     unsafe { GetDriveTypeW(wide.as_ptr()) == DRIVE_FIXED }
 }
+
+/// Starts a GIO file monitor on the main thread and waits for it. GLib's
+/// Windows monitors deliver changes as completion callbacks to the thread that
+/// started them, and only GLib's main loop waits alertably for them; a monitor
+/// started on a plain worker thread never reports anything.
+#[cfg(windows)]
+pub(crate) fn watch_on_main_thread(
+    file: &gtk::gio::File,
+    folder: bool,
+    flags: gtk::gio::FileMonitorFlags,
+) -> Result<gtk::gio::FileMonitor, gtk::glib::Error> {
+    use gtk::{gio, gio::prelude::FileExt, glib};
+    let (sender, receiver) = std::sync::mpsc::channel();
+    let file = file.clone();
+    glib::MainContext::default().invoke(move || {
+        let created = if folder {
+            file.monitor_directory(flags, gio::Cancellable::NONE)
+        } else {
+            file.monitor_file(flags, gio::Cancellable::NONE)
+        };
+        let _ = sender.send(created.map(Unconnected));
+    });
+    match receiver.recv() {
+        Ok(created) => created.map(|Unconnected(monitor)| monitor),
+        Err(_) => Err(glib::Error::new(
+            gio::IOErrorEnum::Cancelled,
+            "the main loop stopped before the monitor started",
+        )),
+    }
+}
+
+/// A monitor that has no signal handlers yet.
+#[cfg(windows)]
+struct Unconnected(gtk::gio::FileMonitor);
+
+#[cfg(windows)]
+#[expect(
+    unsafe_code,
+    reason = "a monitor without handlers moves from the UI thread to the monitors worker"
+)]
+// SAFETY: as for `BareMonitor`: no handler is connected while it crosses threads, and GObject
+// reference counts are thread-safe.
+unsafe impl Send for Unconnected {}

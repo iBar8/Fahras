@@ -204,7 +204,7 @@ pub(in crate::ui) struct Preferences {
     sidebar_order: Vec<String>,
     #[serde(default = "default_enabled")]
     sidebar_show_home: bool,
-    #[serde(default = "default_enabled")]
+    #[serde(default = "defaults::default_trash_shown")]
     sidebar_show_trash: bool,
     #[serde(default = "default_enabled")]
     sidebar_show_network: bool,

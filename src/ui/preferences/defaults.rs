@@ -47,7 +47,7 @@ impl Default for Preferences {
             list_folder_clicks: default_double_clicks(),
             sidebar_order: default_sidebar_order(),
             sidebar_show_home: true,
-            sidebar_show_trash: true,
+            sidebar_show_trash: default_trash_shown(),
             sidebar_show_network: true,
             sidebar_show_recent: true,
             sidebar_show_desktop: true,
@@ -107,6 +107,12 @@ impl Default for Preferences {
 
 pub(super) fn default_enabled() -> bool {
     true
+}
+
+/// Fahras: Windows has no `trash:///` location to list until Fahras can browse
+/// the Recycle Bin, so its Trash place starts hidden there.
+pub(super) fn default_trash_shown() -> bool {
+    cfg!(not(windows))
 }
 
 pub(super) fn default_release_channel() -> String {

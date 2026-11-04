@@ -202,7 +202,7 @@ impl SidebarState {
     }
 
     pub(super) fn refresh_trash_contents(self: &Rc<Self>) {
-        if self.local_only {
+        if self.local_only || cfg!(windows) {
             return;
         }
         // A probe already in flight may have read Trash before this change landed, so queue
@@ -234,7 +234,7 @@ impl SidebarState {
 
     /// Keeps the context menu current when another application changes `trash:///`.
     pub(super) fn watch_trash(self: &Rc<Self>) {
-        if self.trash_monitor.borrow().is_some() {
+        if self.trash_monitor.borrow().is_some() || cfg!(windows) {
             return;
         }
         let (changed, live) = (Rc::downgrade(self), Rc::downgrade(self));

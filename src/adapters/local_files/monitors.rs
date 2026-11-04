@@ -105,7 +105,11 @@ fn run(job: Job) {
             let Ok(admitted) = admitted else {
                 return;
             };
+            #[cfg(not(windows))]
             let created = local_operations::watch(&file, watched, flags);
+            #[cfg(windows)]
+            let created =
+                crate::platform::watch_on_main_thread(&file, watched == Watched::Folder, flags);
             admitted.progress().answered(&created);
             drop(admitted);
             match created {
