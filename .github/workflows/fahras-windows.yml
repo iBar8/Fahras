@@ -18,6 +18,8 @@ jobs:
     name: Build Fahras for Windows (x64)
     runs-on: windows-latest
     timeout-minutes: 120
+    permissions:
+      contents: write
     defaults:
       run:
         shell: msys2 {0}
@@ -99,3 +101,21 @@ jobs:
           name: Fahras-windows-x64
           path: dist/Fahras-windows-x64.zip
           if-no-files-found: error
+
+      - name: Desktop smoke test (window, drives, rename, copy, move, delete; English and Arabic)
+        id: desktop
+        shell: pwsh
+        run: ./.github/fahras/windows-smoke.ps1 -App dist/Fahras -Evidence evidence
+
+      - name: Publish smoke-test evidence to the ci-evidence branch
+        if: always() && github.event_name != 'pull_request'
+        shell: pwsh
+        run: |
+          if (-not (Test-Path evidence)) { exit 0 }
+          Set-Location evidence
+          git init -q -b ci-evidence
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Windows smoke test evidence for ${{ github.sha }} (run ${{ github.run_id }})"
+          git push -q --force "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-evidence
