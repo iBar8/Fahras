@@ -1,6 +1,7 @@
 # Claude Code instructions
 
 @AGENTS.md
+@docs/fahras/AGENTS.md
 
 ## Code comments
 
