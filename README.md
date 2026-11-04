@@ -34,7 +34,7 @@ Instant search, rich previews, sandboxed security, and full Arabic support.
 - 🔍 **Instant search.** Fuzzy filename search across all your drives, with results as you type.
 - 🛡️ **Safe previews.** Images, PDFs and videos are opened in an isolated sandbox, so a malicious file can't reach your system just by being previewed.
 - ⌨️ **Keyboard-first.** Every action has a shortcut. The mouse is welcome but never required.
-- 👁️ **Rich previews.** Markdown, code, PDFs, camera RAW photos, video storyboards and audio with a live spectrum.
+- ▶️ **Rich previews.** Markdown, code, PDFs, camera RAW photos, video storyboards and audio with a live spectrum.
 - 🌍 **Arabic built in.** A full Arabic interface with proper right-to-left layout, plus 13 other languages.
 - 🎨 **Your style.** 95 themes, light and dark, and (coming soon) Windows 10 and 11 Explorer-style layouts.
 
@@ -174,7 +174,7 @@ Third-party components and their licenses are listed in [THIRD_PARTY_LICENSES.md
 - 🔍 **بحث فوري.** ابحث عن الملفات بالاسم في جميع أقراصك، وتظهر النتائج أثناء الكتابة.
 - 🛡️ **معاينة آمنة.** تُفتح الصور وملفات PDF والفيديو داخل بيئة معزولة، فلا يستطيع ملف ضار أن يصل إلى نظامك لمجرد معاينته.
 - ⌨️ **لوحة المفاتيح أولًا.** لكل أمر اختصار، ويمكنك استخدام الفأرة متى شئت.
-- 👁️ **معاينة غنية.** ملفات Markdown، والشيفرة البرمجية، وPDF، وصور الكاميرا الخام (RAW)، والفيديو، والصوت.
+- ▶️ **معاينة غنية.** ملفات Markdown، والشيفرة البرمجية، وPDF، وصور الكاميرا الخام (RAW)، والفيديو، والصوت.
 - 🌍 **العربية جزء أساسي.** واجهة عربية كاملة من اليمين إلى اليسار، إلى جانب ثلاث عشرة لغة أخرى.
 - 🎨 **بأسلوبك.** خمسة وتسعون مظهرًا بألوان فاتحة وداكنة، وقريبًا تصاميم تشبه مستكشف الملفات في ويندوز 10 و11.
 
