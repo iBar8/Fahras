@@ -47,13 +47,20 @@ pub(super) trait FsEnvironment: Send + Sync {
 impl FsEnvironment for System {
     fn can_trash(&self, path: &Path) -> bool {
         assert_off_main_thread();
-        gio::File::for_path(path)
-            .query_info(
-                gio::FILE_ATTRIBUTE_ACCESS_CAN_TRASH,
-                gio::FileQueryInfoFlags::NOFOLLOW_SYMLINKS,
-                gio::Cancellable::NONE,
-            )
-            .is_ok_and(|info| info.boolean(gio::FILE_ATTRIBUTE_ACCESS_CAN_TRASH))
+        #[cfg(windows)]
+        {
+            crate::platform::recycle_bin_covers(path)
+        }
+        #[cfg(not(windows))]
+        {
+            gio::File::for_path(path)
+                .query_info(
+                    gio::FILE_ATTRIBUTE_ACCESS_CAN_TRASH,
+                    gio::FileQueryInfoFlags::NOFOLLOW_SYMLINKS,
+                    gio::Cancellable::NONE,
+                )
+                .is_ok_and(|info| info.boolean(gio::FILE_ATTRIBUTE_ACCESS_CAN_TRASH))
+        }
     }
 
     #[expect(

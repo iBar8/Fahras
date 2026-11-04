@@ -183,6 +183,8 @@ Log '--- Arabic ---'
 Set-Content (Join-Path $settingsDir 'settings.toml') 'language = "ar"' -Encoding utf8
 Run-Suite 'C:\fahras-smoke-ar' 'ar'
 
-Log "Recycle Bin items: $((New-Object -ComObject Shell.Application).NameSpace(10).Items().Count)"
+$recycled = @((New-Object -ComObject Shell.Application).NameSpace(10).Items() | ForEach-Object { $_.Name })
+Log "Recycle Bin: $($recycled -join ', ')"
+Check "deleted files are in the Recycle Bin" (@($recycled | Where-Object { $_ -like 'delta*' }).Count -ge 2)
 Log "Failures: $failures"
 exit $failures

@@ -55,3 +55,24 @@ pub(crate) fn split_root(path: &std::path::Path) -> Option<(std::path::PathBuf, 
     }
     Some((root, components.as_path()))
 }
+
+/// Whether deleting at `path` can go to the Recycle Bin: Windows keeps one on
+/// fixed drives only, while removable and network drives delete permanently.
+/// GLib reports `access::can-trash` as false everywhere on Windows, although
+/// its `g_file_trash` uses the Recycle Bin.
+#[cfg(windows)]
+#[expect(
+    unsafe_code,
+    reason = "GetDriveTypeW is only exposed through the Win32 FFI"
+)]
+pub(crate) fn recycle_bin_covers(path: &std::path::Path) -> bool {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::Storage::FileSystem::GetDriveTypeW;
+    const DRIVE_FIXED: u32 = 3;
+    let Some((root, _)) = split_root(path) else {
+        return false;
+    };
+    let wide: Vec<u16> = root.as_os_str().encode_wide().chain([0]).collect();
+    // SAFETY: `wide` is a NUL-terminated root path that outlives the call.
+    unsafe { GetDriveTypeW(wide.as_ptr()) == DRIVE_FIXED }
+}

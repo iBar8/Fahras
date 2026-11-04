@@ -221,6 +221,7 @@ impl NativeScan<'_> {
                 self.progress.answered(&probed);
                 probed.ok()
             });
+        #[cfg(not(windows))]
         let can_trash = match probed_capabilities.as_ref().and_then(info_can_trash) {
             Some(true)
                 if crate::adapters::trash_support::unsupported_reason_for_directory(self.path)
@@ -230,6 +231,8 @@ impl NativeScan<'_> {
             }
             other => other,
         };
+        #[cfg(windows)]
+        let can_trash = Some(crate::platform::recycle_bin_covers(self.path));
         let can_delete = probed_capabilities.as_ref().and_then(info_can_delete);
         (can_trash, can_delete)
     }

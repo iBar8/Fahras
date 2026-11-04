@@ -101,6 +101,7 @@ ashpd-compat = { package = "fahras-ashpd-compat", path = "crates/ashpd-compat" }
 gio-unix-compat = { package = "fahras-gio-unix-compat", path = "crates/gio-unix-compat" }
 rustix-compat = { package = "fahras-rustix-compat", path = "crates/rustix-compat" }
 pango = { version = "0.22.9", features = ["v1_56"] }
+windows-sys = { version = "0.61.2", features = ["Win32_Storage_FileSystem"] }
 
 [dev-dependencies]
 rustls = { version = "0.23.46", default-features = false, features = ["std", "ring", "tls12"] }
