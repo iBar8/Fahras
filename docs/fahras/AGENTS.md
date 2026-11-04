@@ -28,6 +28,8 @@ future merge conflict.
   installer and links. Keep internal names (`strata` crate, `strata-*` CSS and
   assets, `@strata_*` colors) unchanged.
 - Never reuse upstream's update signing key or release infrastructure.
+- Dependabot is removed (`.github/dependabot.yml`); dependency updates arrive
+  through upstream syncs. Keep it deleted when a sync touches it.
 - Do not delete or edit upstream workflows; they are disabled in the GitHub
   Actions settings. Fahras workflows use the `fahras-` filename prefix.
 
