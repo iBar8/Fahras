@@ -130,6 +130,14 @@ function Run-Suite([string] $root, [string] $label) {
 
     Go 'C:\'
     Shot "$label-02-drive-c"
+    $otherDrive = Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Name -ne 'C' -and $_.Free -ne $null } | Select-Object -First 1
+    if ($otherDrive) {
+        $marker = Join-Path $otherDrive.Root 'fahras-drive-check.txt'
+        Set-Content $marker 'drive check'
+        Go $otherDrive.Root
+        Shot "$label-02b-drive-$($otherDrive.Name)"
+        Log "      browsed drive $($otherDrive.Root) (marker file: $marker)"
+    }
     Go $ops.arabic
     Shot "$label-03-arabic-names"
     Set-Content (Join-Path $ops.arabic 'created-outside.txt') 'live refresh'
