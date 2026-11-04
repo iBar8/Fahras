@@ -185,8 +185,8 @@ fn classify_command_line_unlock_volume() {
 fn version_line_is_the_package_name_and_installed_version() {
     let line = version_line();
     assert!(
-        line.starts_with("strata "),
-        "the --version line should start with the package name"
+        line.starts_with("Fahras "),
+        "the --version line should start with the product name"
     );
     assert!(
         line.contains(&crate::build_info::installed_version().to_string()),
