@@ -18,7 +18,7 @@ Instant search, rich previews, sandboxed security, and full Arabic support.
 </div>
 
 > [!NOTE]
-> **Fahras is in early development.** The Windows version is being built right now and there is no download yet.
+> **Fahras is in early development.** A Windows preview build is available: open the [latest Windows build](https://github.com/iBar8/Fahras/actions/workflows/fahras-windows.yml), pick the newest successful run and download **Fahras-windows-x64** under *Artifacts* (requires signing in to GitHub).
 > Star or watch the repository to follow along.
 
 <div align="center">
@@ -42,7 +42,7 @@ Instant search, rich previews, sandboxed security, and full Arabic support.
 
 | Platform | Status |
 |---|---|
-| 🪟 **Windows 10 / 11** (x64) | 🚧 In development, no release yet |
+| 🪟 **Windows 10 / 11** (x64) | 🧪 Preview build: [download from the latest Windows build](https://github.com/iBar8/Fahras/actions/workflows/fahras-windows.yml). Unzip and run `Fahras\bin\Fahras.exe`; Windows warns because it is not signed yet (**More info → Run anyway**). |
 | 🐧 **Linux** | 🚧 First Fahras release coming soon. Until then you can [build from source](docs/packaging.md). |
 
 ## Features
@@ -105,9 +105,9 @@ Instant search, rich previews, sandboxed security, and full Arabic support.
 
 **Phase 1: Foundation**
 - [x] Fahras name, logo and repository
-- [ ] Windows build on GitHub Actions
-- [ ] Opens and browses folders on Windows
-- [ ] Full Arabic translation with right-to-left layout
+- [x] Windows build on GitHub Actions, tested on Windows with every build
+- [x] Opens and browses folders and drives on Windows; copy, move, rename and delete to the Recycle Bin
+- [x] Full Arabic translation with right-to-left layout and 19 Arabic fonts
 
 **Phase 2: Everyday use on Windows**
 - [ ] Recycle Bin, drives, USB eject
@@ -163,7 +163,7 @@ Third-party components and their licenses are listed in [THIRD_PARTY_LICENSES.md
 
 </div>
 
-> 📌 **فهرس في مرحلة التطوير الأولى.** نعمل الآن على نسخة ويندوز، ولا يوجد إصدار للتنزيل بعد.
+> 📌 **فهرس في مرحلة التطوير الأولى.** تتوفر نسخة تجريبية لويندوز: افتح [آخر بناء لويندوز](https://github.com/iBar8/Fahras/actions/workflows/fahras-windows.yml)، واختر أحدث تشغيل ناجح، ثم نزّل **Fahras-windows-x64** من قسم *Artifacts* (يلزم تسجيل الدخول إلى GitHub).
 > تابع المستودع ليصلك كل جديد.
 
 ## لماذا فهرس؟
@@ -182,7 +182,7 @@ Third-party components and their licenses are listed in [THIRD_PARTY_LICENSES.md
 
 | النظام | الحالة |
 |---|---|
-| 🪟 **ويندوز 10 و11** (x64) | 🚧 قيد التطوير، لا يوجد إصدار بعد |
+| 🪟 **ويندوز 10 و11** (x64) | 🧪 نسخة تجريبية: [نزّلها من آخر بناء لويندوز](https://github.com/iBar8/Fahras/actions/workflows/fahras-windows.yml). فك الضغط وشغّل `Fahras\bin\Fahras.exe`؛ سيعرض ويندوز تحذيرًا لأن البرنامج غير موقّع بعد (**مزيد من المعلومات ← التشغيل على أي حال**). |
 | 🐧 **لينكس** | 🚧 أول إصدار من فهرس قريبًا. يمكنك حتى ذلك الحين [بناؤه من الشيفرة المصدرية](docs/packaging.md). |
 
 ## المزايا
@@ -245,9 +245,9 @@ Third-party components and their licenses are listed in [THIRD_PARTY_LICENSES.md
 
 **المرحلة الأولى: الأساس**
 - [x] الاسم والشعار والمستودع
-- [ ] بناء نسخة ويندوز تلقائيًا على GitHub
-- [ ] فتح المجلدات وتصفحها على ويندوز
-- [ ] ترجمة عربية كاملة مع واجهة من اليمين إلى اليسار
+- [x] بناء نسخة ويندوز تلقائيًا على GitHub واختبارها على ويندوز في كل مرة
+- [x] فتح المجلدات والأقراص وتصفحها على ويندوز، مع النسخ والنقل وإعادة التسمية والحذف إلى سلة المحذوفات
+- [x] ترجمة عربية كاملة مع واجهة من اليمين إلى اليسار وتسعة عشر خطًا عربيًا
 
 **المرحلة الثانية: الاستخدام اليومي على ويندوز**
 - [ ] سلة المحذوفات، والأقراص، والإخراج الآمن لأجهزة USB
