@@ -329,14 +329,14 @@ pub(super) fn local_directory_children<Fd: AsFd>(handle: &Fd) -> Result<Vec<OsSt
 
 /// Resolve ordinary parent aliases from `/`; descendants keep their separate no-follow policy.
 pub(super) fn open_local_parent_directory(parent_path: &Path) -> Result<OwnedFd, String> {
-    if !parent_path.is_absolute() {
+    let Some((filesystem_root, relative)) = crate::platform::split_root(parent_path) else {
         return Err(crate::i18n::tr(
             "A local operation target must use an absolute path",
         ));
-    }
+    };
     let root = fs()
         .open_path(
-            OsStr::new("/"),
+            filesystem_root.as_os_str(),
             rustix::fs::OFlags::PATH | rustix::fs::OFlags::DIRECTORY | rustix::fs::OFlags::CLOEXEC,
             rustix::fs::Mode::empty(),
         )
@@ -347,9 +347,6 @@ pub(super) fn open_local_parent_directory(parent_path: &Path) -> Result<OwnedFd,
             )
             .into_owned()
         })?;
-    let relative = parent_path
-        .strip_prefix(Path::new("/"))
-        .map_err(|_| crate::i18n::tr("A local operation target must use an absolute path"))?;
     if relative.as_os_str().is_empty() {
         return Ok(root);
     }

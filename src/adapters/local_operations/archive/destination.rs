@@ -226,12 +226,11 @@ impl ExtractionDestination {
     ///
     /// Returns an error if `path` is not absolute or cannot be opened as a directory.
     pub(super) fn open(path: &Path) -> Result<Self, String> {
-        let relative = path
-            .strip_prefix("/")
-            .map_err(|_| crate::i18n::tr("Extraction destination must use an absolute path"))?;
+        let (root_path, relative) = crate::platform::split_root(path)
+            .ok_or_else(|| crate::i18n::tr("Extraction destination must use an absolute path"))?;
         let filesystem_root = fs()
             .open_path(
-                OsStr::new("/"),
+                root_path.as_os_str(),
                 rustix::fs::OFlags::PATH
                     | rustix::fs::OFlags::DIRECTORY
                     | rustix::fs::OFlags::CLOEXEC,

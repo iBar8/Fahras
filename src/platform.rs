@@ -38,3 +38,20 @@ pub(crate) fn register_fonts(
     }
     Ok(())
 }
+
+/// Splits an absolute path into its filesystem root and the path below it:
+/// `/` on Linux, the drive or share root (`C:\`, `\\server\share\`) on Windows.
+pub(crate) fn split_root(path: &std::path::Path) -> Option<(std::path::PathBuf, &std::path::Path)> {
+    use std::path::Component;
+    let mut components = path.components();
+    let mut root = std::path::PathBuf::new();
+    if let Some(Component::Prefix(prefix)) = components.clone().next() {
+        root.push(prefix.as_os_str());
+        components.next();
+    }
+    match components.next() {
+        Some(Component::RootDir) => root.push(Component::RootDir),
+        _ => return None,
+    }
+    Some((root, components.as_path()))
+}
