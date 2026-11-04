@@ -480,10 +480,16 @@ pub fn ftruncate<Fd: AsFd>(fd: Fd, length: u64) -> Result<()> {
 
 pub fn seek<Fd: AsFd>(fd: Fd, pos: SeekFrom) -> Result<u64> {
     let mut file = fd.as_fd().file().map_err(errno)?;
+    let length = || file.metadata().map(|metadata| metadata.len()).map_err(errno);
+    // Files are treated as fully allocated: all data, with the only hole at the end.
     let pos = match pos {
         SeekFrom::Start(offset) => StdSeekFrom::Start(offset),
         SeekFrom::End(offset) => StdSeekFrom::End(offset),
         SeekFrom::Current(offset) => StdSeekFrom::Current(offset),
+        SeekFrom::Data(offset) if offset < length()? => StdSeekFrom::Start(offset),
+        SeekFrom::Data(_) => return Err(Errno::NXIO),
+        SeekFrom::Hole(offset) if offset < length()? => StdSeekFrom::End(0),
+        SeekFrom::Hole(_) => return Err(Errno::NXIO),
     };
     file.seek(pos).map_err(errno)
 }
@@ -599,6 +605,14 @@ pub fn setxattr<P: Arg, Name: Arg>(_path: P, _name: Name, _value: &[u8], _flags:
 }
 
 pub fn fsetxattr<Fd: AsFd, Name: Arg>(_fd: Fd, _name: Name, _value: &[u8], _flags: XattrFlags) -> Result<()> {
+    Err(Errno::OPNOTSUPP)
+}
+
+pub fn fgetxattr_query<Fd: AsFd, Name: Arg>(_fd: Fd, _name: Name) -> Result<usize> {
+    Err(Errno::OPNOTSUPP)
+}
+
+pub fn flistxattr_query<Fd: AsFd>(_fd: Fd) -> Result<usize> {
     Err(Errno::OPNOTSUPP)
 }
 

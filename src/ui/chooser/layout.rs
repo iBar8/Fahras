@@ -702,6 +702,7 @@ fn register_chooser_window(state: &ChooserState, window: &gtk::Window) {
 
 fn present_window(state: &ChooserState, window: &gtk::Window, browser: &Rc<crate::app::Browser>) {
     gtk::prelude::WidgetExt::realize(window);
+    #[cfg(not(windows))]
     if state.destination_host.is_some()
         && let Some(surface) = window
             .surface()
@@ -751,6 +752,11 @@ fn focus_initial_widget(
     });
 }
 
+#[cfg(windows)]
+pub(super) fn apply_external_parent(_window: &gtk::Window, _parent: Option<&WindowIdentifierType>) {
+}
+
+#[cfg(not(windows))]
 pub(super) fn apply_external_parent(window: &gtk::Window, parent: Option<&WindowIdentifierType>) {
     let Some(WindowIdentifierType::Wayland(handle)) = parent else {
         return;

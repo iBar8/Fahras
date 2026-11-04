@@ -227,6 +227,12 @@ pub(super) fn identity_at_path(path: &Path) -> Option<ItemIdentity> {
     ))
 }
 
+#[cfg(windows)]
+pub(super) fn file_handle(_dir: BorrowedFd<'_>, _name: &OsStr) -> Result<u64, rustix::io::Errno> {
+    Err(rustix::io::Errno::OPNOTSUPP)
+}
+
+#[cfg(not(windows))]
 #[expect(unsafe_code, reason = "rustix has no name_to_handle_at")]
 pub(super) fn file_handle(dir: BorrowedFd<'_>, name: &OsStr) -> Result<u64, rustix::io::Errno> {
     use rustix::io::Errno;

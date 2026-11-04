@@ -594,6 +594,9 @@ fn environment(anchor: &impl IsA<gtk::Widget>) -> Vec<(String, String)> {
         })
         .join(" ");
     let display = anchor.display();
+    #[cfg(windows)]
+    let display_server = display.type_().name().to_owned();
+    #[cfg(not(windows))]
     let display_server = if display.is::<gdk4_wayland::WaylandDisplay>() {
         "Wayland".to_owned()
     } else if display.is::<gdk4_x11::X11Display>() {

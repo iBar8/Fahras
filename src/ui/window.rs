@@ -48,6 +48,10 @@ mod sidebar_trash;
 mod sidebar_view;
 mod sidebar_width;
 mod unlock_argument;
+#[cfg(not(windows))]
+mod volume_password;
+#[cfg(windows)]
+#[path = "../platform/windows/volume_password.rs"]
 mod volume_password;
 
 pub(super) use appearance_menu::build_appearance_menu;

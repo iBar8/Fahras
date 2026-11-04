@@ -7,7 +7,6 @@
 
 //! UnRAR FFI used by the sandboxed extraction helper.
 
-use crate::platform::unix::ffi::OsStrExt;
 use std::{ffi::CString, io::Write, path::Path, ptr};
 
 use unrar_sys as native;
@@ -208,8 +207,7 @@ fn extract(
     password: Option<&str>,
     writer: &mut impl Write,
 ) -> Result<(), Failure> {
-    let path =
-        CString::new(archive_path.as_os_str().as_bytes()).map_err(|error| error.to_string())?;
+    let path = crate::platform::archive_path(archive_path)?;
     if password.is_some_and(|value| value.contains('\0')) {
         return Err("RAR password contains a NUL character".into());
     }
@@ -354,7 +352,7 @@ pub(super) fn cover_image(path: &Path) -> Result<Vec<u8>, String> {
         MAX_ENTRIES, MAX_IMAGE_BYTES, compare_names, image_name,
     };
 
-    let path = CString::new(path.as_os_str().as_bytes()).map_err(|error| error.to_string())?;
+    let path = crate::platform::archive_path(path)?;
     let mut selected: Option<String> = None;
     for scanning in [true, false] {
         let mut handle = ptr::null();

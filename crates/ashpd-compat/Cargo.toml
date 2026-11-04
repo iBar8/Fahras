@@ -1,0 +1,10 @@
+[package]
+name = "fahras-ashpd-compat"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+description = "The ashpd file-chooser data types that Fahras's chooser uses, without D-Bus"
+publish = false
+
+[lib]
+name = "ashpd_compat"

@@ -716,15 +716,24 @@ impl FsOps for System {
     )]
     fn close(&self, fd: OwnedFd) -> Result<(), Errno> {
         assert_off_main_thread();
-        let raw = fd.into_raw_fd();
-        // SAFETY: `raw` came from an owned descriptor and is closed exactly once.
-        if unsafe { libc::close(raw) } == 0 {
-            return Ok(());
+        #[cfg(windows)]
+        {
+            // Windows reports no deferred write errors when a handle closes.
+            drop(fd);
+            Ok(())
         }
-        match Errno::from_io_error(&std::io::Error::last_os_error()) {
-            // Linux always releases the descriptor, as `g_close` assumes.
-            Some(Errno::INTR) | None => Ok(()),
-            Some(error) => Err(error),
+        #[cfg(not(windows))]
+        {
+            let raw = fd.into_raw_fd();
+            // SAFETY: `raw` came from an owned descriptor and is closed exactly once.
+            if unsafe { libc::close(raw) } == 0 {
+                return Ok(());
+            }
+            match Errno::from_io_error(&std::io::Error::last_os_error()) {
+                // Linux always releases the descriptor, as `g_close` assumes.
+                Some(Errno::INTR) | None => Ok(()),
+                Some(error) => Err(error),
+            }
         }
     }
 

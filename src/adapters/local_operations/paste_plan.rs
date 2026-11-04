@@ -29,24 +29,21 @@ pub(super) fn transfer_is_noop(
 /// its own identity, so moving a link into the folder it targets is allowed.
 /// `None` means an ancestor could not be inspected.
 pub(super) fn target_is_within_source(source: &gio::File, target: &gio::File) -> Option<bool> {
-    use crate::platform::unix::fs::MetadataExt;
-
     fs_ops::assert_off_main_thread();
     let (Some(source_path), Some(target_path)) = (source.path(), target.path()) else {
         return Some(false);
     };
-    let identity = |metadata: &std::fs::Metadata| (metadata.dev(), metadata.ino());
-    let source_identity = identity(&std::fs::symlink_metadata(source_path).ok()?);
-    if std::fs::symlink_metadata(&target_path)
-        .is_ok_and(|metadata| identity(&metadata) == source_identity)
-    {
+    // rustix rather than `std::fs::Metadata`, which has no file index on Windows.
+    let identity = |stat: rustix::fs::Stat| (stat.st_dev, stat.st_ino);
+    let source_identity = identity(rustix::fs::lstat(&source_path).ok()?);
+    if rustix::fs::lstat(&target_path).is_ok_and(|stat| identity(stat) == source_identity) {
         return Some(true);
     }
     for ancestor in target_path.ancestors().skip(1) {
-        match std::fs::metadata(ancestor) {
-            Ok(metadata) if identity(&metadata) == source_identity => return Some(true),
+        match rustix::fs::stat(ancestor) {
+            Ok(stat) if identity(stat) == source_identity => return Some(true),
             Ok(_) => {}
-            Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
+            Err(rustix::io::Errno::NOENT) => {}
             Err(_) => return None,
         }
     }

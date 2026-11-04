@@ -84,6 +84,7 @@ pub(in crate::ui) fn launch_at(
             } else {
                 gio::AppInfoCreateFlags::NONE
             };
+            #[cfg(not(windows))]
             if app
                 .downcast_ref::<gio_unix::DesktopAppInfo>()
                 .is_some_and(|desktop| desktop.boolean("StartupNotify"))

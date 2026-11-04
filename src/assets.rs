@@ -1016,6 +1016,14 @@ fn write_if_changed(path: &Path, contents: &[u8]) -> io::Result<()> {
     Ok(())
 }
 
+#[cfg(windows)]
+fn register_application_fonts(
+    paths: impl IntoIterator<Item = PathBuf>,
+) -> Result<(), Box<dyn std::error::Error>> {
+    crate::platform::register_fonts(paths)
+}
+
+#[cfg(not(windows))]
 #[expect(
     unsafe_code,
     reason = "Fontconfig exposes application-font registration only through its C FFI"

@@ -17,7 +17,14 @@ fn seconds(time: io::Result<SystemTime>) -> (i64, i64) {
 
 /// Unix metadata derived from what Windows reports: one owner (uid 0) and
 /// permission bits from the read-only attribute.
+///
+/// `std::fs::Metadata` carries no volume or file index on Windows, so `dev`
+/// is always 0 and `ino` is the creation time, which changes whenever a file
+/// is replaced. That serves change stamps and cache keys; real identity
+/// comparisons use `rustix::fs::stat`, which reports the file index.
 pub trait MetadataExt {
+    fn dev(&self) -> u64;
+    fn ino(&self) -> u64;
     fn mode(&self) -> u32;
     fn uid(&self) -> u32;
     fn gid(&self) -> u32;
@@ -34,6 +41,14 @@ pub trait MetadataExt {
 }
 
 impl MetadataExt for Metadata {
+    fn dev(&self) -> u64 {
+        0
+    }
+
+    fn ino(&self) -> u64 {
+        std::os::windows::fs::MetadataExt::creation_time(self)
+    }
+
     fn mode(&self) -> u32 {
         let kind = if self.file_type().is_symlink() {
             0o120000
@@ -146,6 +161,17 @@ impl DirBuilderExt for DirBuilder {
     }
 }
 
+/// Listings carry no file index on Windows; callers fall back to comparing paths.
+pub trait DirEntryExt {
+    fn ino(&self) -> u64;
+}
+
+impl DirEntryExt for std::fs::DirEntry {
+    fn ino(&self) -> u64 {
+        0
+    }
+}
+
 pub trait FileTypeExt {
     fn is_block_device(&self) -> bool;
     fn is_char_device(&self) -> bool;
@@ -174,6 +200,21 @@ impl FileTypeExt for FileType {
 pub trait FileExt {
     fn read_at(&self, buf: &mut [u8], offset: u64) -> io::Result<usize>;
     fn write_at(&self, buf: &[u8], offset: u64) -> io::Result<usize>;
+
+    fn read_exact_at(&self, mut buf: &mut [u8], mut offset: u64) -> io::Result<()> {
+        while !buf.is_empty() {
+            match self.read_at(buf, offset) {
+                Ok(0) => return Err(io::ErrorKind::UnexpectedEof.into()),
+                Ok(read) => {
+                    buf = &mut buf[read..];
+                    offset += read as u64;
+                }
+                Err(error) if error.kind() == io::ErrorKind::Interrupted => {}
+                Err(error) => return Err(error),
+            }
+        }
+        Ok(())
+    }
 }
 
 impl FileExt for File {

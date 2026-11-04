@@ -255,6 +255,8 @@ pub enum SeekFrom {
     Start(u64),
     End(i64),
     Current(i64),
+    Data(u64),
+    Hole(u64),
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

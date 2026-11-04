@@ -8,6 +8,10 @@ rust_i18n::i18n!(
 );
 
 #[cfg(windows)]
+extern crate ashpd_compat as ashpd;
+#[cfg(windows)]
+extern crate gio_unix_compat as gio_unix;
+#[cfg(windows)]
 extern crate rustix_compat as rustix;
 
 mod adapters;
@@ -557,6 +561,10 @@ fn install_application_identity() {
     glib::set_application_name("Strata");
 }
 
+#[cfg(windows)]
+fn install_x11_program_class() {}
+
+#[cfg(not(windows))]
 fn install_x11_program_class() {
     let Some(display) = gtk::gdk::Display::default() else {
         return;

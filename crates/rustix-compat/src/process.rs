@@ -44,6 +44,10 @@ impl Pid {
         }
     }
 
+    pub const fn as_raw_pid(self) -> i32 {
+        self.0
+    }
+
     pub const fn is_init(self) -> bool {
         self.0 == 1
     }
@@ -158,4 +162,53 @@ pub fn pidfd_send_signal<Fd: crate::fd::AsFd>(_pidfd: Fd, _signal: Signal) -> Re
 
 pub fn setpriority_process(_pid: Option<Pid>, _priority: i32) -> Result<()> {
     Ok(())
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum WaitId<'a> {
+    All,
+    Pid(Pid),
+    Pgid(Option<Pid>),
+    PidFd(crate::fd::BorrowedFd<'a>),
+}
+
+bitflags! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub struct WaitIdOptions: u32 {
+        const NOHANG = 1;
+        const EXITED = 4;
+        const STOPPED = 2;
+        const CONTINUED = 8;
+        const NOWAIT = 0x0100_0000;
+        const _ = !0;
+    }
+
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub struct WaitOptions: u32 {
+        const NOHANG = 1;
+        const UNTRACED = 2;
+        const CONTINUED = 8;
+        const _ = !0;
+    }
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct WaitIdStatus(());
+
+#[derive(Debug, Clone, Copy)]
+pub struct WaitStatus(u32);
+
+impl WaitStatus {
+    pub fn exit_status(self) -> Option<u32> {
+        Some(self.0)
+    }
+}
+
+/// Windows processes are waited on through `std::process::Child` instead.
+pub fn waitid<'a, Id: Into<WaitId<'a>>>(_id: Id, _options: WaitIdOptions) -> Result<Option<WaitIdStatus>> {
+    Err(Errno::NOSYS)
+}
+
+pub fn waitpid(_pid: Option<Pid>, _options: WaitOptions) -> Result<Option<(Pid, WaitStatus)>> {
+    Err(Errno::NOSYS)
 }

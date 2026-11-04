@@ -44,6 +44,8 @@ pub struct OwnedFd {
 enum Repr<'a> {
     Inner(&'a FdInner),
     File(&'a File),
+    /// A handle that is not a file, such as a child process pipe.
+    Handle(isize, std::marker::PhantomData<&'a ()>),
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -86,13 +88,14 @@ impl<'a> BorrowedFd<'a> {
                 .as_ref()
                 .ok_or_else(|| crate::io::Errno::BADF.into()),
             Repr::File(file) => Ok(file),
+            Repr::Handle(..) => Err(crate::io::Errno::BADF.into()),
         }
     }
 
     pub(crate) fn path(&self) -> Option<&'a Path> {
         match self.repr {
             Repr::Inner(inner) => inner.path.as_deref(),
-            Repr::File(_) => None,
+            Repr::File(_) | Repr::Handle(..) => None,
         }
     }
 
@@ -103,7 +106,7 @@ impl<'a> BorrowedFd<'a> {
     pub(crate) fn flags(&self) -> u32 {
         match self.repr {
             Repr::Inner(inner) => inner.flags.load(Ordering::Relaxed),
-            Repr::File(_) => 0,
+            Repr::File(_) | Repr::Handle(..) => 0,
         }
     }
 
@@ -123,7 +126,32 @@ impl<'a> BorrowedFd<'a> {
             None => crate::win::final_path(self.file()?).map(Some),
         }
     }
+
+    pub(crate) fn from_handle<T: AsRawHandle + ?Sized>(handle: &'a T) -> Self {
+        Self {
+            repr: Repr::Handle(handle.as_raw_handle() as isize, std::marker::PhantomData),
+        }
+    }
 }
+
+macro_rules! handle_as_fd {
+    ($($type:ty),+) => {
+        $(impl AsFd for $type {
+            fn as_fd(&self) -> BorrowedFd<'_> {
+                BorrowedFd::from_handle(self)
+            }
+        })+
+    };
+}
+
+handle_as_fd!(
+    std::process::ChildStdin,
+    std::process::ChildStdout,
+    std::process::ChildStderr,
+    std::io::Stdin,
+    std::io::Stdout,
+    std::io::Stderr
+);
 
 pub trait AsFd {
     fn as_fd(&self) -> BorrowedFd<'_>;
@@ -201,7 +229,10 @@ fn raw(handle: RawHandle) -> RawFd {
 
 impl AsRawFd for BorrowedFd<'_> {
     fn as_raw_fd(&self) -> RawFd {
-        self.file().map_or(-100, |file| raw(file.as_raw_handle()))
+        match self.repr {
+            Repr::Handle(handle, _) => handle,
+            _ => self.file().map_or(-100, |file| raw(file.as_raw_handle())),
+        }
     }
 }
 

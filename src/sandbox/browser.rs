@@ -20,8 +20,13 @@ use super::{Cancellation, ParseOperation, metadata::MediaMetadata};
 use crate::services::ModelFormat;
 use wire::{Operation, Response};
 
+#[cfg(not(windows))]
 mod process;
 pub(crate) mod wire;
+#[cfg(not(windows))]
+mod worker;
+#[cfg(windows)]
+#[path = "../platform/windows/sandbox_worker.rs"]
 mod worker;
 pub(crate) use worker::run;
 

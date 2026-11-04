@@ -6,7 +6,29 @@
 use std::{io, path::Path};
 
 #[derive(Debug)]
-pub struct UnixStream(());
+enum Never {}
+
+/// Never constructed: every way to obtain one fails with `Unsupported`.
+#[derive(Debug)]
+pub struct UnixStream(Never);
+
+impl From<UnixStream> for crate::fd::OwnedFd {
+    fn from(stream: UnixStream) -> Self {
+        match stream.0 {}
+    }
+}
+
+impl From<crate::fd::OwnedFd> for UnixStream {
+    fn from(_fd: crate::fd::OwnedFd) -> Self {
+        panic!("Unix sockets are not available on Windows")
+    }
+}
+
+impl crate::fd::AsFd for UnixStream {
+    fn as_fd(&self) -> crate::fd::BorrowedFd<'_> {
+        match self.0 {}
+    }
+}
 
 impl UnixStream {
     pub fn connect<P: AsRef<Path>>(_path: P) -> io::Result<Self> {
@@ -71,7 +93,7 @@ impl io::Write for &UnixStream {
 }
 
 #[derive(Debug)]
-pub struct UnixListener(());
+pub struct UnixListener(Never);
 
 impl UnixListener {
     pub fn bind<P: AsRef<Path>>(_path: P) -> io::Result<Self> {

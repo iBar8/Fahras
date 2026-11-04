@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: MIT
 
+#[cfg(not(windows))]
 mod dbus;
+#[cfg(not(windows))]
+mod window_geometry;
+#[cfg(windows)]
+#[path = "platform/windows/portal_window_geometry.rs"]
 mod window_geometry;
 
 pub(crate) use window_geometry::prepare_chooser_placement;
@@ -8,11 +13,11 @@ pub(crate) use window_geometry::prepare_chooser_placement;
 #[cfg(test)]
 mod tests;
 
+use crate::platform::unix::ffi::OsStrExt as _;
 use std::{
     collections::HashMap,
     ffi::{OsStr, OsString},
     future::Future,
-    os::unix::ffi::OsStrExt as _,
     path::{Path, PathBuf},
     sync::{
         Arc, Mutex,
@@ -229,6 +234,12 @@ pub(crate) fn run(#[cfg(feature = "qa")] qa: Option<crate::qa::Session>) -> glib
     });
     let service_failed = Arc::new(AtomicBool::new(false));
     let failed = service_failed.clone();
+    #[cfg(windows)]
+    {
+        drop((backend, service_loop));
+        failed.store(true, Ordering::SeqCst);
+    }
+    #[cfg(not(windows))]
     std::thread::spawn(move || {
         let result: Result<(), zbus::Error> = async_io::block_on(async {
             use futures_lite::StreamExt as _;
@@ -661,7 +672,7 @@ async fn resolve_save_file_suggestion(
 }
 
 pub(crate) fn safe_filename(name: &OsStr) -> bool {
-    use std::os::unix::ffi::OsStrExt as _;
+    use crate::platform::unix::ffi::OsStrExt as _;
 
     let bytes = name.as_bytes();
     !bytes.is_empty()

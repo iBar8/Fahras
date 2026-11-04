@@ -860,6 +860,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "fahras-ashpd-compat"
+version = "0.1.0"
+
+[[package]]
+name = "fahras-gio-unix-compat"
+version = "0.1.0"
+dependencies = [
+ "gio",
+ "glib",
+]
+
+[[package]]
 name = "fahras-rustix-compat"
 version = "0.1.0"
 dependencies = [
@@ -3035,6 +3047,8 @@ dependencies = [
  "calamine",
  "csv",
  "docx-rs",
+ "fahras-ashpd-compat",
+ "fahras-gio-unix-compat",
  "fahras-rustix-compat",
  "fitparser",
  "flate2",
@@ -3059,6 +3073,7 @@ dependencies = [
  "landlock",
  "libc",
  "mermaid-svg",
+ "pango",
  "pangocairo",
  "poppler-rs",
  "pulldown-cmark",

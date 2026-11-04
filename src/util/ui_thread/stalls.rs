@@ -193,7 +193,8 @@ fn read_path(address: u64) -> Option<PathBuf> {
     let memory = File::open("/proc/self/mem").ok()?;
     let mut bytes = Vec::new();
     let mut at = address;
-    while bytes.len() < libc::PATH_MAX as usize {
+    const PATH_MAX: usize = 4096;
+    while bytes.len() < PATH_MAX {
         let mut chunk = vec![0_u8; (PAGE - at % PAGE) as usize];
         let read = memory.read_at(&mut chunk, at).ok()?;
         if read == 0 {

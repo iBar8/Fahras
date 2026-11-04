@@ -1,0 +1,14 @@
+[package]
+name = "fahras-gio-unix-compat"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+description = "The gio-unix API that Fahras uses, mapped onto cross-platform GIO for Windows"
+publish = false
+
+[lib]
+name = "gio_unix_compat"
+
+[dependencies]
+gio = { version = "0.22.9", features = ["v2_72"] }
+glib = "0.22.9"
