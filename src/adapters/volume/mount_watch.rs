@@ -3,8 +3,8 @@
 #[cfg(test)]
 mod tests;
 
+use rustix::fd::OwnedFd;
 use std::{
-    os::fd::OwnedFd,
     sync::{Arc, Mutex, MutexGuard, OnceLock, PoisonError},
     time::Duration,
 };

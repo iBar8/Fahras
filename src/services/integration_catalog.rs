@@ -2,13 +2,13 @@
 //! Opt-in integrations bundled with Strata: the catalog under `integrations/`,
 //! their installation as external file providers and update detection.
 
+use crate::platform::unix::fs::{MetadataExt, OpenOptionsExt, PermissionsExt};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{
     collections::BTreeMap,
     fs,
     io::Write,
-    os::unix::fs::{MetadataExt, OpenOptionsExt, PermissionsExt},
     path::{Path, PathBuf},
     process::{Command, Stdio},
     sync::OnceLock,

@@ -2,11 +2,11 @@
 
 //! Browser-only sandbox supervisors. Preview sessions deliberately remain independent.
 
+use crate::platform::unix::{fs::MetadataExt, net::UnixStream};
 use std::{
     collections::VecDeque,
     fs::File,
     io,
-    os::unix::{fs::MetadataExt, net::UnixStream},
     path::{Path, PathBuf},
     process::Stdio,
     sync::{
@@ -381,8 +381,8 @@ fn request_held(
 }
 
 fn open_source(path: &Path) -> io::Result<File> {
+    use rustix::fd::AsRawFd;
     use rustix::fs::{FileType, Mode, OFlags, fstat, open};
-    use std::os::fd::AsRawFd;
     // O_PATH inspects special files without opening a device or blocking on a
     // FIFO. Reopening this descriptor, not the pathname, closes the type race.
     let source = open(path, OFlags::PATH | OFlags::CLOEXEC, Mode::empty())?;
@@ -738,7 +738,7 @@ impl Worker {
         match self {
             Self::Persistent(worker) => worker.execute(file, operation, cancellation),
             Self::OneShot => {
-                use std::os::fd::AsRawFd;
+                use rustix::fd::AsRawFd;
                 let operation = parse_operation(operation);
                 let output = super::parse(
                     Path::new(&format!("/proc/self/fd/{}", file.as_raw_fd())),
@@ -889,7 +889,7 @@ impl ProcessWorker {
                 "/app/strata",
                 "--browser-worker",
             ])
-            .stdin(Stdio::from(std::os::fd::OwnedFd::from(child_socket)))
+            .stdin(Stdio::from(rustix::fd::OwnedFd::from(child_socket)))
             .stdout(Stdio::null())
             .stderr(Stdio::null());
         let mut child = super::spawn_renderer(&mut command)?;
@@ -968,7 +968,7 @@ struct DeadlineReader<'a, R> {
     deadline: Instant,
     cancellation: &'a Cancellation,
 }
-impl<R: io::Read + std::os::fd::AsFd> io::Read for DeadlineReader<'_, R> {
+impl<R: io::Read + rustix::fd::AsFd> io::Read for DeadlineReader<'_, R> {
     fn read(&mut self, bytes: &mut [u8]) -> io::Result<usize> {
         use rustix::event::{PollFd, PollFlags, Timespec, poll};
         if bytes.is_empty() {

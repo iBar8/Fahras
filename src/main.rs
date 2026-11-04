@@ -7,6 +7,9 @@ rust_i18n::i18n!(
     backend = crate::i18n::Catalogs::compiled()
 );
 
+#[cfg(windows)]
+extern crate rustix_compat as rustix;
+
 mod adapters;
 mod app;
 mod assets;
@@ -18,6 +21,7 @@ mod logging;
 mod media;
 mod metrics;
 mod model;
+mod platform;
 mod portal;
 mod portal_setup;
 #[cfg(feature = "qa")]
@@ -34,10 +38,8 @@ mod trusted_command;
 mod ui;
 mod util;
 
-use std::{
-    cell::OnceCell, ffi::OsString, ops::ControlFlow, os::unix::process::CommandExt, process::Stdio,
-    time::Duration,
-};
+use crate::platform::unix::process::CommandExt;
+use std::{cell::OnceCell, ffi::OsString, ops::ControlFlow, process::Stdio, time::Duration};
 
 use gtk::{gio, glib, prelude::*};
 

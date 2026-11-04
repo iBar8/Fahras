@@ -3,14 +3,12 @@
 #[cfg(test)]
 mod tests;
 
+use crate::platform::unix::ffi::OsStrExt;
+use rustix::fd::{AsFd, BorrowedFd, OwnedFd};
 use std::{
     collections::HashMap,
     ffi::{OsStr, OsString},
     iter,
-    os::{
-        fd::{AsFd, BorrowedFd, OwnedFd},
-        unix::ffi::OsStrExt,
-    },
     path::{Path, PathBuf},
     rc::Rc,
     time::{SystemTime, UNIX_EPOCH},

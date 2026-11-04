@@ -3,9 +3,9 @@
 //! Trash that only counts a local item as trashed once it has left its name:
 //! GLib 2.86 to 2.88.4 can fail without an error and move nothing (GLib #4060).
 
+use crate::platform::unix::ffi::{OsStrExt, OsStringExt};
 use std::{
     ffi::{OsStr, OsString},
-    os::unix::ffi::{OsStrExt, OsStringExt},
     path::{Path, PathBuf},
 };
 

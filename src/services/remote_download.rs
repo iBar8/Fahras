@@ -3,10 +3,10 @@
 #[cfg(test)]
 mod tests;
 
+use crate::platform::unix::fs::{OpenOptionsExt, PermissionsExt};
 use std::{
     fs,
     io::{self, Read, Write},
-    os::unix::fs::{OpenOptionsExt, PermissionsExt},
     path::{Path, PathBuf},
     sync::{
         Arc,

@@ -1,5 +1,9 @@
 // SPDX-License-Identifier: MIT
 
+#[cfg(test)]
+use rustix::fd::OwnedFd;
+#[cfg(test)]
+use std::ffi::OsString;
 use std::{
     ffi::OsStr,
     future::Future,
@@ -8,8 +12,6 @@ use std::{
     sync::{Arc, atomic::AtomicBool},
     thread,
 };
-#[cfg(test)]
-use std::{ffi::OsString, os::fd::OwnedFd};
 
 use gtk::{gio, glib, prelude::*};
 

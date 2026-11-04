@@ -4,10 +4,10 @@
 //! order: `chown` clears `security.capability` and the special bits, and
 //! xattrs go in before a read-only mode would refuse them.
 
+use rustix::fd::BorrowedFd;
 use std::{
     collections::HashSet,
     ffi::{OsStr, OsString},
-    os::fd::BorrowedFd,
     sync::Mutex,
 };
 

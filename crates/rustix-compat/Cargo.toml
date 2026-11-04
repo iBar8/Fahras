@@ -1,0 +1,20 @@
+[package]
+name = "fahras-rustix-compat"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+description = "The subset of rustix that Fahras uses, implemented for Windows"
+publish = false
+
+[lib]
+name = "rustix_compat"
+
+[target.'cfg(windows)'.dependencies]
+bitflags = "2.13.1"
+windows-sys = { version = "0.61.2", features = [
+    "Win32_Foundation",
+    "Win32_Storage_FileSystem",
+    "Win32_System_IO",
+    "Win32_System_Threading",
+    "Win32_Security",
+] }

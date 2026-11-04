@@ -19,6 +19,7 @@ use crate::{
     services::{LoadHandle, OperationEvent, PlaceEntryRequest, TypedPath, validate_basename},
 };
 use gtk::{gio, glib, prelude::*};
+use rustix::fd::OwnedFd;
 use rustix::{
     fs::{AtFlags, FileType, Mode},
     io::Errno,
@@ -26,7 +27,6 @@ use rustix::{
 use std::{
     collections::HashSet,
     ffi::OsStr,
-    os::fd::OwnedFd,
     path::{Path, PathBuf},
     rc::Rc,
 };

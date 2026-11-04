@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 
+use crate::platform::unix::fs::MetadataExt as _;
 use std::{
     fs,
     io::{Read, Write},
-    os::unix::fs::MetadataExt as _,
     path::{Path, PathBuf},
     process::Command,
     sync::{
@@ -1184,7 +1184,7 @@ fn oversized_update() -> InstallStop {
 }
 
 fn set_executable(path: &Path) -> Result<(), String> {
-    use std::os::unix::fs::PermissionsExt;
+    use crate::platform::unix::fs::PermissionsExt;
     fs::set_permissions(path, fs::Permissions::from_mode(0o755)).map_err(|error| {
         rust_i18n::t!(
             "Could not mark the update executable: %{error}",

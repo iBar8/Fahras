@@ -4,8 +4,8 @@
 //! from existing files. Nothing here touches the network: a dropped address
 //! becomes a link file, never a download.
 
+use crate::platform::unix::fs::PermissionsExt;
 use std::io::{self, Write};
-use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
 
 use glib::{KeyFile, KeyFileFlags, Uri, UriFlags};

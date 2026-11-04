@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 
+use crate::platform::unix::fs::{DirBuilderExt, PermissionsExt};
 use std::{
     collections::HashMap,
     ffi::{OsStr, OsString},
     fs::{self, DirBuilder},
     io,
-    os::unix::fs::{DirBuilderExt, PermissionsExt},
     path::{Path, PathBuf},
     sync::Arc,
 };

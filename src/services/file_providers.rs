@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 //! Opt-in external file providers. No provider code runs on the GTK thread.
+use crate::platform::unix::fs::MetadataExt;
 use serde::Deserialize;
 use std::{
     collections::BTreeMap,
     fs,
     io::Read,
-    os::unix::fs::MetadataExt,
     path::{Path, PathBuf},
 };
 

@@ -6,14 +6,14 @@ mod tests;
 mod omarchy;
 pub(crate) mod udiskie;
 
+use crate::platform::unix::{
+    ffi::OsStrExt as _,
+    fs::{MetadataExt, OpenOptionsExt, PermissionsExt},
+    process::CommandExt as _,
+};
 use std::{
     env, fs, io,
     io::{Read as _, Write as _},
-    os::unix::{
-        ffi::OsStrExt as _,
-        fs::{MetadataExt, OpenOptionsExt, PermissionsExt},
-        process::CommandExt as _,
-    },
     path::{Path, PathBuf},
     process::{Command, Output, Stdio},
     thread,

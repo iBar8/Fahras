@@ -5,6 +5,7 @@ use super::{
     decoders::extract_zip_from_archive,
     extraction::ArchiveOutcome,
 };
+use crate::platform::unix::fs::{MetadataExt, PermissionsExt};
 use crate::{
     model::{EntryKind, FileEntry, Location, MetadataValue},
     services::{ArchiveFormat, TransferReport},
@@ -14,7 +15,6 @@ use std::{
     ffi::{OsStr, OsString},
     fs,
     io::{Cursor, Write},
-    os::unix::fs::{MetadataExt, PermissionsExt},
     path::{Path, PathBuf},
     sync::{
         Arc,

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 
+use rustix::fd::{AsFd, BorrowedFd, OwnedFd};
 use std::{
     cell::OnceCell,
     collections::HashSet,
     ffi::{OsStr, OsString},
-    os::fd::{AsFd, BorrowedFd, OwnedFd},
     path::{Path, PathBuf},
     rc::Rc,
     sync::{

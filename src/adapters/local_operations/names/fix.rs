@@ -3,12 +3,12 @@
 //! The name a destination stores for a name it would refuse, alter or find
 //! too long, by the rules of its mount's profile.
 
+use crate::platform::unix::ffi::{OsStrExt, OsStringExt};
 use std::{
     borrow::Cow,
     collections::HashSet,
     ffi::{OsStr, OsString},
     ops::Range,
-    os::unix::ffi::{OsStrExt, OsStringExt},
 };
 
 use gtk::pango;

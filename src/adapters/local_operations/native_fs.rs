@@ -2,10 +2,10 @@
 
 use super::fs_ops::{Entry, EntryStat, FsOps, OffMain, assert_off_main_thread, fs};
 use crate::services::{Attributes, Evidence, IdentityTraits, InodeNumbers, ItemIdentity, Proof};
+use rustix::fd::{AsFd, AsRawFd, BorrowedFd, OwnedFd};
 use std::{
     ffi::{OsStr, OsString},
     io,
-    os::fd::{AsFd, AsRawFd, BorrowedFd, OwnedFd},
     path::{Path, PathBuf},
 };
 

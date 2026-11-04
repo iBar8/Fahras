@@ -51,7 +51,7 @@ pub(crate) fn sync_filesystem(root: &Path) -> io::Result<()> {
             rustix::fs::Mode::empty(),
         )
         .map_err(io::Error::from)?;
-    fs().sync_fs(std::os::fd::AsFd::as_fd(&handle))
+    fs().sync_fs(rustix::fd::AsFd::as_fd(&handle))
         .map_err(io::Error::from)?;
     Ok(())
 }

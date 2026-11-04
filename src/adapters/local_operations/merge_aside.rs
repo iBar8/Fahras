@@ -5,10 +5,10 @@
 //! and deletes that folder only once the merge has succeeded and is on
 //! disk. An original whose name the merge left free goes back to it first.
 
+use rustix::fd::{AsFd, OwnedFd};
 use std::{
     collections::{HashMap, HashSet},
     ffi::{OsStr, OsString},
-    os::fd::{AsFd, OwnedFd},
     path::{Path, PathBuf},
     sync::Arc,
 };

@@ -5,11 +5,11 @@
 //! are deleted. It keeps names, never descriptors. What an operation placed
 //! is recorded the same way, for undo to delete only while unchanged.
 
+use rustix::fd::{AsFd, BorrowedFd, OwnedFd};
 use std::{
     collections::{HashMap, HashSet},
     ffi::{OsStr, OsString},
     io,
-    os::fd::{AsFd, BorrowedFd, OwnedFd},
     path::{Path, PathBuf},
     sync::{
         Arc, Mutex,

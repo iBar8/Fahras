@@ -6,12 +6,13 @@
 #[cfg(test)]
 pub(super) mod tests;
 
+use crate::platform::unix::fs::MetadataExt;
+use rustix::fd::OwnedFd;
 use std::{
     collections::HashMap,
     ffi::{OsStr, OsString},
     future::Future,
     io::ErrorKind,
-    os::{fd::OwnedFd, unix::fs::MetadataExt},
     path::{Path, PathBuf},
     pin::Pin,
     sync::{LazyLock, Mutex, MutexGuard, PoisonError},

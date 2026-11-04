@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 
+use rustix::fd::{AsFd, OwnedFd};
 use std::{
     io::{self, Read, Write},
     mem::MaybeUninit,
-    os::fd::{AsFd, OwnedFd},
 };
 
 use rustix::net::{

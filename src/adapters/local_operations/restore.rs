@@ -6,6 +6,7 @@ use super::{
     placement::{PlaceError, RenameFailure},
     release::{self, ActiveOperation},
 };
+use crate::platform::unix::ffi::{OsStrExt, OsStringExt};
 use crate::{
     adapters::{
         gio_file_for_location,
@@ -24,15 +25,12 @@ use crate::{
     },
 };
 use gtk::{gio, glib, prelude::*};
+use rustix::fd::{AsFd, OwnedFd};
 use std::{
     collections::{HashMap, HashSet},
     ffi::{OsStr, OsString},
     future::Future,
     io,
-    os::{
-        fd::{AsFd, OwnedFd},
-        unix::ffi::{OsStrExt, OsStringExt},
-    },
     path::{Path, PathBuf},
     pin::Pin,
     rc::Rc,

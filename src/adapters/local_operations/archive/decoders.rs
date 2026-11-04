@@ -4,12 +4,12 @@
 //! Format-specific member enumeration, passwords and error translation stay here.
 //!
 
+use crate::platform::unix::ffi::OsStrExt;
 use std::{
     borrow::Cow,
     collections::HashMap,
     ffi::OsStr,
     io::{BufRead, BufReader, Read, Seek},
-    os::unix::ffi::OsStrExt,
     path::Path,
     sync::{
         Arc,

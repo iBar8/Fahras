@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 
+use crate::platform::unix::{ffi::OsStringExt, fs::MetadataExt};
 use std::{
     collections::HashSet,
     ffi::{OsStr, OsString},
     fs,
     io::Read,
-    os::unix::{ffi::OsStringExt, fs::MetadataExt},
     path::Path,
 };
 

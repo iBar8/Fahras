@@ -17,12 +17,12 @@ use super::{
     owed::{Deletion, Owed},
     placement::{Displacement, Exchanged, PlaceError, RenameFailure},
 };
+use rustix::fd::{AsFd, OwnedFd};
 use std::{
     collections::{HashMap, HashSet},
     ffi::{OsStr, OsString},
     future::Future,
     ops::ControlFlow,
-    os::fd::{AsFd, OwnedFd},
     path::{Path, PathBuf},
     pin::Pin,
     rc::Rc,

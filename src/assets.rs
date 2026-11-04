@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 
+use crate::platform::unix::ffi::OsStrExt;
 use std::{
     cell::{Cell, RefCell},
     collections::{HashMap, VecDeque},
     ffi::CString,
     fs, io,
-    os::unix::ffi::OsStrExt,
     path::{Path, PathBuf},
 };
 

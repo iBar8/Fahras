@@ -4,10 +4,10 @@
 //! recorded by path beneath the copy's root, so no descriptor is held for
 //! each, and get their exact mode last.
 
+use rustix::fd::{AsFd, BorrowedFd, OwnedFd};
 use std::{
     cmp::Reverse,
     ffi::OsStr,
-    os::fd::{AsFd, BorrowedFd, OwnedFd},
     path::{Path, PathBuf},
 };
 

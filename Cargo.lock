@@ -860,6 +860,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "fahras-rustix-compat"
+version = "0.1.0"
+dependencies = [
+ "bitflags 2.13.1",
+ "windows-sys 0.61.2",
+]
+
+[[package]]
 name = "fast-float2"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3027,6 +3035,7 @@ dependencies = [
  "calamine",
  "csv",
  "docx-rs",
+ "fahras-rustix-compat",
  "fitparser",
  "flate2",
  "frizbee",

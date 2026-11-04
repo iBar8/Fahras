@@ -172,7 +172,7 @@ impl PrivateOutput {
     }
 
     pub(super) fn create_in(parent: &Path) -> io::Result<Self> {
-        use std::os::unix::fs::DirBuilderExt;
+        use crate::platform::unix::fs::DirBuilderExt;
 
         for _ in 0..PRIVATE_OUTPUT_ATTEMPTS {
             let path = parent.join(format!(

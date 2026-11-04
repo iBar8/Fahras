@@ -268,7 +268,7 @@ pub(super) fn render_dcraw(path: &Path, size: i32) -> Result<Vec<u8>, String> {
 }
 
 pub(super) fn render_simple_dcraw(path: &Path, size: i32) -> Result<Vec<u8>, String> {
-    use std::os::unix::fs::symlink;
+    use crate::platform::unix::fs::symlink;
 
     // Writes `<file>.thumb.jpg` next to the input, which is a read-only bind.
     let directory = tempfile::tempdir().map_err(|error| error.to_string())?;

@@ -7,11 +7,11 @@
 //! Errors that may mean "unsupported" are only learned from definitive errnos
 //! or from a probe on Strata's own names, and nothing is unlinked without proof.
 
+use rustix::fd::{AsFd, BorrowedFd, OwnedFd};
 use std::{
     cell::Cell,
     ffi::{OsStr, OsString},
     ops::ControlFlow,
-    os::fd::{AsFd, BorrowedFd, OwnedFd},
     path::Path,
     sync::Arc,
 };

@@ -3,9 +3,9 @@
 //! Puts what a copy wrote on its device before anything only the copy holds
 //! is deleted, the way the destination's filesystem family reaches it.
 
+use rustix::fd::{AsFd, BorrowedFd, OwnedFd};
 use std::{
     ffi::OsStr,
-    os::fd::{AsFd, BorrowedFd, OwnedFd},
     path::{Path, PathBuf},
     sync::atomic::{AtomicU64, Ordering},
 };

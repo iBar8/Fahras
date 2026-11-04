@@ -3,12 +3,12 @@
 #[cfg(test)]
 mod tests;
 
+use rustix::fd::OwnedFd;
 use std::{
     collections::{BTreeMap, HashSet},
     ffi::OsString,
     io,
     ops::ControlFlow,
-    os::fd::OwnedFd,
     path::{Path, PathBuf},
     sync::Arc,
 };

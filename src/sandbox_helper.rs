@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 
+use rustix::fd::RawFd;
 #[cfg(feature = "rar")]
 use std::io;
-use std::{fs, io::Read, os::fd::RawFd, path::Path, process::Command, time::Duration};
+use std::{fs, io::Read, path::Path, process::Command, time::Duration};
 
 use crate::{
     adapters::{encode_archive_result, list_archive_entries_direct},

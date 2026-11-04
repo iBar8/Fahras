@@ -7,7 +7,8 @@
 
 //! UnRAR FFI used by the sandboxed extraction helper.
 
-use std::{ffi::CString, io::Write, os::unix::ffi::OsStrExt, path::Path, ptr};
+use crate::platform::unix::ffi::OsStrExt;
+use std::{ffi::CString, io::Write, path::Path, ptr};
 
 use unrar_sys as native;
 

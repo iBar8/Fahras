@@ -4,11 +4,11 @@
 //! exclusively, so in a folder this copy made a taken name is a case alias,
 //! someone else's entry, or the copy's own entry whose reply was lost.
 
+use rustix::fd::{AsFd, BorrowedFd, OwnedFd};
 use std::{
     collections::{HashMap, HashSet},
     ffi::{OsStr, OsString},
     io,
-    os::fd::{AsFd, BorrowedFd, OwnedFd},
     path::{Path, PathBuf},
     sync::{
         Arc, Mutex, OnceLock,

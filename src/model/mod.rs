@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 
+use crate::platform::unix::ffi::OsStrExt;
 use std::{
     cmp::Ordering,
     ffi::{OsStr, OsString},
-    os::unix::ffi::OsStrExt,
     path::{Component, Path, PathBuf},
     sync::Arc,
 };

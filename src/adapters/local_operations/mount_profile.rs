@@ -6,11 +6,11 @@
 #[cfg(test)]
 mod tests;
 
+use rustix::fd::{AsFd, BorrowedFd};
 use std::{
     collections::HashMap,
     ffi::OsStr,
     hash::{DefaultHasher, Hash, Hasher},
-    os::fd::{AsFd, BorrowedFd},
     path::{Component, Path, PathBuf},
     sync::{Arc, Mutex, MutexGuard},
 };

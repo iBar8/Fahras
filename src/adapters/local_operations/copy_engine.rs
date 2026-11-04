@@ -23,11 +23,11 @@ mod restrictive;
 pub(super) mod stage;
 mod tree;
 
+use rustix::fd::{AsFd, BorrowedFd, OwnedFd};
 use std::{
     borrow::Borrow,
     collections::{BTreeSet, HashMap, HashSet},
     ffi::{OsStr, OsString},
-    os::fd::{AsFd, BorrowedFd, OwnedFd},
     path::{Path, PathBuf},
     rc::Rc,
     sync::{

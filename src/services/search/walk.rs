@@ -123,7 +123,7 @@ fn entry_mode(
     file_type: Option<FileType>,
     is_directory: bool,
 ) -> MetadataValue<u32> {
-    use std::os::unix::fs::MetadataExt;
+    use crate::platform::unix::fs::MetadataExt;
 
     if is_directory {
         return MetadataValue::Unknown;

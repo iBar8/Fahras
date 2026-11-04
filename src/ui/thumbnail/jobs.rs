@@ -102,7 +102,7 @@ async fn read_disk_cache(job: &mut ThumbnailJob) -> Option<Vec<u8>> {
         return None;
     }
     let lookup = background::cache(move || {
-        use std::os::unix::fs::MetadataExt;
+        use crate::platform::unix::fs::MetadataExt;
         if let Ok(metadata) = std::fs::metadata(&key.path) {
             key.modified = Some(metadata.mtime());
             key.file_size = Some(metadata.len());

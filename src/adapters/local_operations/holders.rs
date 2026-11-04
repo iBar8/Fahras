@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: MIT
 
+use crate::platform::unix::ffi::OsStrExt;
+use rustix::fd::{AsFd, BorrowedFd};
 use std::{
     collections::HashSet,
     ffi::{OsStr, OsString},
-    os::{
-        fd::{AsFd, BorrowedFd},
-        unix::ffi::OsStrExt,
-    },
     path::{Path, PathBuf},
     time::{Duration, Instant},
 };

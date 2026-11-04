@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
+use rustix::fd::AsFd;
 use std::{
     io::{self, Read, Write},
-    os::fd::AsFd,
     path::{Path, PathBuf},
     process::{Child, ChildStdout, Command, Stdio},
     time::{Duration, Instant},

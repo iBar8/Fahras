@@ -4,9 +4,9 @@
 //! and writes, leaving out the holes of sparse local files. Progress and
 //! cancellation are checked between calls.
 
+use rustix::fd::BorrowedFd;
 use std::{
     cell::OnceCell,
-    os::fd::BorrowedFd,
     sync::{
         OnceLock,
         atomic::{AtomicBool, Ordering},

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 
+use crate::platform::unix::{ffi::OsStrExt as _, fs::PermissionsExt};
 use std::{
     ffi::OsStr,
     io,
-    os::unix::{ffi::OsStrExt as _, fs::PermissionsExt},
     path::{Path, PathBuf},
     sync::OnceLock,
 };

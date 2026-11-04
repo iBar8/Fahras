@@ -55,7 +55,7 @@ const GL_LIBRARIES: [&str; 9] = [
 /// Resolves a helper tool the way the sandbox's `PATH` does. The sandbox root
 /// is mounted at its host path, so the host file is the one helpers run.
 pub(crate) fn sandbox_tool(name: &str) -> Option<PathBuf> {
-    use std::os::unix::fs::PermissionsExt;
+    use crate::platform::unix::fs::PermissionsExt;
     runtime::current()
         .tool_directories()
         .map(|directory| directory.join(name))

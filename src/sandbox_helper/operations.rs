@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 //! The helper's file-producing operations, looked up by their argument name.
 
-use std::{fs, os::fd::RawFd, path::Path};
+use rustix::fd::RawFd;
+use std::{fs, path::Path};
 
 use super::{
     appimage, archive_cover, document_media, image_conversion, media, model, pdf,

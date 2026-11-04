@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 
+use crate::platform::unix::ffi::OsStrExt as _;
 use std::{
     collections::HashSet,
     env,
     ffi::OsStr,
     fs, io,
-    os::unix::ffi::OsStrExt as _,
     path::{Path, PathBuf},
     process::{Command, Stdio},
     time::Duration,

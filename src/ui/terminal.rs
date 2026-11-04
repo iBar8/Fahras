@@ -374,7 +374,7 @@ fn is_executable(path: &Path) -> bool {
     }
     #[cfg(unix)]
     {
-        use std::os::unix::fs::PermissionsExt;
+        use crate::platform::unix::fs::PermissionsExt;
         metadata.permissions().mode() & 0o111 != 0
     }
     #[cfg(not(unix))]

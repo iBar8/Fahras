@@ -187,13 +187,14 @@ pub(crate) use typed_names::{
     rename_taken as typed_rename_is_taken,
 };
 
+use crate::platform::unix::ffi::OsStrExt;
+use rustix::fd::AsFd;
 use std::{
     cell::{Cell, RefCell},
     collections::{HashMap, HashSet},
     ffi::{OsStr, OsString},
     future::Future,
     io,
-    os::{fd::AsFd, unix::ffi::OsStrExt},
     path::{Path, PathBuf},
     pin::Pin,
     rc::Rc,

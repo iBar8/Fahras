@@ -6,13 +6,13 @@
 #[cfg(test)]
 mod tests;
 
+use crate::platform::unix::{
+    ffi::{OsStrExt, OsStringExt},
+    fs::MetadataExt,
+};
 use std::{
     ffi::{OsStr, OsString},
     future::Future,
-    os::unix::{
-        ffi::{OsStrExt, OsStringExt},
-        fs::MetadataExt,
-    },
     path::{Component, Path, PathBuf},
 };
 

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
-use std::{cell::Cell, ffi::OsString, io, os::fd::OwnedFd, sync::Arc};
+use rustix::fd::OwnedFd;
+use std::{cell::Cell, ffi::OsString, io, sync::Arc};
 
 use super::{
     super::{

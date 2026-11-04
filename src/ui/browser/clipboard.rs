@@ -4,6 +4,7 @@ use crate::adapters::{
     DropVolumeQuery, DropVolumes, gio_file_for_location, location_for_file, lookup_drop_volumes,
 };
 use crate::model::{FileEntry, Location};
+use crate::platform::unix::ffi::OsStrExt;
 use crate::services::{
     CrossVolumeDropStrategy, DropActionInput, DropCommit, DropOverride, TransferKind,
     VolumeRelation, drop_commit, transferable_drop_sources,
@@ -20,7 +21,6 @@ use gtk::prelude::*;
 use gtk::{glib, graphene};
 use std::cell::{Cell, RefCell};
 use std::collections::{HashMap, HashSet};
-use std::os::unix::ffi::OsStrExt;
 use std::path::Path;
 use std::rc::{Rc, Weak};
 use std::time::Duration;

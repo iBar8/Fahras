@@ -9,11 +9,11 @@
 //! Staging isolates conflict naming from the user's files. A password failure
 //! discards it, because the retry extracts the whole archive again. Unfinished
 //! sessions retain partial output even during decoder panic unwinding.
+use crate::platform::unix::ffi::OsStrExt;
 use std::{
     collections::{HashMap, HashSet},
     ffi::{OsStr, OsString},
     io::{Read, Write},
-    os::unix::ffi::OsStrExt,
     path::{Path, PathBuf},
     sync::atomic::{AtomicBool, AtomicUsize, Ordering},
     time::SystemTime,

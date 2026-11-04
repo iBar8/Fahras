@@ -3,9 +3,9 @@
 #[cfg(test)]
 mod tests;
 
+use crate::platform::unix::ffi::OsStringExt;
 use std::{
     ffi::OsString,
-    os::unix::ffi::OsStringExt,
     path::{Path, PathBuf},
     sync::Arc,
     time::Duration,

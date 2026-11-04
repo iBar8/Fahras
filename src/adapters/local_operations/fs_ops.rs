@@ -3,14 +3,12 @@
 //! The directory-relative syscalls that placement uses, behind one seam so
 //! tests can emulate filesystems that lack a primitive.
 
+use crate::platform::unix::ffi::OsStringExt;
+use rustix::fd::{AsFd, AsRawFd, BorrowedFd, IntoRawFd, OwnedFd};
 use std::{
     ffi::{OsStr, OsString},
     mem::MaybeUninit,
     ops::ControlFlow,
-    os::{
-        fd::{AsFd, AsRawFd, BorrowedFd, IntoRawFd, OwnedFd},
-        unix::ffi::OsStringExt,
-    },
     path::Path,
     time::Duration,
 };

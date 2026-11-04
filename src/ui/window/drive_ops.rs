@@ -224,7 +224,7 @@ fn tool_path(cmd: &str) -> Option<PathBuf> {
 }
 
 fn is_executable(path: &Path) -> bool {
-    use std::os::unix::fs::PermissionsExt;
+    use crate::platform::unix::fs::PermissionsExt;
     path.is_file()
         && path
             .metadata()

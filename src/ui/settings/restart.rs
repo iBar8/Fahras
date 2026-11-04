@@ -50,7 +50,7 @@ pub(super) fn schedule_rollback_cleanup_with(
 }
 
 pub(super) fn remove_unless_replaced(rollback: &Path, preserved: &std::fs::Metadata) {
-    use std::os::unix::fs::MetadataExt;
+    use crate::platform::unix::fs::MetadataExt;
     crate::util::ui_thread::assert_off();
     // A later install owns its own rollback copy, even in this process.
     if !std::fs::symlink_metadata(rollback)
@@ -84,7 +84,8 @@ fn process_start_time(pid: u32) -> Option<String> {
 }
 
 pub(super) fn restart_waiter(current_exe: &std::path::Path, parent_pid: u32) -> Option<Command> {
-    use std::{os::unix::process::CommandExt, process::Stdio};
+    use crate::platform::unix::process::CommandExt;
+    use std::process::Stdio;
 
     crate::util::ui_thread::assert_off();
     let mut command = crate::trusted_command::command("sh").ok()?;

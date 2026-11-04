@@ -29,7 +29,7 @@ pub(super) fn transfer_is_noop(
 /// its own identity, so moving a link into the folder it targets is allowed.
 /// `None` means an ancestor could not be inspected.
 pub(super) fn target_is_within_source(source: &gio::File, target: &gio::File) -> Option<bool> {
-    use std::os::unix::fs::MetadataExt;
+    use crate::platform::unix::fs::MetadataExt;
 
     fs_ops::assert_off_main_thread();
     let (Some(source_path), Some(target_path)) = (source.path(), target.path()) else {

@@ -72,7 +72,7 @@ pub(super) fn build_index(
             let mode = if is_directory {
                 MetadataValue::Unknown
             } else {
-                use std::os::unix::fs::MetadataExt;
+                use crate::platform::unix::fs::MetadataExt;
                 // Executability follows the target, not DirEntry's symlink mode.
                 let metadata = if file_type.is_symlink() {
                     std::fs::metadata(&path).ok()

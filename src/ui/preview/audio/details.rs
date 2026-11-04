@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 
+use crate::platform::unix::fs::MetadataExt;
 use std::{
     cell::{Cell, RefCell},
     collections::VecDeque,
-    os::unix::fs::MetadataExt,
     path::{Path, PathBuf},
     rc::Rc,
     sync::{Mutex, OnceLock},

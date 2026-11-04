@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 use super::*;
-use std::os::fd::OwnedFd;
+use rustix::fd::OwnedFd;
 
 pub(in crate::adapters::local_operations) async fn rename_native(
     source: PathBuf,

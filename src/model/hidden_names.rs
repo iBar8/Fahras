@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: MIT
 
-use std::{
-    ffi::{OsStr, OsString},
-    os::unix::ffi::OsStrExt,
-};
+use crate::platform::unix::ffi::OsStrExt;
+use std::ffi::{OsStr, OsString};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum HiddenName {

@@ -15,9 +15,9 @@
 #[cfg(test)]
 mod tests;
 
+use crate::platform::unix::fs::PermissionsExt;
 use std::{
     io::Read,
-    os::unix::fs::PermissionsExt,
     path::{Path, PathBuf},
 };
 

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
+use rustix::fd::AsFd;
 use std::{
     collections::HashSet,
-    os::fd::AsFd,
     path::{Path, PathBuf},
     thread,
 };

@@ -5,10 +5,10 @@
 //! its scope is written, each later name is linked to that copy, or copied
 //! from it where the destination refuses.
 
+use rustix::fd::{AsFd, BorrowedFd, OwnedFd};
 use std::{
     collections::{HashMap, HashSet, hash_map},
     ffi::OsString,
-    os::fd::{AsFd, BorrowedFd, OwnedFd},
     path::{Path, PathBuf},
     sync::{Arc, Mutex},
 };

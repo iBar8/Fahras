@@ -494,7 +494,7 @@ fn one_item() -> usize {
 }
 
 fn extension_bytes(name: &OsStr) -> Option<&[u8]> {
-    use std::os::unix::ffi::OsStrExt;
+    use crate::platform::unix::ffi::OsStrExt;
     let bytes = name.as_bytes();
     let dot = bytes.iter().rposition(|byte| *byte == b'.')?;
     // A leading dot alone is a hidden file name, not an extension.

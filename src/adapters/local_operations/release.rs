@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 
+use rustix::fd::AsRawFd;
 use std::{
     cell::RefCell,
     collections::{BTreeMap, HashMap, HashSet},
-    os::fd::AsRawFd,
     path::{Path, PathBuf},
     time::{Duration, Instant},
 };

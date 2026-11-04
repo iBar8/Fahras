@@ -30,20 +30,18 @@ use super::{
     ArchiveError, COPY_BUF, archive_failed, check_archive_cancelled, copy_with_big_buf,
     decoders::FILE_ATTRIBUTE_UNIX_EXTENSION, destination::process_umask,
 };
+use crate::platform::unix::fs::PermissionsExt;
 use crate::{
     adapters::volume::Family,
     model::hidden_names::HiddenName,
     services::{ItemIdentity, PlacedSnapshot, ReplacedOriginal, TransferConflict, error_detail},
 };
 use gtk::{gio, glib};
+use rustix::fd::{AsFd, OwnedFd};
 use rustix::fs::AtFlags;
 use std::{
     ffi::{OsStr, OsString},
     io::{self, Read, Seek, SeekFrom, Write},
-    os::{
-        fd::{AsFd, OwnedFd},
-        unix::fs::PermissionsExt,
-    },
     path::{Path, PathBuf},
     sync::{
         Arc, OnceLock,

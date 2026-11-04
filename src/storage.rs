@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 
+use crate::platform::unix::fs::{MetadataExt, OpenOptionsExt, PermissionsExt};
 use std::{
     fmt,
     fs::{self, File, OpenOptions},
     io::{self, Write},
-    os::unix::fs::{MetadataExt, OpenOptionsExt, PermissionsExt},
     path::{Path, PathBuf},
     sync::atomic::{AtomicU64, Ordering},
 };

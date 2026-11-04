@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
+use crate::platform::unix::fs::FileExt;
 use std::{
     fs::File,
-    os::unix::fs::FileExt,
     path::PathBuf,
     sync::{
         Arc,
@@ -187,7 +187,7 @@ fn polled(address: u64, count: u64) -> String {
 }
 
 fn read_path(address: u64) -> Option<PathBuf> {
-    use std::os::unix::ffi::OsStringExt;
+    use crate::platform::unix::ffi::OsStringExt;
 
     const PAGE: u64 = 4096;
     let memory = File::open("/proc/self/mem").ok()?;

@@ -60,7 +60,7 @@ impl Renderer {
 }
 
 pub(super) fn spawn_renderer(command: &mut Command) -> io::Result<Renderer> {
-    use std::os::unix::process::CommandExt;
+    use crate::platform::unix::process::CommandExt;
 
     let (info, info_end) = rustix::pipe::pipe_with(rustix::pipe::PipeFlags::CLOEXEC)?;
     command.stderr(Stdio::from(info_end));

@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: MIT
 
-use std::{
-    ffi::{OsStr, OsString},
-    os::fd::{AsFd, OwnedFd},
-};
+use rustix::fd::{AsFd, OwnedFd};
+use std::ffi::{OsStr, OsString};
 
 use super::super::{
     fs_ops::{Entry, EntryStat, fs},

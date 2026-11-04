@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
+use crate::platform::unix::fs::MetadataExt;
 use std::{
     fs::{self, Metadata},
-    os::unix::fs::MetadataExt,
     path::{Component, Path, PathBuf},
     process::Command,
 };

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 use super::protocol::{FRAME_LIMIT, checked_reply};
 use super::{Manifest, PATH_LIMIT, Registration, Reply, Request};
+use crate::platform::unix::{net::UnixStream, process::CommandExt};
 use std::{
     collections::{BTreeMap, VecDeque},
     io::{self, Read, Write},
-    os::unix::{net::UnixStream, process::CommandExt},
     process::{Command, Stdio},
     sync::{
         Arc, Condvar, Mutex,
@@ -350,8 +350,8 @@ fn run(
             .args(&manifest.command[1..])
             .current_dir("/")
             .process_group(0)
-            .stdin(Stdio::from(std::os::fd::OwnedFd::from(peer.try_clone()?)))
-            .stdout(Stdio::from(std::os::fd::OwnedFd::from(peer)))
+            .stdin(Stdio::from(rustix::fd::OwnedFd::from(peer.try_clone()?)))
+            .stdout(Stdio::from(rustix::fd::OwnedFd::from(peer)))
             .stderr(Stdio::null());
         crate::child_environment::restore_command(&mut command);
         Ok((stream, command.spawn()?))

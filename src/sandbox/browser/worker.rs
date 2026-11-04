@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: MIT
 
-use std::{
-    io::{self, Write},
-    os::unix::net::UnixStream,
-};
+use crate::platform::unix::net::UnixStream;
+use std::io::{self, Write};
 
 use super::{
     process,

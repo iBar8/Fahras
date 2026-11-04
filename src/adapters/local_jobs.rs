@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 
+use crate::platform::unix::{fs::DirBuilderExt, fs::MetadataExt, process::CommandExt};
 use std::{
     ffi::OsString,
     fs,
     io::{self, Read},
-    os::unix::{fs::DirBuilderExt, fs::MetadataExt, process::CommandExt},
     path::{Path, PathBuf},
     process::{Child, ChildStderr, ChildStdout, Command, Stdio},
     rc::Rc,
@@ -305,7 +305,7 @@ fn watch_process(
 }
 
 fn exit_from_status(status: std::process::ExitStatus) -> Exit {
-    use std::os::unix::process::ExitStatusExt;
+    use crate::platform::unix::process::ExitStatusExt;
     Exit {
         code: status.code(),
         signal: status.signal(),
@@ -445,7 +445,7 @@ fn helper_python_path(run_directory: &Path) -> OsString {
 }
 
 fn path_bytes(path: &Path) -> io::Result<Vec<u8>> {
-    use std::os::unix::ffi::OsStrExt;
+    use crate::platform::unix::ffi::OsStrExt;
     let bytes = path.as_os_str().as_bytes();
     if bytes.is_empty() {
         return Err(io::Error::new(
@@ -604,7 +604,7 @@ struct CapturedOutput {
 
 impl CapturedOutput {
     fn make_nonblocking(&self) -> io::Result<()> {
-        use std::os::fd::AsFd;
+        use rustix::fd::AsFd;
         for fd in [
             self.stdout.as_ref().map(AsFd::as_fd),
             self.stderr.as_ref().map(AsFd::as_fd),

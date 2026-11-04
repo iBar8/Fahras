@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+use crate::platform::unix::fs::MetadataExt;
 use std::{
     cell::{Cell, RefCell},
     collections::{HashMap, HashSet, VecDeque},
@@ -8,7 +9,6 @@ use std::{
     future::Future,
     io::ErrorKind,
     ops::ControlFlow,
-    os::unix::fs::MetadataExt,
     path::{Path, PathBuf},
     pin::Pin,
     rc::Rc,
@@ -762,7 +762,7 @@ fn native_entry_with_identity(
     mounts: &MountTable,
     progress: &Progress,
 ) -> Option<PathBuf> {
-    use std::os::unix::fs::DirEntryExt;
+    use crate::platform::unix::fs::DirEntryExt;
     let folders = native_folders(directory, Path::new(""), mounts, progress)?;
     let matches = |entry: &&fs::DirEntry| has_identity(&entry.path(), identity, progress);
     // Btrfs subvolumes, overlayfs and FUSE can list a different inode than stat reports.

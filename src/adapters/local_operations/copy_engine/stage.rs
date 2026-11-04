@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 
+use rustix::fd::{AsFd, BorrowedFd, OwnedFd};
 use std::{
     collections::HashMap,
     ffi::{OsStr, OsString},
-    os::fd::{AsFd, BorrowedFd, OwnedFd},
 };
 
 use rustix::{

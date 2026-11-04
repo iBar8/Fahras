@@ -168,7 +168,7 @@ struct TimedPipeReader<'a, F> {
     cancelled: &'a AtomicBool,
 }
 
-impl<F: std::os::fd::AsFd> Read for TimedPipeReader<'_, F> {
+impl<F: rustix::fd::AsFd> Read for TimedPipeReader<'_, F> {
     fn read(&mut self, buffer: &mut [u8]) -> std::io::Result<usize> {
         use rustix::event::{PollFd, PollFlags, Timespec, poll};
         let deadline = Instant::now() + self.timeout;

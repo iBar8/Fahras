@@ -11,15 +11,12 @@ use crate::{
     services::Holder,
 };
 use gtk::{gio, glib, prelude::*};
+use rustix::fd::{AsFd, BorrowedFd};
 use rustix::{
     fs::{AtFlags, Mode, OFlags, StatxFlags},
     io::Errno,
 };
-use std::{
-    ffi::OsString,
-    os::fd::{AsFd, BorrowedFd},
-    path::Path,
-};
+use std::{ffi::OsString, path::Path};
 
 pub(super) trait FsEnvironment: Send + Sync {
     fn can_trash(&self, path: &Path) -> bool;
