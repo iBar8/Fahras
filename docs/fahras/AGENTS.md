@@ -43,6 +43,17 @@ Every new user-facing string needs all fourteen. Arabic is plain Modern
 Standard Arabic (Fusha) with simple, common words and no dialect, and the
 interface must work right to left.
 
+## Releases
+
+- Fahras uses Strata's version from `Cargo.toml`; release after an upstream
+  sync brings a new version. Switch to Fahras's own numbers only when the owner
+  wants to ship between syncs.
+- To release, the owner creates the release on GitHub with tag `v<version>`
+  from `main`. `fahras-windows.yml` builds, tests and signs the installer with
+  the `FAHRAS_UPDATE_SIGNING_KEY` secret and attaches the files.
+- `data/update-keys.json` holds the matching public key. Never replace it
+  without the owner; installed copies only accept updates signed by it.
+
 ## Syncing with upstream
 
 The `upstream` remote points at `https://github.com/lgse/strata` with pushes
