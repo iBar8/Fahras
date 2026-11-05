@@ -54,8 +54,10 @@ fn app_icon_choice(preferences: &Rc<PreferenceManager>) -> gtk::Box {
             preview.set_icon_name(Some(icon.icon_name()));
         }
     });
+    menu.set_hexpand(true);
     let control = gtk::Box::new(gtk::Orientation::Horizontal, 10);
     control.set_valign(gtk::Align::Center);
+    control.set_hexpand(true);
     control.append(&preview);
     control.append(&menu);
     control

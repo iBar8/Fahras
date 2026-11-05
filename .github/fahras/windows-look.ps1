@@ -20,6 +20,8 @@ public static class LookWin {
     [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hWnd, int cmd);
     [DllImport("user32.dll")] public static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr w, IntPtr l);
     [DllImport("user32.dll")] public static extern IntPtr GetClassLongPtr(IntPtr hWnd, int index);
+    [DllImport("user32.dll")] public static extern bool SetCursorPos(int x, int y);
+    [DllImport("user32.dll")] public static extern void mouse_event(int flags, int dx, int dy, int data, IntPtr extra);
 }
 '@
 
@@ -171,26 +173,32 @@ foreach ($case in $skins) {
     Stop-Fahras
 }
 
-# Settings opens on its current page's entry; the search field sits above the
-# page list, so it is $page + 1 Shift+Tabs away. Search then shows only the
-# matching row, and four Tabs pass the clear button, the page entry and the
-# close button to reach its choice.
-function Choose-In-Settings([string] $query, [int] $page, [int] $down, [string] $shot) {
+function Click([int] $x, [int] $y, [int] $settle = 1200) {
+    [LookWin]::SetCursorPos($x, $y) | Out-Null
+    Start-Sleep -Milliseconds 150
+    [LookWin]::mouse_event(0x2, 0, 0, 0, [IntPtr]::Zero)
+    [LookWin]::mouse_event(0x4, 0, 0, 0, [IntPtr]::Zero)
+    Start-Sleep -Milliseconds $settle
+}
+
+# Settings fills the maximized 1024x768 runner screen the same way every time
+# (see the look-live-*-search screenshots): the search field sits at the top of
+# the page list, and a search for one row shows that row's choice first in the
+# page. Right to left mirrors both across the screen.
+function Choose-In-Settings([string] $query, [int] $down, [bool] $rightToLeft, [string] $shot) {
+    $mirror = { param($x) if ($rightToLeft) { 1024 - $x } else { $x } }
     Keys '^,' 2500
-    $send = { param($keys, $settle) [System.Windows.Forms.SendKeys]::SendWait($keys); Start-Sleep -Milliseconds $settle }
-    & $send ('+{TAB}' * ($page + 1)) 600
+    Click (& $mirror 170) 106 600
     Set-Clipboard -Value $query
-    & $send '^a' 300
-    & $send '^v' 1500
+    [System.Windows.Forms.SendKeys]::SendWait('^a'); Start-Sleep -Milliseconds 300
+    [System.Windows.Forms.SendKeys]::SendWait('^v'); Start-Sleep -Milliseconds 1500
     Shot "$shot-search"
-    & $send '{TAB}{TAB}{TAB}{TAB}' 800
-    & $send ' ' 1200
+    Click (& $mirror 646) 244
     Shot "$shot-menu"
-    & $send ('{DOWN}' * $down) 600
-    & $send '{ENTER}' 1500
+    [System.Windows.Forms.SendKeys]::SendWait('{DOWN}' * $down); Start-Sleep -Milliseconds 600
+    [System.Windows.Forms.SendKeys]::SendWait('{ENTER}'); Start-Sleep -Milliseconds 1500
     Shot "$shot-chosen"
-    & $send '{ESC}' 600
-    & $send '{ESC}' 1500
+    [System.Windows.Forms.SendKeys]::SendWait('{ESC}'); Start-Sleep -Milliseconds 1500
 }
 
 function Saved([string] $line) {
@@ -209,14 +217,14 @@ foreach ($lang in 'en', 'ar') {
     $before = Sidebar-Color $rtl
     Check "[live-$lang] starts on the Manila icon" ((Window-Icon "live-$lang-before") -eq $hashes['manila'])
 
-    Choose-In-Settings 'skin' 0 2 "look-live-$lang-01-skin"
+    Choose-In-Settings 'skin' 2 $rtl "look-live-$lang-01-skin"
     Check "[live-$lang] Windows 11 skin is saved" (Saved 'explorer_skin = "windows11"')
     $after = Sidebar-Color $rtl
     Log "      sidebar $(Hex $before) -> $(Hex $after)"
     Check "[live-$lang] the open window takes the Windows 11 skin" (Near $after '#f3f3f3')
     Shot "look-live-$lang-02-skinned"
 
-    Choose-In-Settings 'manila' 1 1 "look-live-$lang-03-icon"
+    Choose-In-Settings 'manila' 1 $rtl "look-live-$lang-03-icon"
     Check "[live-$lang] Forest icon is saved" (Saved 'app_icon = "forest"')
     Check "[live-$lang] the window and taskbar show Forest at once" ((Window-Icon "live-$lang-after") -eq $hashes['forest'])
     Shot "look-live-$lang-04-icon"
