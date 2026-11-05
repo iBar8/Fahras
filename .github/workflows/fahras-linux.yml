@@ -91,7 +91,7 @@ jobs:
             build-essential pkg-config clang libgtk-4-dev libgtksourceview-5-dev \
             libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libfontconfig-dev \
             libpoppler-glib-dev libwayland-dev libxkbcommon-dev librsvg2-common \
-            gstreamer1.0-plugins-base gstreamer1.0-plugins-good xvfb dbus fonts-noto-core
+            gstreamer1.0-plugins-base gstreamer1.0-plugins-good xvfb dbus at-spi2-core fonts-noto-core
 
       - name: Install the pinned Rust
         run: |
@@ -109,6 +109,7 @@ jobs:
           restore-keys: linux-tests-
 
       - name: Test on a private display and bus
+        shell: bash
         env:
           CARGO_INCREMENTAL: '0'
           CARGO_PROFILE_DEV_DEBUG: '0'
