@@ -18,7 +18,7 @@ Instant search, rich previews, sandboxed security, and full Arabic support.
 </div>
 
 > [!NOTE]
-> **Fahras is in early development.** A Windows preview build is available: open the [latest Windows build](https://github.com/iBar8/Fahras/actions/workflows/fahras-windows.yml), pick the newest successful run and download **Fahras-windows-x64** under *Artifacts* (requires signing in to GitHub).
+> **Fahras is in early development.** Try the Windows preview: download the installer from the [latest release](https://github.com/iBar8/Fahras/releases/latest).
 > Star or watch the repository to follow along.
 
 <div align="center">
@@ -42,7 +42,7 @@ Instant search, rich previews, sandboxed security, and full Arabic support.
 
 | Platform | Status |
 |---|---|
-| 🪟 **Windows 10 / 11** (x64) | 🧪 Preview build: [download from the latest Windows build](https://github.com/iBar8/Fahras/actions/workflows/fahras-windows.yml). Unzip and run `Fahras\bin\Fahras.exe`; Windows warns because it is not signed yet (**More info → Run anyway**). |
+| 🪟 **Windows 10 / 11** (x64) | 🧪 Preview: download `Fahras-Setup-…-x64.exe` from the [latest release](https://github.com/iBar8/Fahras/releases/latest) and run it. It installs for your account only, with no administrator rights. A portable `.zip` is there too. Windows warns because the installer is not signed yet (**More info → Run anyway**). |
 | 🐧 **Linux** | 🚧 First Fahras release coming soon. Until then you can [build from source](docs/packaging.md). |
 
 ## Features
@@ -121,7 +121,8 @@ Instant search, rich previews, sandboxed security, and full Arabic support.
 - [ ] Network shares, "Open in Fahras" in Explorer, run as administrator
 
 **Phase 5: Release**
-- [ ] Installer, signed updates, first public release
+- [x] Installer in English and Arabic, first public release
+- [ ] Signed automatic updates on Windows
 
 **Planned features**
 - [ ] Windows 10 and Windows 11 Explorer-style layouts and skins
@@ -163,7 +164,7 @@ Third-party components and their licenses are listed in [THIRD_PARTY_LICENSES.md
 
 </div>
 
-> 📌 **فهرس في مرحلة التطوير الأولى.** تتوفر نسخة تجريبية لويندوز: افتح [آخر بناء لويندوز](https://github.com/iBar8/Fahras/actions/workflows/fahras-windows.yml)، واختر أحدث تشغيل ناجح، ثم نزّل **Fahras-windows-x64** من قسم *Artifacts* (يلزم تسجيل الدخول إلى GitHub).
+> 📌 **فهرس في مرحلة التطوير الأولى.** جرّب النسخة التجريبية لويندوز: نزّل برنامج التثبيت من [أحدث إصدار](https://github.com/iBar8/Fahras/releases/latest).
 > تابع المستودع ليصلك كل جديد.
 
 ## لماذا فهرس؟
@@ -182,7 +183,7 @@ Third-party components and their licenses are listed in [THIRD_PARTY_LICENSES.md
 
 | النظام | الحالة |
 |---|---|
-| 🪟 **ويندوز 10 و11** (x64) | 🧪 نسخة تجريبية: [نزّلها من آخر بناء لويندوز](https://github.com/iBar8/Fahras/actions/workflows/fahras-windows.yml). فك الضغط وشغّل `Fahras\bin\Fahras.exe`؛ سيعرض ويندوز تحذيرًا لأن البرنامج غير موقّع بعد (**مزيد من المعلومات ← التشغيل على أي حال**). |
+| 🪟 **ويندوز 10 و11** (x64) | 🧪 نسخة تجريبية: نزّل `Fahras-Setup-…-x64.exe` من [أحدث إصدار](https://github.com/iBar8/Fahras/releases/latest) وشغّله. يُثبَّت لحسابك فقط ولا يحتاج صلاحيات المسؤول. ويتوفر أيضًا ملف `.zip` محمول. سيعرض ويندوز تحذيرًا لأن المثبّت غير موقّع بعد (**مزيد من المعلومات ← التشغيل على أي حال**). |
 | 🐧 **لينكس** | 🚧 أول إصدار من فهرس قريبًا. يمكنك حتى ذلك الحين [بناؤه من الشيفرة المصدرية](docs/packaging.md). |
 
 ## المزايا
@@ -261,7 +262,8 @@ Third-party components and their licenses are listed in [THIRD_PARTY_LICENSES.md
 - [ ] مجلدات الشبكة، وأمر «فتح في فهرس» داخل مستكشف الملفات، والتشغيل بصلاحيات المسؤول
 
 **المرحلة الخامسة: الإصدار**
-- [ ] برنامج التثبيت، وتحديثات موقعة، وأول إصدار عام
+- [x] برنامج تثبيت بالعربية والإنجليزية، وأول إصدار عام
+- [ ] تحديثات تلقائية موقّعة على ويندوز
 
 **مزايا مخطط لها**
 - [ ] تصاميم ومظاهر تشبه مستكشف الملفات في ويندوز 10 و11
