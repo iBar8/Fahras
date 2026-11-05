@@ -30,7 +30,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends \
             build-essential pkg-config clang libgtk-4-dev libgtksourceview-5-dev \
             libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libfontconfig-dev \
-            libwayland-dev libxkbcommon-dev librsvg2-common gstreamer1.0-plugins-base \
+            libpoppler-glib-dev libwayland-dev libxkbcommon-dev librsvg2-common gstreamer1.0-plugins-base \
             xvfb xdotool imagemagick dbus python3-pil fonts-noto-core
 
       - name: Install the pinned Rust
