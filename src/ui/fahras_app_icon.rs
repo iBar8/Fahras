@@ -8,7 +8,7 @@ use std::{
     rc::{Rc, Weak},
 };
 
-use gtk::{gio, glib};
+use gtk::{gio, glib, prelude::*};
 
 use crate::{fahras::look::AppIcon, ui::preferences::PreferenceManager};
 
@@ -20,8 +20,8 @@ pub(crate) fn register_resources() -> Result<(), glib::Error> {
     gio::resources_register_include!("fahras.gresource")
 }
 
-/// Shows the saved icon now and follows later changes. GTK passes the default
-/// icon to every window that has not set its own, including open ones.
+/// Shows the saved icon now and follows later changes, on new windows through
+/// the default icon and on open ones directly.
 pub(crate) fn follow_preference() {
     let preferences = PreferenceManager::shared();
     apply(preferences.app_icon());
@@ -37,8 +37,16 @@ pub(crate) fn follow_preference() {
 }
 
 fn apply(icon: AppIcon) {
-    if gtk::Window::default_icon_name().as_deref() != Some(icon.icon_name()) {
-        gtk::Window::set_default_icon_name(icon.icon_name());
+    let name = icon.icon_name();
+    if gtk::Window::default_icon_name().as_deref() == Some(name) {
+        return;
+    }
+    gtk::Window::set_default_icon_name(name);
+    // On Windows an open window keeps its taskbar icon until it is given a new one.
+    for window in gtk::Window::list_toplevels() {
+        if let Ok(window) = window.downcast::<gtk::Window>() {
+            window.set_icon_name(Some(name));
+        }
     }
 }
 

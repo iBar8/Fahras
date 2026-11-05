@@ -13,13 +13,20 @@ fn chosen_icon_reaches_open_windows_and_is_bundled() {
             super::follow_preference();
             let window = gtk::Window::new();
             let theme = gtk::IconTheme::for_display(&WidgetExt::display(&window));
-            for icon in AppIcon::ALL {
+            for icon in [
+                AppIcon::Forest,
+                AppIcon::Ink,
+                AppIcon::Clay,
+                AppIcon::Manila,
+            ] {
                 assert!(theme.has_icon(icon.icon_name()), "{icon:?} is bundled");
                 preferences.set_app_icon(icon);
                 assert_eq!(
                     gtk::Window::default_icon_name().as_deref(),
                     Some(icon.icon_name())
                 );
+                let shown = window.icon_name().or_else(gtk::Window::default_icon_name);
+                assert_eq!(shown.as_deref(), Some(icon.icon_name()), "{icon:?}");
             }
             preferences.set_app_icon(AppIcon::Manila);
             window.destroy();
