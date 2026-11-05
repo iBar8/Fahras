@@ -224,6 +224,13 @@ foreach ($lang in 'en', 'ar') {
     Check "[live-$lang] the open window takes the Windows 11 skin" (Near $after '#f3f3f3')
     Shot "look-live-$lang-02-skinned"
 
+    Choose-In-Settings 'skin' 1 $rtl "look-live-$lang-02b-skin10"
+    Check "[live-$lang] Windows 10 skin is saved" (Saved 'explorer_skin = "windows10"')
+    Check "[live-$lang] the open window takes the Windows 10 skin" (Near (Sidebar-Color $rtl) '#ffffff')
+    Shot "look-live-$lang-02c-skinned10"
+    Choose-In-Settings 'skin' 2 $rtl "look-live-$lang-02d-skin11"
+    Check "[live-$lang] back to the Windows 11 skin" (Near (Sidebar-Color $rtl) '#f3f3f3')
+
     Choose-In-Settings 'manila' 1 $rtl "look-live-$lang-03-icon"
     Check "[live-$lang] Forest icon is saved" (Saved 'app_icon = "forest"')
     Check "[live-$lang] the window and taskbar show Forest at once" ((Window-Icon "live-$lang-after") -eq $hashes['forest'])
