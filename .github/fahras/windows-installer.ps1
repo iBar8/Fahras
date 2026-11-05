@@ -79,9 +79,11 @@ if ($Step -eq 'install') {
     Check 'installed copy opens' (Wait-Until { $running.Refresh(); $running.MainWindowHandle -ne [IntPtr]::Zero })
     $before = Get-Date
     # The arguments src/fahras/windows_install.rs passes.
-    $update = Start-Process -FilePath $Setup -Wait -PassThru -ArgumentList @(
+    # Not -Wait: it also waits for the Fahras the installer reopens.
+    $update = Start-Process -FilePath $Setup -PassThru -ArgumentList @(
         '/SILENT', '/SP-', '/SUPPRESSMSGBOXES', '/NORESTART', '/CLOSEAPPLICATIONS',
         '/FORCECLOSEAPPLICATIONS', '/RELAUNCH=1', "/LOG=`"$(Join-Path $Evidence 'installer-update.log')`"")
+    $update.WaitForExit(180000) | Out-Null
     Check 'update installer exits successfully' ($update.ExitCode -eq 0)
     Check 'the running copy was closed' (Wait-Until { $running.HasExited } 30)
     $relaunched = $null
