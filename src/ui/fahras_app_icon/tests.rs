@@ -9,6 +9,8 @@ fn chosen_icon_reaches_open_windows_and_is_bundled() {
     gtk_test(
         "ui::fahras_app_icon::tests::chosen_icon_reaches_open_windows_and_is_bundled",
         || {
+            // Followed before anything holds the preferences, as at startup.
+            super::follow_preference();
             let preferences = PreferenceManager::shared();
             super::follow_preference();
             let window = gtk::Window::new();

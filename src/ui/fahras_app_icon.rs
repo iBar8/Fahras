@@ -21,7 +21,8 @@ pub(crate) fn register_resources() -> Result<(), glib::Error> {
 }
 
 /// Shows the saved icon now and follows later changes, on new windows through
-/// the default icon and on open ones directly.
+/// the default icon and on open ones directly. The shared preferences live only
+/// while something holds them, so a window calls this again once it holds them.
 pub(crate) fn follow_preference() {
     let preferences = PreferenceManager::shared();
     apply(preferences.app_icon());

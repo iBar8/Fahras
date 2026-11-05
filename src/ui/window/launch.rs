@@ -82,6 +82,7 @@ pub(in crate::ui) fn present_target(
     crate::assets::register_icon_theme();
     let _theme_manager = crate::ui::theme::ThemeManager::shared();
     let preference_manager = PreferenceManager::shared();
+    crate::ui::fahras_app_icon::follow_preference();
     crate::ui::actions::shared();
     tracing::debug!(
         elapsed_ms = present_started.elapsed().as_millis() as u64,
