@@ -8,6 +8,8 @@ they conflict; everything else in `AGENTS.md` still applies.
 
 - Owner: iBar8. Commits are authored as
   `iBar8 <340081494+iBar8@users.noreply.github.com>`.
+- Never add a `Claude-Session:` link to commit messages. A `Co-Authored-By:`
+  trailer is fine.
 - Push finished work directly to `main`. No issue-first workflow or pull
   requests unless the owner asks for one.
 - No automatic upstream sync. Sync only when the owner asks.
