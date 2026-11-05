@@ -229,5 +229,13 @@ jobs:
           (cd assets && sha256sum -- * > SHA256SUMS.txt)
           prerelease=()
           case "$TAG" in *-*) prerelease=(--prerelease) ;; esac
-          gh release create "$TAG" assets/* --title "Fahras $version" \
-            --notes-file .github/fahras/release-notes.md "${prerelease[@]}"
+          # A release drafted on github.com already exists; attach the files to it.
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" assets/* --clobber
+            if [ -z "$(gh release view "$TAG" --json body -q .body)" ]; then
+              gh release edit "$TAG" --notes-file .github/fahras/release-notes.md
+            fi
+          else
+            gh release create "$TAG" assets/* --title "Fahras $version" \
+              --notes-file .github/fahras/release-notes.md "${prerelease[@]}"
+          fi
