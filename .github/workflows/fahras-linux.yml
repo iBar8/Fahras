@@ -77,47 +77,30 @@ jobs:
           git push -q --force "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-evidence-linux
 
   tests:
-    name: Run the full Linux test suite
+    name: Run the full Linux test suite in the pinned test container
     runs-on: ubuntu-24.04
-    timeout-minutes: 150
+    timeout-minutes: 240
     steps:
       - name: Check out
         uses: actions/checkout@v4
 
-      - name: Install GTK 4 and the display tools
+      # The same Arch snapshot and patched GTK 4.22 that the tests are written
+      # against, built here from tests/container/Dockerfile.
+      - name: Build the test container
+        id: image
         run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            build-essential pkg-config clang libgtk-4-dev libgtksourceview-5-dev \
-            libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libfontconfig-dev \
-            libpoppler-glib-dev libwayland-dev libxkbcommon-dev librsvg2-common \
-            gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
-            gstreamer1.0-libav ffmpeg imagemagick xvfb dbus at-spi2-core fonts-noto-core
-
-      - name: Install the pinned Rust
-        run: |
-          rustup toolchain install 1.98.1 --profile minimal
-          rustup default 1.98.1
+          image="$(python3 scripts/image_base.py build --engine docker)"
+          echo "image=$image" >> "$GITHUB_OUTPUT"
 
       - name: Cache Cargo
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: linux-tests-${{ hashFiles('Cargo.lock') }}
-          restore-keys: linux-tests-
+          path: target/quality-container
+          key: linux-container-${{ hashFiles('Cargo.lock') }}
+          restore-keys: linux-container-
 
-      - name: Test on a private display and bus
-        shell: bash
+      - name: Test
         env:
-          CARGO_INCREMENTAL: '0'
-          CARGO_PROFILE_DEV_DEBUG: '0'
-        run: ./scripts/test-headless.py 2>&1 | tee test-output.txt
-
-      - name: Summarize
-        if: always()
-        run: |
-          grep -aE '^test .* \.\.\. FAILED$' test-output.txt | sort -u || true
-          grep -aE '^test result: .* [0-9]{3,} passed' test-output.txt || true
+          STRATA_CONTAINER_ENGINE: docker
+          STRATA_QUALITY_IMAGE: ${{ steps.image.outputs.image }}
+        run: ./scripts/quality.sh test
