@@ -49,7 +49,7 @@ class SignedUpdateTests(unittest.TestCase):
 
     def test_manifest_binds_both_targets_and_exact_bytes(self):
         manifest = json.loads(self.manifest())
-        self.assertEqual(manifest["repository"], "lgse/strata")
+        self.assertEqual(manifest["repository"], "iBar8/Fahras")
         self.assertEqual(manifest["source_commit"], "a" * 40)
         self.assertEqual({entry["target"] for entry in manifest["artifacts"]}, set(signing.TARGETS))
         for entry in manifest["artifacts"]:

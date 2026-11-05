@@ -12,6 +12,11 @@ fn catalog_text_names_the_product_people_see() {
         ),
         ("de", "Die Strata-Programmdatei", "Die Fahras-Programmdatei"),
         ("ar", "أعد تشغيل Strata.", "أعد تشغيل فهرس."),
+        (
+            "en",
+            "<a href=\"https://github.com/lgse/strata/releases/latest\">View releases</a>",
+            "<a href=\"https://github.com/iBar8/Fahras/releases/latest\">View releases</a>",
+        ),
         ("en", "Copy", "Copy"),
         ("en", "~/.config/strata", "~/.config/strata"),
     ] {

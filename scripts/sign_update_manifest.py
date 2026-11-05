@@ -39,7 +39,7 @@ def manifest_bytes(directory, version, source_commit):
         with path.open("rb") as archive:
             checksum = hashlib.file_digest(archive, "sha256").hexdigest()
         artifacts.append({"name": name, "target": target, "size": info.st_size, "sha256": checksum})
-    value = {"schema": 1, "repository": "lgse/strata", "tag": f"v{version}", "source_commit": source_commit, "artifacts": artifacts}
+    value = {"schema": 1, "repository": "iBar8/Fahras", "tag": f"v{version}", "source_commit": source_commit, "artifacts": artifacts}
     return (json.dumps(value, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
 
 

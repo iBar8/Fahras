@@ -57,7 +57,7 @@ fn choice(version: &str, kind: BuildKind) -> ReleaseChoice {
     ReleaseChoice {
         release: ReleaseMetadata {
             version: version.to_owned(),
-            url: format!("https://github.com/lgse/strata/releases/tag/v{version}"),
+            url: format!("https://github.com/iBar8/Fahras/releases/tag/v{version}"),
             notes: String::new(),
             note_blocks: Vec::new(),
             kind,

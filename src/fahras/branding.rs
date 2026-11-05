@@ -6,6 +6,8 @@ pub(crate) const DISPLAY_NAME: &str = "Fahras";
 
 /// The name Strata's translation catalogs use for the product.
 const UPSTREAM_NAME: &str = "Strata";
+const UPSTREAM_REPOSITORY: &str = "https://github.com/lgse/strata";
+const REPOSITORY: &str = "https://github.com/iBar8/Fahras";
 
 fn display_name_in(locale: &str) -> &'static str {
     match locale {
@@ -25,12 +27,13 @@ pub(crate) fn rebrand(locale: &str, text: &'static str) -> &'static str {
 }
 
 fn rebranded(locale: &str, text: &'static str) -> &'static str {
-    if !text.contains(UPSTREAM_NAME) {
+    if !text.contains(UPSTREAM_NAME) && !text.contains(UPSTREAM_REPOSITORY) {
         return text;
     }
     // Leaked once per message when the catalogs load at startup.
     Box::leak(
-        text.replace(UPSTREAM_NAME, display_name_in(locale))
+        text.replace(UPSTREAM_REPOSITORY, REPOSITORY)
+            .replace(UPSTREAM_NAME, display_name_in(locale))
             .into_boxed_str(),
     )
 }
