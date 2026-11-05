@@ -93,6 +93,7 @@ function Start-Fahras($settings, [string] $label) {
         $lines = $settings.GetEnumerator() | ForEach-Object { "$($_.Key) = `"$($_.Value)`"" }
         Set-Content -Path $settingsFile -Value ($lines -join "`n") -Encoding utf8
     }
+    $env:RUST_LOG = 'strata=debug'
     $script:process = Start-Process -FilePath (Join-Path $App 'bin\Fahras.exe') -ArgumentList "`"$folder`"" -PassThru `
         -RedirectStandardError (Join-Path $Evidence "look-$label.log") -RedirectStandardOutput (Join-Path $Evidence "look-$label.out")
     $opened = Wait-Until { $script:process.Refresh(); $script:process.HasExited -or $script:process.MainWindowHandle -ne [IntPtr]::Zero } 60
@@ -170,11 +171,13 @@ foreach ($case in $skins) {
     Stop-Fahras
 }
 
-# Settings search shows only the matching row; four Tabs pass the clear
-# button, the page entry and the close button to reach its choice.
-function Choose-In-Settings([string] $query, [int] $down, [string] $shot) {
+# Settings opens on its current page's entry; the search field sits above the
+# page list, so it is $page + 1 Shift+Tabs away. Search then shows only the
+# matching row, and four Tabs pass the clear button, the page entry and the
+# close button to reach its choice.
+function Choose-In-Settings([string] $query, [int] $page, [int] $down, [string] $shot) {
     Keys '^,' 2500
-    Keys '+{TAB}' 600
+    Keys ('+{TAB}' * ($page + 1)) 600
     Keys '^a' 300
     Keys $query 1500
     Keys '{TAB}{TAB}{TAB}{TAB}' 800
@@ -188,7 +191,12 @@ function Choose-In-Settings([string] $query, [int] $down, [string] $shot) {
 }
 
 function Saved([string] $line) {
-    (Get-Content $settingsFile -Raw -ErrorAction SilentlyContinue) -match [regex]::Escape($line)
+    $saved = Wait-Until { (Get-Content $settingsFile -Raw -ErrorAction SilentlyContinue) -match [regex]::Escape($line) } 10
+    if (-not $saved) {
+        Log "      settings.toml now: $((Get-Content $settingsFile -Raw -ErrorAction SilentlyContinue) -replace "`n", ' | ')"
+        Log "      settings folder: $((Get-ChildItem -Force $settingsDir | ForEach-Object Name) -join ', ')"
+    }
+    return $saved
 }
 
 Log '--- Live change from Settings, then a restart ---'
@@ -198,14 +206,14 @@ foreach ($lang in 'en', 'ar') {
     $before = Sidebar-Color $rtl
     Check "[live-$lang] starts on the Manila icon" ((Window-Icon "live-$lang-before") -eq $hashes['manila'])
 
-    Choose-In-Settings 'skin' 2 "look-live-$lang-01-skin"
+    Choose-In-Settings 'skin' 0 2 "look-live-$lang-01-skin"
     Check "[live-$lang] Windows 11 skin is saved" (Saved 'explorer_skin = "windows11"')
     $after = Sidebar-Color $rtl
     Log "      sidebar $(Hex $before) -> $(Hex $after)"
     Check "[live-$lang] the open window takes the Windows 11 skin" (Near $after '#f3f3f3')
     Shot "look-live-$lang-02-skinned"
 
-    Choose-In-Settings 'manila' 1 "look-live-$lang-03-icon"
+    Choose-In-Settings 'manila' 1 1 "look-live-$lang-03-icon"
     Check "[live-$lang] Forest icon is saved" (Saved 'app_icon = "forest"')
     Check "[live-$lang] the window and taskbar show Forest at once" ((Window-Icon "live-$lang-after") -eq $hashes['forest'])
     Shot "look-live-$lang-04-icon"
