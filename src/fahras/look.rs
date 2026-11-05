@@ -26,12 +26,12 @@ impl AppIcon {
         }
     }
 
-    pub(crate) fn label_key(self) -> &'static str {
+    pub(crate) fn label(self) -> &'static str {
         match self {
-            Self::Manila => "fahras.icon.manila",
-            Self::Forest => "fahras.icon.forest",
-            Self::Ink => "fahras.icon.ink",
-            Self::Clay => "fahras.icon.clay",
+            Self::Manila => "Manila",
+            Self::Forest => "Forest",
+            Self::Ink => "Ink",
+            Self::Clay => "Clay",
         }
     }
 }

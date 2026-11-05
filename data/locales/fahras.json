@@ -32,7 +32,7 @@
     "zh-TW": "無法啟動 Fahras 安裝程式：%{error}",
     "ar": "تعذّر تشغيل برنامج تثبيت فهرس: %{error}"
   },
-  "fahras.look.heading": {
+  "LOOK": {
     "en": "LOOK",
     "fr": "STYLE",
     "hu": "MEGJELENÉS",
@@ -48,7 +48,7 @@
     "zh-TW": "外觀",
     "ar": "المظهر"
   },
-  "fahras.skin.title": {
+  "Explorer look": {
     "en": "Explorer look",
     "fr": "Style Explorateur",
     "hu": "Fájlkezelő stílus",
@@ -64,7 +64,7 @@
     "zh-TW": "檔案總管外觀",
     "ar": "مظهر مستكشف الملفات"
   },
-  "fahras.skin.description": {
+  "Looks like Windows File Explorer, with its colors in light or dark to match your theme.": {
     "en": "Looks like Windows File Explorer, with its colors in light or dark to match your theme.",
     "fr": "Ressemble à l’Explorateur de fichiers de Windows, avec ses couleurs en clair ou en sombre selon votre thème.",
     "hu": "A Windows Fájlkezelőjére hasonlít, a témához illő világos vagy sötét színekkel.",
@@ -80,7 +80,7 @@
     "zh-TW": "外觀類似 Windows 檔案總管，並依主題使用淺色或深色配色。",
     "ar": "يشبه مستكشف الملفات في ويندوز، بألوانه الفاتحة أو الداكنة حسب السمة التي اخترتها."
   },
-  "fahras.skin.off": {
+  "Fahras": {
     "en": "Fahras",
     "fr": "Fahras",
     "hu": "Fahras",
@@ -96,7 +96,7 @@
     "zh-TW": "Fahras",
     "ar": "فهرس"
   },
-  "fahras.skin.windows10": {
+  "Windows 10": {
     "en": "Windows 10",
     "fr": "Windows 10",
     "hu": "Windows 10",
@@ -112,7 +112,7 @@
     "zh-TW": "Windows 10",
     "ar": "ويندوز 10"
   },
-  "fahras.skin.windows11": {
+  "Windows 11": {
     "en": "Windows 11",
     "fr": "Windows 11",
     "hu": "Windows 11",
@@ -128,7 +128,7 @@
     "zh-TW": "Windows 11",
     "ar": "ويندوز 11"
   },
-  "fahras.icon.title": {
+  "App icon": {
     "en": "App icon",
     "fr": "Icône de l’application",
     "hu": "Alkalmazásikon",
@@ -144,7 +144,7 @@
     "zh-TW": "應用程式圖示",
     "ar": "أيقونة البرنامج"
   },
-  "fahras.icon.description": {
+  "Shown on the window and the taskbar.": {
     "en": "Shown on the window and the taskbar.",
     "fr": "Affichée sur la fenêtre et dans la barre des tâches.",
     "hu": "Az ablakon és a tálcán jelenik meg.",
@@ -160,7 +160,7 @@
     "zh-TW": "顯示在視窗和工作列上。",
     "ar": "تظهر على النافذة وشريط المهام."
   },
-  "fahras.icon.manila": {
+  "Manila": {
     "en": "Manila",
     "fr": "Manille",
     "hu": "Manila",
@@ -176,7 +176,7 @@
     "zh-TW": "馬尼拉",
     "ar": "مانيلا"
   },
-  "fahras.icon.forest": {
+  "Forest": {
     "en": "Forest",
     "fr": "Forêt",
     "hu": "Erdő",
@@ -192,7 +192,7 @@
     "zh-TW": "森林",
     "ar": "غابة"
   },
-  "fahras.icon.ink": {
+  "Ink": {
     "en": "Ink",
     "fr": "Encre",
     "hu": "Tinta",
@@ -208,7 +208,7 @@
     "zh-TW": "墨水",
     "ar": "حبر"
   },
-  "fahras.icon.clay": {
+  "Clay": {
     "en": "Clay",
     "fr": "Argile",
     "hu": "Agyag",

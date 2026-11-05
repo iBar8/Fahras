@@ -267,6 +267,18 @@ pub(super) const TARGETS: &[Target] = &[
         aliases: "appearance font typeface arabic script naskh kufi",
     },
     Target {
+        id: "explorer-look",
+        page: "theme",
+        title: "Explorer look",
+        aliases: "appearance skin windows 10 11 file explorer style",
+    },
+    Target {
+        id: "app-icon",
+        page: "theme",
+        title: "App icon",
+        aliases: "appearance logo taskbar window manila forest ink clay",
+    },
+    Target {
         id: "text",
         page: "theme",
         title: "Text size",

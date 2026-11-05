@@ -13,35 +13,35 @@ const ICON_PREVIEW_SIZE: i32 = 32;
 
 /// The Explorer skin and the application icon, under the theme choice.
 pub(super) fn append_look_options(content: &gtk::Box, preferences: &Rc<PreferenceManager>) {
-    let group = super::settings_group(content, "fahras.look.heading");
+    let group = super::settings_group(content, "LOOK");
     let skin = super::bindings::choice_menu(
         preferences,
-        "fahras.skin.title",
+        "Explorer look",
         &[
-            ("fahras.skin.off", ExplorerSkin::Off),
-            ("fahras.skin.windows10", ExplorerSkin::Windows10),
-            ("fahras.skin.windows11", ExplorerSkin::Windows11),
+            ("Fahras", ExplorerSkin::Off),
+            ("Windows 10", ExplorerSkin::Windows10),
+            ("Windows 11", ExplorerSkin::Windows11),
         ],
         PreferenceManager::explorer_skin,
         PreferenceManager::set_explorer_skin,
     );
     group.append(&super::control_row(
-        "fahras.skin.title",
-        "fahras.skin.description",
+        "Explorer look",
+        "Looks like Windows File Explorer, with its colors in light or dark to match your theme.",
         &skin,
     ));
     group.append(&super::control_row(
-        "fahras.icon.title",
-        "fahras.icon.description",
+        "App icon",
+        "Shown on the window and the taskbar.",
         &app_icon_choice(preferences),
     ));
 }
 
 fn app_icon_choice(preferences: &Rc<PreferenceManager>) -> gtk::Box {
-    let choices = AppIcon::ALL.map(|icon| (icon.label_key(), icon));
+    let choices = AppIcon::ALL.map(|icon| (icon.label(), icon));
     let menu = super::bindings::choice_menu(
         preferences,
-        "fahras.icon.title",
+        "App icon",
         &choices,
         PreferenceManager::app_icon,
         PreferenceManager::set_app_icon,
