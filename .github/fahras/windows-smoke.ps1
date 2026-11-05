@@ -158,7 +158,8 @@ function Run-Suite([string] $root, [string] $label) {
     Keys '^a' 500
     Keys '^c' 800
     Go $ops.copied
-    Keys '^v' 3000
+    Keys '^v' 1000
+    Wait-Until { Test-Path (Join-Path $ops.copied 'beta.txt') } 30 | Out-Null
     Shot "$label-05-copied"
     Check "[$label] copy beta.txt" (
         (Test-Path (Join-Path $ops.copied 'beta.txt')) -and (Test-Path (Join-Path $ops.copy 'beta.txt')))
@@ -169,14 +170,17 @@ function Run-Suite([string] $root, [string] $label) {
     Keys '^a' 500
     Keys '^x' 800
     Go $ops.moved
-    Keys '^v' 3000
+    Keys '^v' 1000
+    Wait-Until { -not (Test-Path (Join-Path $ops.move 'gamma.txt')) } 30 | Out-Null
     Shot "$label-06-moved"
     Check "[$label] move gamma.txt" (
         (Test-Path (Join-Path $ops.moved 'gamma.txt')) -and -not (Test-Path (Join-Path $ops.move 'gamma.txt')))
 
     Go $ops.delete
     Keys '^a' 500
-    Keys '{DELETE}' 3000
+    Keys '{DELETE}' 1000
+    # The first move to a new profile's Recycle Bin can take several seconds.
+    Wait-Until { -not (Test-Path (Join-Path $ops.delete 'delta.txt')) } 30 | Out-Null
     Shot "$label-07-deleted"
     Check "[$label] delete delta.txt to the Recycle Bin" (-not (Test-Path (Join-Path $ops.delete 'delta.txt')))
 
