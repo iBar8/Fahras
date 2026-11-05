@@ -173,9 +173,22 @@ foreach ($lang in 'en', 'ar') {
     $before = Window-Icon "live-$lang-before"
     Keys '^,' 2500
     Shot "look-live-$lang-01-settings"
-    for ($step = 1; $step -le 8; $step++) {
+    Keys '+{TAB}' 600
+    Keys 'Explorer look' 1500
+    Shot "look-live-$lang-02-search"
+    for ($step = 1; $step -le 5; $step++) {
         Keys '{TAB}' 600
-        Shot ("look-live-$lang-02-tab-{0:d2}" -f $step)
+        Shot ("look-live-$lang-03-search-tab-{0:d2}" -f $step)
+    }
+    Keys '{ESC}' 600
+    Keys '{ESC}' 600
+    Keys '^,' 2500
+    Keys '{TAB}' 600
+    Keys '{ENTER}' 1500
+    Shot "look-live-$lang-04-appearance"
+    for ($step = 1; $step -le 6; $step++) {
+        Keys '{TAB}' 600
+        Shot ("look-live-$lang-05-appearance-tab-{0:d2}" -f $step)
     }
     Stop-Fahras
 }
