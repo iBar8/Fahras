@@ -125,11 +125,13 @@ impl PermissionsExt for Permissions {
         self.set_readonly(mode & 0o222 == 0);
     }
 
-    /// Windows `Permissions` has no constructor; start from the temporary
-    /// directory's, which is always writable, and apply the mode.
+    /// Windows `Permissions` has no constructor; start from a regular file's
+    /// and apply the mode. A directory's would carry its directory attribute,
+    /// which Windows rejects on a file with "The parameter is incorrect".
     fn from_mode(mode: u32) -> Self {
-        let mut permissions = std::fs::metadata(std::env::temp_dir())
-            .expect("the temporary directory exists")
+        let mut permissions = std::env::current_exe()
+            .and_then(std::fs::metadata)
+            .expect("the running executable exists")
             .permissions();
         permissions.set_mode(mode);
         permissions

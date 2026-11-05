@@ -177,17 +177,20 @@ foreach ($case in $skins) {
 # close button to reach its choice.
 function Choose-In-Settings([string] $query, [int] $page, [int] $down, [string] $shot) {
     Keys '^,' 2500
-    Keys ('+{TAB}' * ($page + 1)) 600
-    Keys '^a' 300
-    Keys $query 1500
-    Keys '{TAB}{TAB}{TAB}{TAB}' 800
-    Keys ' ' 1200
+    $send = { param($keys, $settle) [System.Windows.Forms.SendKeys]::SendWait($keys); Start-Sleep -Milliseconds $settle }
+    & $send ('+{TAB}' * ($page + 1)) 600
+    Set-Clipboard -Value $query
+    & $send '^a' 300
+    & $send '^v' 1500
+    Shot "$shot-search"
+    & $send '{TAB}{TAB}{TAB}{TAB}' 800
+    & $send ' ' 1200
     Shot "$shot-menu"
-    Keys ('{DOWN}' * $down) 600
-    Keys '{ENTER}' 1500
+    & $send ('{DOWN}' * $down) 600
+    & $send '{ENTER}' 1500
     Shot "$shot-chosen"
-    Keys '{ESC}' 600
-    Keys '{ESC}' 1500
+    & $send '{ESC}' 600
+    & $send '{ESC}' 1500
 }
 
 function Saved([string] $line) {
