@@ -87,9 +87,12 @@ function Keys([string] $keys, [int] $settle = 800) {
     Start-Sleep -Milliseconds $settle
 }
 
-function Start-Fahras([hashtable] $settings, [string] $label) {
-    $lines = $settings.GetEnumerator() | ForEach-Object { "$($_.Key) = `"$($_.Value)`"" }
-    Set-Content -Path $settingsFile -Value ($lines -join "`n") -Encoding utf8
+# A null $settings keeps the saved settings file, as a restart does.
+function Start-Fahras($settings, [string] $label) {
+    if ($settings) {
+        $lines = $settings.GetEnumerator() | ForEach-Object { "$($_.Key) = `"$($_.Value)`"" }
+        Set-Content -Path $settingsFile -Value ($lines -join "`n") -Encoding utf8
+    }
     $script:process = Start-Process -FilePath (Join-Path $App 'bin\Fahras.exe') -ArgumentList "`"$folder`"" -PassThru `
         -RedirectStandardError (Join-Path $Evidence "look-$label.log") -RedirectStandardOutput (Join-Path $Evidence "look-$label.out")
     $opened = Wait-Until { $script:process.Refresh(); $script:process.HasExited -or $script:process.MainWindowHandle -ne [IntPtr]::Zero } 60
@@ -167,29 +170,51 @@ foreach ($case in $skins) {
     Stop-Fahras
 }
 
-Log '--- Live change from Settings ---'
-foreach ($lang in 'en', 'ar') {
-    Start-Fahras @{ language = $lang; mode = 'theme'; theme = 'github'; app_icon = 'manila' } "live-$lang"
-    $before = Window-Icon "live-$lang-before"
+# Settings search shows only the matching row; four Tabs pass the clear
+# button, the page entry and the close button to reach its choice.
+function Choose-In-Settings([string] $query, [int] $down, [string] $shot) {
     Keys '^,' 2500
-    Shot "look-live-$lang-01-settings"
     Keys '+{TAB}' 600
-    Keys 'Explorer look' 1500
-    Shot "look-live-$lang-02-search"
-    for ($step = 1; $step -le 5; $step++) {
-        Keys '{TAB}' 600
-        Shot ("look-live-$lang-03-search-tab-{0:d2}" -f $step)
-    }
-    Keys '{ESC}' 600
-    Keys '{ESC}' 600
-    Keys '^,' 2500
-    Keys '{TAB}' 600
+    Keys '^a' 300
+    Keys $query 1500
+    Keys '{TAB}{TAB}{TAB}{TAB}' 800
+    Keys ' ' 1200
+    Shot "$shot-menu"
+    Keys ('{DOWN}' * $down) 600
     Keys '{ENTER}' 1500
-    Shot "look-live-$lang-04-appearance"
-    for ($step = 1; $step -le 6; $step++) {
-        Keys '{TAB}' 600
-        Shot ("look-live-$lang-05-appearance-tab-{0:d2}" -f $step)
-    }
+    Shot "$shot-chosen"
+    Keys '{ESC}' 600
+    Keys '{ESC}' 1500
+}
+
+function Saved([string] $line) {
+    (Get-Content $settingsFile -Raw -ErrorAction SilentlyContinue) -match [regex]::Escape($line)
+}
+
+Log '--- Live change from Settings, then a restart ---'
+foreach ($lang in 'en', 'ar') {
+    $rtl = $lang -eq 'ar'
+    Start-Fahras @{ language = $lang; mode = 'theme'; theme = 'github'; app_icon = 'manila' } "live-$lang"
+    $before = Sidebar-Color $rtl
+    Check "[live-$lang] starts on the Manila icon" ((Window-Icon "live-$lang-before") -eq $hashes['manila'])
+
+    Choose-In-Settings 'skin' 2 "look-live-$lang-01-skin"
+    Check "[live-$lang] Windows 11 skin is saved" (Saved 'explorer_skin = "windows11"')
+    $after = Sidebar-Color $rtl
+    Log "      sidebar $(Hex $before) -> $(Hex $after)"
+    Check "[live-$lang] the open window takes the Windows 11 skin" (Near $after '#f3f3f3')
+    Shot "look-live-$lang-02-skinned"
+
+    Choose-In-Settings 'manila' 1 "look-live-$lang-03-icon"
+    Check "[live-$lang] Forest icon is saved" (Saved 'app_icon = "forest"')
+    Check "[live-$lang] the window and taskbar show Forest at once" ((Window-Icon "live-$lang-after") -eq $hashes['forest'])
+    Shot "look-live-$lang-04-icon"
+    Stop-Fahras
+
+    Start-Fahras $null "live-$lang-restart"
+    Check "[live-$lang] Forest icon after a restart" ((Window-Icon "live-$lang-restart") -eq $hashes['forest'])
+    Check "[live-$lang] Windows 11 skin after a restart" (Near (Sidebar-Color $rtl) '#f3f3f3')
+    Shot "look-live-$lang-05-restarted"
     Stop-Fahras
 }
 
