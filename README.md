@@ -36,7 +36,7 @@ Instant search, rich previews, sandboxed security, and full Arabic support.
 - ⌨️ **Keyboard-first.** Every action has a shortcut. The mouse is welcome but never required.
 - ▶️ **Rich previews.** Markdown, code, PDFs, camera RAW photos, video storyboards and audio with a live spectrum.
 - 🌍 **Arabic built in.** A full Arabic interface with proper right-to-left layout and 19 bundled Arabic fonts to choose from, plus 13 other languages.
-- 🎨 **Your style.** 95 themes, light and dark, and (coming soon) Windows 10 and 11 Explorer-style layouts.
+- 🎨 **Your style.** 95 themes, light and dark, Windows 10 and 11 Explorer looks, and four app icons to choose from.
 
 ## Download
 
@@ -125,8 +125,8 @@ Instant search, rich previews, sandboxed security, and full Arabic support.
 - [ ] Signed automatic updates on Windows
 
 **Planned features**
-- [ ] Windows 10 and Windows 11 Explorer-style layouts and skins
-- [ ] Choose your app icon: Manila, Forest, Ink or Clay
+- [x] Windows 10 and Windows 11 Explorer looks (Settings → Appearance → Look)
+- [x] Choose your app icon: Manila, Forest, Ink or Clay
 - [ ] Folder sizes in the list
 - [ ] Dual-pane mode
 - [ ] Batch rename with live preview
@@ -177,7 +177,7 @@ Third-party components and their licenses are listed in [THIRD_PARTY_LICENSES.md
 - ⌨️ **لوحة المفاتيح أولًا.** لكل أمر اختصار، ويمكنك استخدام الفأرة متى شئت.
  - ▶️ **معاينة غنية.** ملفات Markdown، والشيفرة البرمجية، وPDF، وصور الكاميرا الخام (RAW)، والفيديو، والصوت.
 - 🌍 **العربية جزء أساسي.** واجهة عربية كاملة من اليمين إلى اليسار، مع تسعة عشر خطًا عربيًا مدمجًا تختار منها ما يناسبك، إلى جانب ثلاث عشرة لغة أخرى.
-- 🎨 **بأسلوبك.** خمسة وتسعون مظهرًا بألوان فاتحة وداكنة، وقريبًا تصاميم تشبه مستكشف الملفات في ويندوز 10 و11.
+- 🎨 **بأسلوبك.** خمسة وتسعون مظهرًا بألوان فاتحة وداكنة، ومظهر يشبه مستكشف الملفات في ويندوز 10 و11، وأربع أيقونات للبرنامج تختار منها.
 
 ## التنزيل
 
@@ -266,8 +266,8 @@ Third-party components and their licenses are listed in [THIRD_PARTY_LICENSES.md
 - [ ] تحديثات تلقائية موقّعة على ويندوز
 
 **مزايا مخطط لها**
-- [ ] تصاميم ومظاهر تشبه مستكشف الملفات في ويندوز 10 و11
-- [ ] اختيار أيقونة البرنامج: مانيلا، أو الغابة، أو الحبر، أو الطين
+- [x] مظهر يشبه مستكشف الملفات في ويندوز 10 و11 (الإعدادات ← المظهر)
+- [x] اختيار أيقونة البرنامج: مانيلا، أو الغابة، أو الحبر، أو الطين
 - [ ] عرض أحجام المجلدات في القائمة
 - [ ] وضع اللوحتين المتجاورتين
 - [ ] إعادة تسمية مجموعة ملفات مع معاينة فورية
