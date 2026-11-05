@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/io/github/lgse/Strata/icons/scalable/apps">
+    <file alias="fahras-manila.svg">variants/fahras-manila.svg</file>
+    <file alias="fahras-forest.svg">variants/fahras-forest.svg</file>
+    <file alias="fahras-ink.svg">variants/fahras-ink.svg</file>
+    <file alias="fahras-clay.svg">variants/fahras-clay.svg</file>
+  </gresource>
+</gresources>

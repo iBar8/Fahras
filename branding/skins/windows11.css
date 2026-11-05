@@ -1,0 +1,83 @@
+/* Fahras Windows 11 Explorer skin. Colors come from the skin's @strata_* palette. */
+
+headerbar.browser-header,
+.tab-strip,
+.mode-pane-header,
+.list-headings {
+  background: @strata_surface;
+}
+
+.tab-strip {
+  box-shadow: none;
+}
+
+.sidebar {
+  background: @strata_surface;
+  padding: 4px 6px;
+}
+
+.sidebar-shell,
+.sidebar-shell:dir(rtl) {
+  border-left: none;
+  border-right: none;
+}
+
+.sidebar-row,
+.sidebar-device {
+  border-radius: 4px;
+}
+
+.sidebar-row:hover,
+.sidebar-device:hover {
+  background: alpha(@strata_text, 0.05);
+}
+
+.sidebar-row.active,
+.sidebar-row.active:hover,
+.sidebar-device.active,
+.sidebar-device.active:hover {
+  background: alpha(@strata_text, 0.08);
+  box-shadow: inset 3px 0 0 0 @strata_accent;
+}
+
+.sidebar-row.active:dir(rtl),
+.sidebar-row.active:hover:dir(rtl),
+.sidebar-device.active:dir(rtl),
+.sidebar-device.active:hover:dir(rtl) {
+  box-shadow: inset -3px 0 0 0 @strata_accent;
+}
+
+.sidebar-row.active image,
+.sidebar-device.active .sidebar-row image {
+  color: @strata_text;
+}
+
+.file-list row,
+.file-list-mode row,
+.file-icons > child {
+  border-radius: 4px;
+}
+
+.file-list row:hover:not(:selected),
+.file-list-mode row:hover:not(:selected),
+.file-icons > child:hover:not(:selected) {
+  background: alpha(@strata_text, 0.05);
+}
+
+.file-list row:selected,
+.file-list-mode row:selected,
+.file-icons > child:selected {
+  background: alpha(@strata_accent, 0.16);
+  color: @strata_text;
+}
+
+.file-list row:selected:hover,
+.file-list-mode row:selected:hover,
+.file-icons > child:selected:hover {
+  background: alpha(@strata_accent, 0.22);
+}
+
+.list-headings {
+  border-bottom: 1px solid @strata_border;
+  font-weight: 400;
+}

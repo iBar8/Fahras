@@ -12,6 +12,11 @@ fn main() {
     println!("cargo::rerun-if-changed=integrations");
     write_integration_bundle();
     glib_build_tools::compile_resources(&["data"], "data/strata.gresource.xml", "strata.gresource");
+    glib_build_tools::compile_resources(
+        &["branding"],
+        "branding/fahras.gresource.xml",
+        "fahras.gresource",
+    );
 
     println!("cargo::rerun-if-env-changed=STRATA_TRUSTED_COMMAND_PATH");
     validate_trusted_command_path();

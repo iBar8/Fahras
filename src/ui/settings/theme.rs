@@ -85,6 +85,7 @@ pub(super) fn theme_page(
         },
     );
     system.append(&current_row);
+    super::fahras_look::append_look_options(&content, &preferences);
 
     let library = gtk::Box::new(gtk::Orientation::Vertical, 0);
     library.add_css_class("theme-library");

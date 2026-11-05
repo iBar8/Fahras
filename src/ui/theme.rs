@@ -19,6 +19,7 @@ use crate::services::LoadHandle;
 
 mod color;
 mod document_style;
+mod fahras_skin;
 mod font;
 mod generated_css;
 mod gtk_settings;
@@ -146,6 +147,7 @@ struct AppearancePreferences {
     corner_roundness: CornerRoundness,
     interface_font: Option<String>,
     arabic_font: Option<String>,
+    explorer_skin: crate::fahras::look::ExplorerSkin,
     element_glow: bool,
     file_icon_colors: FileIconColors,
 }
@@ -160,6 +162,7 @@ impl AppearancePreferences {
             corner_roundness: preferences.corner_roundness(),
             interface_font: preferences.interface_font(),
             arabic_font: preferences.arabic_font(),
+            explorer_skin: preferences.explorer_skin(),
             element_glow: preferences.element_glow(),
             file_icon_colors: preferences.file_icon_colors(),
         }
@@ -621,6 +624,8 @@ impl ThemeManager {
     }
 
     fn apply_tokens(&self, tokens: &ThemeTokens, source_palette: Option<&SourcePalette>) {
+        let skin = self.preferences.explorer_skin();
+        let tokens = &fahras_skin::tokens(skin, tokens);
         let color = |value: &str| {
             let [red, green, blue] = parse_rgb_channels(value).unwrap_or_default();
             (u32::from(red) << 16) | (u32::from(green) << 8) | u32::from(blue)
@@ -646,8 +651,9 @@ impl ThemeManager {
             "{}\n@define-color strata_glow {glow};\n",
             tokens_css(tokens, root_font_px)
         ));
-        let family = self.preferences.interface_font();
+        let family = fahras_skin::interface_font(skin, self.preferences.interface_font());
         let arabic = self.preferences.arabic_font();
+        fahras_skin::apply_stylesheet(skin);
         self.font_provider
             .load_from_string(&font::stylesheet(family.as_deref(), arabic.as_deref()));
         apply_interface_font(family.as_deref(), arabic.as_deref(), root_font_px);

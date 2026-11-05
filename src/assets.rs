@@ -270,6 +270,7 @@ pub fn set_catppuccin_theme_colors(enabled: bool) {
 pub fn prepare() -> Result<(), Box<dyn std::error::Error>> {
     let _startup = crate::util::ui_thread::allow(crate::util::ui_thread::Exception::Startup);
     gio::resources_register_include!("strata.gresource")?;
+    crate::ui::fahras_app_icon::register_resources()?;
 
     let font_directory = glib::user_cache_dir()
         .join("strata")
@@ -292,7 +293,7 @@ pub fn register_icon_theme() {
     // Desktop shells resolve the window icon by matching the application ID to a
     // desktop entry, but GTK also needs the name to expose the bundled icon on its
     // own surfaces and on compositors that accept a toplevel icon.
-    gtk::Window::set_default_icon_name(crate::APPLICATION_ID);
+    crate::ui::fahras_app_icon::follow_preference();
 }
 
 pub fn primary_icon(name: &str, pixel_size: i32) -> gtk::Image {

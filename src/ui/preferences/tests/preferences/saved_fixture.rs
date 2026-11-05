@@ -109,6 +109,9 @@ fn assert_theme_colors_beside_user_css(themes: &ThemeManager, windows: &[gtk::Wi
         &user_css,
         gtk::STYLE_PROVIDER_PRIORITY_USER,
     );
+    // The saved Explorer skin replaces theme colors; these checks are about themes.
+    crate::ui::preferences::PreferenceManager::shared()
+        .set_explorer_skin(crate::fahras::look::ExplorerSkin::Off);
     for theme in ["nord", "azure-glow", "nord"] {
         themes.select_theme(theme);
         let tokens = themes.current_tokens().expect("active theme");

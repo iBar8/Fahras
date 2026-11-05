@@ -23,6 +23,7 @@ mod channel;
 mod compact_bin;
 mod diagnostics;
 mod exclusions;
+mod fahras_look;
 mod general;
 pub(crate) use general::abbreviate_home;
 mod install;

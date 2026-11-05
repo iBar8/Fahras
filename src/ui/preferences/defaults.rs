@@ -65,6 +65,8 @@ impl Default for Preferences {
             corner_roundness: CornerRoundness::default(),
             interface_font: None,
             arabic_font: None,
+            app_icon: crate::fahras::look::AppIcon::default(),
+            explorer_skin: crate::fahras::look::ExplorerSkin::default(),
             interface_renderer: InterfaceRenderer::default(),
             language: crate::i18n::Language::default(),
             folders_first: true,

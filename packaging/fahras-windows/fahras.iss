@@ -65,8 +65,8 @@ Type: filesandordirs; Name: "{app}\share"
 Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{autoprograms}\Fahras"; Filename: "{app}\bin\Fahras.exe"; WorkingDir: "{userdocs}"; Comment: "{cm:FahrasComment}"
-Name: "{autodesktop}\Fahras"; Filename: "{app}\bin\Fahras.exe"; WorkingDir: "{userdocs}"; Comment: "{cm:FahrasComment}"; Tasks: desktopicon
+Name: "{autoprograms}\Fahras"; Filename: "{app}\bin\Fahras.exe"; WorkingDir: "{userdocs}"; IconFilename: "{app}\fahras.ico"; Comment: "{cm:FahrasComment}"
+Name: "{autodesktop}\Fahras"; Filename: "{app}\bin\Fahras.exe"; WorkingDir: "{userdocs}"; IconFilename: "{app}\fahras.ico"; Comment: "{cm:FahrasComment}"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\bin\Fahras.exe"; Description: "{cm:LaunchFahras}"; Flags: nowait postinstall skipifsilent

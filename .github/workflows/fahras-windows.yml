@@ -127,6 +127,11 @@ jobs:
         shell: pwsh
         run: ./.github/fahras/windows-smoke.ps1 -App dist/Fahras -Evidence evidence
 
+      - name: App icons and Explorer skins (English and Arabic)
+        if: always() && steps.desktop.outcome != 'skipped'
+        shell: pwsh
+        run: ./.github/fahras/windows-look.ps1 -App dist/Fahras -Evidence evidence
+
       - name: Publish smoke-test evidence to the ci-evidence branch
         if: always() && github.event_name != 'pull_request'
         shell: pwsh

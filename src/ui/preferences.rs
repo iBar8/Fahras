@@ -33,6 +33,7 @@ mod bindings;
 mod corner_roundness;
 mod defaults;
 mod desktop_scale;
+mod fahras_look;
 mod file_settings;
 #[cfg(test)]
 pub(in crate::ui) mod fixtures;
@@ -240,6 +241,10 @@ pub(in crate::ui) struct Preferences {
     interface_font: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     arabic_font: Option<String>,
+    #[serde(default)]
+    app_icon: crate::fahras::look::AppIcon,
+    #[serde(default)]
+    explorer_skin: crate::fahras::look::ExplorerSkin,
     #[serde(default)]
     interface_renderer: InterfaceRenderer,
     #[serde(default)]
