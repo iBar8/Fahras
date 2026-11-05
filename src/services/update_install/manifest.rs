@@ -186,10 +186,8 @@ fn authenticate_with_keys(
     let mut names = HashSet::new();
     let mut targets = HashSet::new();
     for artifact in &manifest.artifacts {
-        if !matches!(
-            artifact.target.as_str(),
-            "x86_64-unknown-linux-gnu" | "aarch64-unknown-linux-gnu"
-        ) || artifact.name != format!("strata-{version}-{}.tar.gz", artifact.target)
+        if crate::fahras::updates::artifact_name(version, &artifact.target).as_deref()
+            != Some(artifact.name.as_str())
             || artifact.size == 0
             || artifact.size > MAX_UPDATE_ARCHIVE_BYTES
             || !lower_hex(&artifact.sha256, 64)
@@ -206,7 +204,7 @@ fn authenticate_with_keys(
         .into_iter()
         .find(|artifact| {
             artifact.name == request.asset_name
-                && artifact.target == format!("{}-unknown-linux-gnu", std::env::consts::ARCH)
+                && artifact.target == crate::fahras::updates::this_target()
         })
         .ok_or_else(|| {
             crate::i18n::tr("The signed manifest does not contain this architecture's update")

@@ -4,3 +4,4 @@
 
 pub(crate) mod arabic_fonts;
 pub(crate) mod branding;
+pub(crate) mod updates;

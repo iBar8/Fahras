@@ -126,6 +126,9 @@ struct ReleaseAsset {
 
 /// The asset naming convention published by `.github/workflows/release.yml`.
 pub(super) fn archive_name(version: &str) -> String {
+    if cfg!(windows) {
+        return crate::fahras::updates::windows_installer_name(version);
+    }
     format!(
         "strata-{version}-{}-unknown-linux-gnu.tar.gz",
         std::env::consts::ARCH

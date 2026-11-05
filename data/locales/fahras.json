@@ -1,0 +1,35 @@
+{
+  "_version": 2,
+  "fahras.update.portable": {
+    "en": "This copy of Fahras was not installed with the installer, so it cannot update itself. Download the new version from the Releases page.",
+    "fr": "Cette copie de Fahras n’a pas été installée avec le programme d’installation et ne peut donc pas se mettre à jour. Téléchargez la nouvelle version depuis la page des versions.",
+    "hu": "A Fahras ezen példányát nem a telepítővel telepítették, ezért nem tudja frissíteni magát. Töltse le az új verziót a Kiadások oldalról.",
+    "de": "Diese Fahras-Kopie wurde nicht mit dem Installationsprogramm installiert und kann sich daher nicht selbst aktualisieren. Laden Sie die neue Version von der Releases-Seite herunter.",
+    "es": "Esta copia de Fahras no se instaló con el instalador, así que no puede actualizarse sola. Descarga la nueva versión desde la página de versiones.",
+    "ja": "この Fahras はインストーラーでインストールされていないため、自動で更新できません。リリースページから新しいバージョンをダウンロードしてください。",
+    "pt-BR": "Esta cópia do Fahras não foi instalada com o instalador, por isso não pode se atualizar sozinha. Baixe a nova versão na página de versões.",
+    "ko": "이 Fahras는 설치 프로그램으로 설치되지 않아 스스로 업데이트할 수 없습니다. 릴리스 페이지에서 새 버전을 다운로드하세요.",
+    "vi": "Bản Fahras này không được cài bằng trình cài đặt nên không thể tự cập nhật. Hãy tải phiên bản mới từ trang phát hành.",
+    "it": "Questa copia di Fahras non è stata installata con il programma di installazione, quindi non può aggiornarsi da sola. Scarica la nuova versione dalla pagina delle release.",
+    "ru": "Эта копия Fahras установлена не через установщик, поэтому не может обновиться сама. Скачайте новую версию со страницы выпусков.",
+    "zh-CN": "此 Fahras 副本不是通过安装程序安装的，因此无法自行更新。请从发布页面下载新版本。",
+    "zh-TW": "此 Fahras 副本不是透過安裝程式安裝的，因此無法自行更新。請從發行頁面下載新版本。",
+    "ar": "لم تُثبَّت هذه النسخة من فهرس ببرنامج التثبيت، لذا لا يمكنها تحديث نفسها. نزّل الإصدار الجديد من صفحة الإصدارات."
+  },
+  "fahras.update.start_failed": {
+    "en": "Could not start the Fahras installer: %{error}",
+    "fr": "Impossible de lancer le programme d’installation de Fahras : %{error}",
+    "hu": "Nem sikerült elindítani a Fahras telepítőjét: %{error}",
+    "de": "Das Fahras-Installationsprogramm konnte nicht gestartet werden: %{error}",
+    "es": "No se pudo iniciar el instalador de Fahras: %{error}",
+    "ja": "Fahras のインストーラーを起動できませんでした: %{error}",
+    "pt-BR": "Não foi possível iniciar o instalador do Fahras: %{error}",
+    "ko": "Fahras 설치 프로그램을 시작할 수 없습니다: %{error}",
+    "vi": "Không thể khởi động trình cài đặt Fahras: %{error}",
+    "it": "Impossibile avviare il programma di installazione di Fahras: %{error}",
+    "ru": "Не удалось запустить установщик Fahras: %{error}",
+    "zh-CN": "无法启动 Fahras 安装程序：%{error}",
+    "zh-TW": "無法啟動 Fahras 安裝程式：%{error}",
+    "ar": "تعذّر تشغيل برنامج تثبيت فهرس: %{error}"
+  }
+}

@@ -180,6 +180,10 @@ jobs:
         shell: pwsh
         run: ./.github/fahras/windows-smoke.ps1 -App "$env:LOCALAPPDATA\Programs\Fahras" -Evidence evidence
 
+      - name: Update the running installed copy
+        shell: pwsh
+        run: ./.github/fahras/windows-installer.ps1 -Setup (Get-ChildItem setup/*.exe)[0].FullName -Evidence evidence -Step update
+
       - name: Uninstall
         shell: pwsh
         run: ./.github/fahras/windows-installer.ps1 -Setup (Get-ChildItem setup/*.exe)[0].FullName -Evidence evidence -Step uninstall
@@ -198,8 +202,8 @@ jobs:
           git push -q --force "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-evidence-download
 
   release:
-    name: Publish the GitHub release
-    if: startsWith(github.ref, 'refs/tags/v')
+    name: Sign the update and publish tagged releases
+    if: github.event_name != 'pull_request'
     needs: [build, verify-download]
     runs-on: ubuntu-latest
     permissions:
@@ -214,7 +218,18 @@ jobs:
           path: assets
           merge-multiple: true
 
+      # Runs on every push, so a missing or wrong key shows up before a release.
+      - name: Sign the update manifest
+        env:
+          UPDATE_SIGNING_KEY: ${{ secrets.FAHRAS_UPDATE_SIGNING_KEY }}
+        run: |
+          set -euo pipefail
+          version=$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -n1)
+          python3 .github/fahras/sign_release.py --directory assets --version "$version" --source-commit "$GITHUB_SHA"
+          cat assets/strata-update-manifest.json
+
       - name: Publish
+        if: startsWith(github.ref, 'refs/tags/v')
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}

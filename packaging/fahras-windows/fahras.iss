@@ -70,3 +70,11 @@ Name: "{autodesktop}\Fahras"; Filename: "{app}\bin\Fahras.exe"; WorkingDir: "{us
 
 [Run]
 Filename: "{app}\bin\Fahras.exe"; Description: "{cm:LaunchFahras}"; Flags: nowait postinstall skipifsilent
+; Fahras runs the installer with /RELAUNCH=1 when it updates itself.
+Filename: "{app}\bin\Fahras.exe"; Flags: nowait runasoriginaluser; Check: RelaunchAfterUpdate
+
+[Code]
+function RelaunchAfterUpdate: Boolean;
+begin
+  Result := WizardSilent and (ExpandConstant('{param:relaunch|0}') = '1');
+end;

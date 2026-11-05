@@ -26,6 +26,8 @@ mod archive;
 mod command;
 mod download;
 mod manifest;
+#[path = "../fahras/windows_install.rs"]
+mod windows_install;
 
 use download::{DownloadTimeouts, describe_download_error, describe_read_error, download_agent};
 
@@ -531,6 +533,11 @@ fn perform_install(
                 "This installation is managed by pacman; install updates through a full system update.",
             )));
         }
+    }
+
+    if cfg!(windows) {
+        let download_url = verified_download_url(request)?;
+        return windows_install::install(request, &download_url, cancel, progress);
     }
 
     let current_exe =

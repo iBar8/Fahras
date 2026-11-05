@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: MIT
 #
 # Fahras installer check: shows the Arabic wizard, installs silently for the
-# current user and checks the result, or uninstalls and checks it is gone.
+# current user and checks the result, updates a running copy the way Fahras
+# does, or uninstalls and checks it is gone.
 
 param(
     [Parameter(Mandatory)] [string] $Setup,
     [Parameter(Mandatory)] [string] $Evidence,
-    [Parameter(Mandatory)] [ValidateSet('install', 'uninstall')] [string] $Step
+    [Parameter(Mandatory)] [ValidateSet('install', 'update', 'uninstall')] [string] $Step
 )
 
 $ErrorActionPreference = 'Stop'
@@ -72,6 +73,27 @@ if ($Step -eq 'install') {
     $text = Get-Content $out -Raw -ErrorAction SilentlyContinue
     Log "      --version: $($text.Trim())"
     Check 'installed copy runs' ($version.ExitCode -eq 0 -and $text -like 'Fahras *')
+} elseif ($Step -eq 'update') {
+    Log '--- Update a running copy ---'
+    $running = Start-Process -FilePath $exe -PassThru
+    Check 'installed copy opens' (Wait-Until { $running.Refresh(); $running.MainWindowHandle -ne [IntPtr]::Zero })
+    $before = Get-Date
+    # The arguments src/fahras/windows_install.rs passes.
+    $update = Start-Process -FilePath $Setup -Wait -PassThru -ArgumentList @(
+        '/SILENT', '/SP-', '/SUPPRESSMSGBOXES', '/NORESTART', '/CLOSEAPPLICATIONS',
+        '/FORCECLOSEAPPLICATIONS', '/RELAUNCH=1', "/LOG=`"$(Join-Path $Evidence 'installer-update.log')`"")
+    Check 'update installer exits successfully' ($update.ExitCode -eq 0)
+    Check 'the running copy was closed' (Wait-Until { $running.HasExited } 30)
+    $relaunched = $null
+    $opened = Wait-Until {
+        $script:relaunched = Get-Process -Name Fahras -ErrorAction SilentlyContinue |
+            Where-Object { $_.StartTime -gt $before -and $_.Path -eq $exe } | Select-Object -First 1
+        [bool] $script:relaunched
+    } 60
+    Check 'Fahras opens again after the update' $opened
+    Start-Sleep -Seconds 5
+    Shot 'installer-02-reopened-after-update'
+    Get-Process -Name Fahras -ErrorAction SilentlyContinue | Stop-Process -Force
 } else {
     Log '--- Uninstaller ---'
     $entry = Get-ItemProperty -Path $uninstallKey -ErrorAction SilentlyContinue

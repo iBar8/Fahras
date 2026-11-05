@@ -314,3 +314,19 @@ fn production_trust_store_excludes_test_keys() {
     assert!(!keys.iter().any(|key| key == PUBLIC.trim()));
     assert!(authenticate(FIXTURE, SIGNATURES, &request()).is_err());
 }
+
+#[test]
+fn fahras_windows_installer_is_a_valid_artifact_beside_the_linux_archives() {
+    let mut manifest: Value = serde_json::from_slice(FIXTURE).expect("manifest fixture");
+    manifest["artifacts"]
+        .as_array_mut()
+        .expect("artifacts")
+        .push(json!({
+            "name": crate::fahras::updates::windows_installer_name("0.12.0"),
+            "target": crate::fahras::updates::WINDOWS_TARGET,
+            "size": 1,
+            "sha256": "a".repeat(64),
+        }));
+    let manifest = serde_json::to_vec(&manifest).expect("manifest JSON");
+    assert!(checked(&manifest, &signed(&manifest, &[7])).is_ok());
+}
