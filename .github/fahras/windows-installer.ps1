@@ -75,16 +75,20 @@ if ($Step -eq 'install') {
     Check 'installed copy runs' ($version.ExitCode -eq 0 -and $text -like 'Fahras *')
 } elseif ($Step -eq 'update') {
     Log '--- Update a running copy ---'
+    Log '      starting the installed copy'
     $running = Start-Process -FilePath $exe -PassThru
     Check 'installed copy opens' (Wait-Until { $running.Refresh(); $running.MainWindowHandle -ne [IntPtr]::Zero })
     $before = Get-Date
     # The arguments src/fahras/windows_install.rs passes.
+    Log '      running the installer over it'
     # Not -Wait: it also waits for the Fahras the installer reopens.
     $update = Start-Process -FilePath $Setup -PassThru -ArgumentList @(
         '/SILENT', '/SP-', '/SUPPRESSMSGBOXES', '/NORESTART', '/CLOSEAPPLICATIONS',
         '/FORCECLOSEAPPLICATIONS', '/RELAUNCH=1', "/LOG=`"$(Join-Path $Evidence 'installer-update.log')`"")
-    $update.WaitForExit(180000) | Out-Null
-    Check 'update installer exits successfully' ($update.ExitCode -eq 0)
+    $finished = $update.WaitForExit(180000)
+    Log "      installer finished: $finished"
+    if (-not $finished) { Shot 'installer-02-update-stuck'; Stop-Process -Id $update.Id -Force -ErrorAction SilentlyContinue }
+    Check 'update installer exits successfully' ($finished -and $update.ExitCode -eq 0)
     Check 'the running copy was closed' (Wait-Until { $running.HasExited } 30)
     $relaunched = $null
     $opened = Wait-Until {

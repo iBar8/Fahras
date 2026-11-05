@@ -182,14 +182,17 @@ jobs:
         run: ./.github/fahras/windows-installer.ps1 -Setup (Get-ChildItem setup/*.exe)[0].FullName -Evidence evidence -Step install
 
       - name: Desktop smoke test on the installed copy
+        timeout-minutes: 15
         shell: pwsh
         run: ./.github/fahras/windows-smoke.ps1 -App "$env:LOCALAPPDATA\Programs\Fahras" -Evidence evidence
 
       - name: Update the running installed copy
+        timeout-minutes: 8
         shell: pwsh
         run: ./.github/fahras/windows-installer.ps1 -Setup (Get-ChildItem setup/*.exe)[0].FullName -Evidence evidence -Step update
 
       - name: Uninstall
+        timeout-minutes: 5
         shell: pwsh
         run: ./.github/fahras/windows-installer.ps1 -Setup (Get-ChildItem setup/*.exe)[0].FullName -Evidence evidence -Step uninstall
 
