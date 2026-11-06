@@ -575,5 +575,37 @@
     "zh-CN": "大图标",
     "zh-TW": "大圖示",
     "ar": "أيقونات كبيرة"
+  },
+  "fahras.sidebar.gallery": {
+    "en": "Gallery",
+    "fr": "Galerie",
+    "hu": "Galéria",
+    "de": "Katalog",
+    "es": "Galería",
+    "ja": "ギャラリー",
+    "pt-BR": "Galeria",
+    "ko": "갤러리",
+    "vi": "Thư viện ảnh",
+    "it": "Raccolta",
+    "ru": "Коллекция",
+    "zh-CN": "图库",
+    "zh-TW": "圖庫",
+    "ar": "المعرض"
+  },
+  "fahras.sidebar.pinned": {
+    "en": "Pinned",
+    "fr": "Épinglé",
+    "hu": "Rögzítve",
+    "de": "Angeheftet",
+    "es": "Anclado",
+    "ja": "ピン留め",
+    "pt-BR": "Fixado",
+    "ko": "고정됨",
+    "vi": "Đã ghim",
+    "it": "Aggiunto",
+    "ru": "Закреплено",
+    "zh-CN": "已固定",
+    "zh-TW": "已釘選",
+    "ar": "مثبّت"
   }
 }

@@ -255,6 +255,12 @@ fn explorer_looks_swap_the_window_layout_live() {
                 Some("fahras-fluent-new-symbolic")
             );
             wait_until_or(
+                || !sidebar_names(&open).contains(&"Gallery".to_owned()),
+                || format!("{:?}", sidebar_names(&open)),
+            );
+            assert!(!shown(&open, "explorer-pin"));
+            assert!(!shown(&open, "explorer-this-pc"));
+            wait_until_or(
                 || separators(&open).iter().all(|text| text == "/"),
                 || format!("{:?}", separators(&open)),
             );
@@ -264,6 +270,24 @@ fn explorer_looks_swap_the_window_layout_live() {
             assert!(shown(&open, "explorer-details-pane"));
             assert!(shown(&open, "explorer-view-switches"));
             assert_eq!(new_icon(&open).as_deref(), Some("fahras-fluent-new-color"));
+            // Gallery shows the Pictures folder, so it needs one.
+            let has_pictures = glib::user_special_dir(glib::UserDirectory::Pictures).is_some();
+            wait_until_or(
+                || {
+                    let names = sidebar_names(&open);
+                    let gallery_second = names.get(1).map(String::as_str) == Some("Gallery");
+                    gallery_second == has_pictures && names.iter().any(|name| name == "Home")
+                },
+                || format!("{:?}", sidebar_names(&open)),
+            );
+            assert!(shown(&open, "explorer-pin"), "user folders are pinned");
+            assert!(
+                with_class(&open, "sidebar-heading-toggle")
+                    .iter()
+                    .filter(|heading| row_name(heading).as_deref() == Some("This PC"))
+                    .all(|heading| heading.has_css_class("explorer-this-pc")),
+                "drives sit under a This PC tree row"
+            );
             let switch = |name: &str| {
                 with_class(&open, "explorer-view-switch")
                     .into_iter()

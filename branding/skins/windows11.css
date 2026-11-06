@@ -156,3 +156,50 @@ headerbar.browser-header,
   min-height: 0;
   min-width: 0;
 }
+
+/* Explorer's This PC tree: its drives hang under it. */
+button.explorer-this-pc + revealer .sidebar-row,
+button.explorer-this-pc + revealer .sidebar-device {
+  padding-left: 22px;
+}
+
+button.explorer-this-pc + revealer .sidebar-row:dir(rtl),
+button.explorer-this-pc + revealer .sidebar-device:dir(rtl) {
+  padding-left: 0;
+  padding-right: 22px;
+}
+
+.explorer-tree-heading label.sidebar-heading {
+  color: @strata_text;
+  font-size: 1em;
+  font-weight: normal;
+  letter-spacing: 0;
+  margin-left: 6px;
+}
+
+.explorer-tree-heading label.sidebar-heading:dir(rtl) {
+  margin-left: 0;
+  margin-right: 6px;
+}
+
+.explorer-pin {
+  color: alpha(@strata_text, 0.55);
+}
+
+.explorer-view-switch {
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  box-shadow: none;
+  min-height: 0;
+  min-width: 0;
+  padding: 2px 4px;
+}
+
+.explorer-view-switch:hover {
+  background: alpha(@strata_text, 0.06);
+}
+
+.explorer-view-switch:checked {
+  background: alpha(@strata_text, 0.1);
+}

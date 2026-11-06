@@ -195,6 +195,7 @@ impl SidebarState {
             .focus_on_click(false)
             .build();
         toggle.add_css_class("sidebar-heading-toggle");
+        self.style_tree_heading(section, &toggle, &content, &rule, &chevron);
         toggle.set_cursor_from_name(Some("pointer"));
         crate::ui::accessibility::set_label(&toggle, &title);
         let weak = Rc::downgrade(self);

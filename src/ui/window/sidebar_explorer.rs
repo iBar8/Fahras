@@ -25,9 +25,17 @@ pub(super) fn arranged_like_explorer(preferences: &PreferenceManager) -> bool {
     preferences.explorer_skin() != ExplorerSkin::Off
 }
 
+/// The polished looks add Explorer's Gallery, pins and This PC tree.
+fn polished(preferences: &PreferenceManager) -> bool {
+    preferences.explorer_skin().is_polished()
+}
+
 impl SidebarState {
     pub(super) fn append_explorer_places(self: &Rc<Self>) {
         self.append_ordered_place("home");
+        if polished(&self.preference_manager) {
+            self.append_gallery();
+        }
         self.append_separator();
         for (id, icon) in USER_FOLDERS {
             self.append_explorer_user_folder(id, icon);
@@ -46,8 +54,51 @@ impl SidebarState {
         if let Some((_, name, directory)) = standard_place(id)
             && let Some(path) = glib::user_special_dir(directory)
         {
-            self.append_place(icon, &crate::i18n::tr(name), Location::local(path));
+            let row = self.append_place(icon, &crate::i18n::tr(name), Location::local(path));
+            if polished(&self.preference_manager) {
+                mark_pinned(&row);
+            }
         }
+    }
+
+    /// Explorer's Gallery: the Pictures folder as large pictures.
+    fn append_gallery(self: &Rc<Self>) {
+        let Some(path) = glib::user_special_dir(glib::UserDirectory::Pictures) else {
+            return;
+        };
+        let row = self.append_place(
+            "fahras-fluent-gallery",
+            &crate::i18n::tr("fahras.sidebar.gallery"),
+            Location::local(path),
+        );
+        row.add_css_class("explorer-gallery");
+        let manager = Rc::downgrade(&self.preference_manager);
+        row.connect_clicked(move |_| {
+            if let Some(manager) = manager.upgrade() {
+                manager.set_browser_mode(crate::ui::browser_modes::BrowserMode::Icons);
+            }
+        });
+    }
+
+    /// In the polished looks the drives hang under a "This PC" row with its
+    /// chevron in front, as in Explorer's tree.
+    pub(super) fn style_tree_heading(
+        &self,
+        section: SidebarSection,
+        toggle: &gtk::Button,
+        content: &gtk::Box,
+        rule: &gtk::Separator,
+        chevron: &gtk::Image,
+    ) {
+        if section != SidebarSection::Devices || !polished(&self.preference_manager) {
+            return;
+        }
+        toggle.add_css_class("explorer-this-pc");
+        content.add_css_class("explorer-tree-heading");
+        content.reorder_child_after(chevron, None::<&gtk::Widget>);
+        let icon = crate::assets::primary_icon("fahras-fluent-this-pc", 16);
+        content.insert_child_after(&icon, Some(chevron));
+        rule.set_visible(false);
     }
 
     /// Explorer heads the drives with "This PC".
@@ -62,7 +113,7 @@ impl SidebarState {
         let weak = Rc::downgrade(self);
         self.preference_manager.bind_preference(
             &self.widget,
-            arranged_like_explorer,
+            |preferences| (arranged_like_explorer(preferences), polished(preferences)),
             move |widget, _| {
                 if let Some(state) = weak.upgrade()
                     && widget.first_child().is_some()
@@ -72,4 +123,20 @@ impl SidebarState {
             },
         );
     }
+}
+
+/// Explorer marks the user folders it keeps in Quick access with a pin.
+fn mark_pinned(row: &gtk::Button) {
+    let Some(content) = row.child().and_downcast::<gtk::Box>() else {
+        return;
+    };
+    let pin = crate::assets::primary_icon("fahras-fluent-pin-symbolic", 14);
+    pin.add_css_class("explorer-pin");
+    pin.set_hexpand(true);
+    pin.set_halign(gtk::Align::End);
+    crate::ui::accessibility::set_description(
+        &pin,
+        Some(&crate::i18n::tr("fahras.sidebar.pinned")),
+    );
+    content.append(&pin);
 }
