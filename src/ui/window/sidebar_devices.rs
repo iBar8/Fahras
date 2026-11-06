@@ -70,7 +70,10 @@ impl SidebarState {
         }
         let count = section.collect_rows(&self.widget);
         section.header.set_item_count(count);
-        section.apply_state(self.section_collapsed(SidebarSection::Devices));
+        section.apply_state(
+            self.section_collapsed(SidebarSection::Devices),
+            self.rail.get(),
+        );
         self.devices_section.replace(Some(section));
     }
 
@@ -78,15 +81,8 @@ impl SidebarState {
         &self,
         volumes: &[gio::Volume],
     ) -> Vec<(String, Location, gio::Mount)> {
-        self.volume_monitor
-            .mounts()
+        super::devices::mounts_without_listed_volumes(&self.volume_monitor, volumes)
             .into_iter()
-            .filter(|mount| !mount.is_shadowed())
-            .filter(|mount| {
-                !mount
-                    .volume()
-                    .is_some_and(|volume| volumes.contains(&volume))
-            })
             .filter_map(|mount| {
                 let name = mount.name().to_string();
                 let location = location_for_file(&mount.root())?;
@@ -528,7 +524,10 @@ pub(super) fn sidebar_lock_button(
 fn device_action_button(label: &str, icon: &str, on_click: impl Fn() + 'static) -> gtk::Button {
     let button = gtk::Button::new();
     crate::ui::accessibility::set_tooltip_and_label(&button, label);
-    button.set_child(Some(&crate::assets::primary_icon(icon, 14)));
+    let image = crate::assets::primary_icon(icon, 14);
+    image.set_halign(gtk::Align::End);
+    image.set_valign(gtk::Align::Center);
+    button.set_child(Some(&image));
     button.add_css_class("sidebar-eject");
     button.add_css_class("sidebar-device-action");
     button.set_cursor_from_name(Some("pointer"));
