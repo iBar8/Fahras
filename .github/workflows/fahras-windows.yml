@@ -66,6 +66,10 @@ jobs:
       - name: Build
         run: cargo build --release --locked
 
+      - name: Show thumbnails, as Windows 10 and 11 do (Server shows icons only)
+        shell: pwsh
+        run: Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name IconsOnly -Value 0 -Type DWord
+
       - name: Test the Windows stand-ins for Linux file APIs
         run: |
           cargo test --locked --manifest-path crates/rustix-compat/Cargo.toml
@@ -201,6 +205,10 @@ jobs:
         run: |
           if (-not (Test-Path 'C:\Program Files\7-Zip\7-zip.dll')) { choco install 7zip.install -y --no-progress }
           Get-ChildItem 'C:\Program Files\7-Zip' | Select-Object -First 5 | Format-Table Name
+
+      - name: Show thumbnails, as Windows 10 and 11 do (Server shows icons only)
+        shell: pwsh
+        run: Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name IconsOnly -Value 0 -Type DWord
 
       - name: Fahras in the Windows shell (Open in Fahras, Explorer layout, native menu, default folders)
         timeout-minutes: 15
