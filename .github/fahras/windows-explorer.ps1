@@ -312,7 +312,7 @@ function Find-Switch([bool] $rightToLeft) {
             foreach ($x in $columns) {
                 $pixel = $bitmap.GetPixel($x, $y)
                 $grey = [math]::Max([math]::Abs($pixel.R - $pixel.G), [math]::Abs($pixel.G - $pixel.B)) -lt 14
-                if ($grey -and $pixel.R -gt 150) { return @($x + 4, $y + 6) }
+                if ($grey -and $pixel.R -gt 150) { return @(($x + 4), ($y + 6)) }
             }
         }
     } finally { $bitmap.Dispose() }
