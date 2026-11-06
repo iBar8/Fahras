@@ -543,5 +543,37 @@
     "zh-CN": "Windows 11（旧版）",
     "zh-TW": "Windows 11（舊版）",
     "ar": "Windows 11 (القديم)"
+  },
+  "fahras.explorer.details": {
+    "en": "Details",
+    "fr": "Détails",
+    "hu": "Részletek",
+    "de": "Details",
+    "es": "Detalles",
+    "ja": "詳細",
+    "pt-BR": "Detalhes",
+    "ko": "자세히",
+    "vi": "Chi tiết",
+    "it": "Dettagli",
+    "ru": "Подробности",
+    "zh-CN": "详细信息",
+    "zh-TW": "詳細資料",
+    "ar": "التفاصيل"
+  },
+  "fahras.explorer.large_icons": {
+    "en": "Large icons",
+    "fr": "Grandes icônes",
+    "hu": "Nagy ikonok",
+    "de": "Große Symbole",
+    "es": "Iconos grandes",
+    "ja": "大アイコン",
+    "pt-BR": "Ícones grandes",
+    "ko": "큰 아이콘",
+    "vi": "Biểu tượng lớn",
+    "it": "Icone grandi",
+    "ru": "Крупные значки",
+    "zh-CN": "大图标",
+    "zh-TW": "大圖示",
+    "ar": "أيقونات كبيرة"
   }
 }

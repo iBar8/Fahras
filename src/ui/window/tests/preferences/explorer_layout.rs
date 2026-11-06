@@ -69,6 +69,18 @@ fn sidebar_names(open: &OpenWindow) -> Vec<String> {
     names
 }
 
+/// The icon the command bar's New shows, by name.
+fn new_icon(open: &OpenWindow) -> Option<String> {
+    with_class(open, "explorer-command-bar")
+        .iter()
+        .flat_map(descendants)
+        .filter_map(|widget| widget.downcast::<gtk::MenuButton>().ok())
+        .find(|button| row_name(button.upcast_ref()).as_deref() == Some("New"))
+        .and_then(|button| button.child())
+        .and_then(|content| content.first_child())
+        .map(|icon| icon.widget_name().to_string())
+}
+
 fn separators(open: &OpenWindow) -> Vec<String> {
     with_class(open, "breadcrumb-separator")
         .iter()
@@ -236,6 +248,12 @@ fn explorer_looks_swap_the_window_layout_live() {
                 "legacy keeps the layout"
             );
             assert!(!crate::fahras::explorer_details::is_polished());
+            assert!(!shown(&open, "explorer-details-pane"));
+            assert!(!shown(&open, "explorer-view-switches"));
+            assert_eq!(
+                new_icon(&open).as_deref(),
+                Some("fahras-fluent-new-symbolic")
+            );
             wait_until_or(
                 || separators(&open).iter().all(|text| text == "/"),
                 || format!("{:?}", separators(&open)),
@@ -243,6 +261,25 @@ fn explorer_looks_swap_the_window_layout_live() {
             manager.set_explorer_skin(ExplorerSkin::Windows11);
             settle();
             assert!(crate::fahras::explorer_details::is_polished());
+            assert!(shown(&open, "explorer-details-pane"));
+            assert!(shown(&open, "explorer-view-switches"));
+            assert_eq!(new_icon(&open).as_deref(), Some("fahras-fluent-new-color"));
+            let switch = |name: &str| {
+                with_class(&open, "explorer-view-switch")
+                    .into_iter()
+                    .filter_map(|widget| widget.downcast::<gtk::ToggleButton>().ok())
+                    .find(|button| button.tooltip_text().as_deref() == Some(name))
+                    .expect("view switch")
+            };
+            let (details, large_icons) = (switch("Details"), switch("Large icons"));
+            assert!(details.is_active(), "Details view is on");
+            large_icons.emit_clicked();
+            settle();
+            assert_eq!(manager.browser_mode(), BrowserMode::Icons);
+            assert!(large_icons.is_active() && !details.is_active());
+            details.emit_clicked();
+            settle();
+            assert_eq!(manager.browser_mode(), BrowserMode::List);
             let child = directory.path().join("child");
             open.content
                 .browser

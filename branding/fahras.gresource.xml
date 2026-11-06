@@ -8,6 +8,10 @@
   </gresource>
   <gresource prefix="/io/github/lgse/Strata/icons/fluent">
     <file alias="fahras-fluent-back-symbolic.svg">fluent/fahras-fluent-back-symbolic.svg</file>
+    <file alias="fahras-fluent-details-pane-symbolic.svg">fluent/fahras-fluent-details-pane-symbolic.svg</file>
+    <file alias="fahras-fluent-new-color.svg">fluent/fahras-fluent-new-color.svg</file>
+    <file alias="fahras-fluent-view-details-symbolic.svg">fluent/fahras-fluent-view-details-symbolic.svg</file>
+    <file alias="fahras-fluent-view-icons-symbolic.svg">fluent/fahras-fluent-view-icons-symbolic.svg</file>
     <file alias="fahras-fluent-book.svg">fluent/fahras-fluent-book.svg</file>
     <file alias="fahras-fluent-chevron-symbolic.svg">fluent/fahras-fluent-chevron-symbolic.svg</file>
     <file alias="fahras-fluent-code.svg">fluent/fahras-fluent-code.svg</file>

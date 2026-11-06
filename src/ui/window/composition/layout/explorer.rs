@@ -6,6 +6,8 @@
 //! 10's ribbon, and a status bar with item and selection counts. Fahras's own
 //! header and footer return when the look is turned off.
 
+mod polish;
+
 use std::rc::Rc;
 
 use gtk::{glib, prelude::*};
@@ -47,6 +49,7 @@ pub(in crate::ui::window) fn install(parts: &ExplorerParts) {
         .insert_child_after(&chrome, Some(&parts.header.widget));
     // Inside the footer, which keeps its job progress, prompts and shortcuts.
     let status = status_bar(parts.browser);
+    status.append(&polish::view_switches(parts.preferences));
     parts.footer.shortcuts.set_activity(&status);
 
     let layout = Layout {
@@ -419,6 +422,15 @@ fn commands(parts: &ExplorerParts, ribbon: bool) -> Commands {
     let labelled = ribbon;
     let view_ref = parts.browser;
     let new = menu_command("fahras-fluent-new-symbolic", "New", ribbon);
+    polish::color_new_icon(
+        &new,
+        parts.preferences,
+        if ribbon {
+            RIBBON_ICON_PX
+        } else {
+            COMMAND_ICON_PX
+        },
+    );
     let new_folder: Rc<dyn Fn()> = {
         let view = view_ref.clone();
         Rc::new(move || view.create_new_folder())
@@ -563,6 +575,15 @@ fn command_bar(parts: &ExplorerParts) -> gtk::Box {
     bar.append(&commands.view);
     bar.append(&separator());
     bar.append(&commands.more);
+    let details = polish::details_pane_button(
+        parts.browser,
+        parts.preview,
+        parts.preferences,
+        COMMAND_ICON_PX,
+    );
+    details.set_hexpand(true);
+    details.set_halign(gtk::Align::End);
+    bar.append(&details);
     bar
 }
 
