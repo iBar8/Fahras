@@ -161,24 +161,17 @@ fn set_visible<W: IsA<gtk::Widget>>(widget: &glib::WeakRef<W>, visible: bool) {
 }
 
 /// Explorer uses the system's own title bar with minimize, maximize and close;
-/// Fahras's look draws its own header instead. A frame only changes while the
-/// window is unrealized.
+/// Fahras's look draws its own header instead. The frame is chosen when a
+/// window opens: rebuilding a shown window's frame leaves it blank on Windows,
+/// so a window that is already up keeps its frame until it is reopened.
 fn use_system_title_bar(window: &gtk::ApplicationWindow, system: bool) {
-    if system == window.titlebar().is_none() {
+    if system == window.titlebar().is_none() || window.is_realized() {
         return;
-    }
-    let shown = window.is_visible();
-    if window.is_realized() {
-        window.set_visible(false);
-        WidgetExt::unrealize(window);
     }
     if system {
         window.set_titlebar(None::<&gtk::Widget>);
     } else {
         crate::ui::decoration::claim_titlebar(window);
-    }
-    if shown {
-        window.present();
     }
 }
 

@@ -125,7 +125,13 @@ fn explorer_looks_swap_the_window_layout_live() {
                     .parent()
                     .is_some_and(|slot| slot.has_css_class("explorer-address"))
             );
-            assert!(open.window.titlebar().is_none(), "the system title bar");
+            assert!(
+                open.window.titlebar().is_some(),
+                "a shown window keeps its frame"
+            );
+            let reopened = OpenWindow::open();
+            assert!(reopened.window.titlebar().is_none(), "the system title bar");
+            reopened.window.destroy();
             assert!(
                 open.content.footer().widget().parent().is_none(),
                 "Fahras's footer is out"
@@ -169,6 +175,12 @@ fn explorer_looks_swap_the_window_layout_live() {
             assert!(!shown(&open, "explorer-chrome"));
             assert!(location.ancestor(gtk::HeaderBar::static_type()).is_some());
             assert!(open.window.titlebar().is_some());
+            let reopened = OpenWindow::open();
+            assert!(
+                reopened.window.titlebar().is_some(),
+                "Fahras's header again"
+            );
+            reopened.window.destroy();
             assert!(open.content.footer().widget().parent().is_some());
             open.window.destroy();
         },
