@@ -95,11 +95,15 @@ function Stop-Fahras {
     Wait-Until { -not (Get-Process -Name Fahras -ErrorAction SilentlyContinue) } 15 | Out-Null
 }
 
-function Write-Settings([hashtable] $settings) {
-    $lines = $settings.GetEnumerator() | ForEach-Object {
-        if ($_.Value -is [array]) { "$($_.Key) = [$((($_.Value | ForEach-Object { "`"$_`"" }) -join ', '))]" }
-        else { "$($_.Key) = `"$($_.Value)`"" }
+function Toml-Value($value) {
+    if ($value -is [array]) {
+        return '[' + (($value | ForEach-Object { '"' + $_ + '"' }) -join ', ') + ']'
     }
+    return '"' + $value + '"'
+}
+
+function Write-Settings([hashtable] $settings) {
+    $lines = foreach ($entry in $settings.GetEnumerator()) { $entry.Key + ' = ' + (Toml-Value $entry.Value) }
     Set-Content -Path $settingsFile -Value ($lines -join "`n") -Encoding utf8
 }
 
