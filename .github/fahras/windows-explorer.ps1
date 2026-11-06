@@ -12,14 +12,61 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-Add-Type -AssemblyName System.Windows.Forms, System.Drawing, UIAutomationClient, UIAutomationTypes
+Add-Type -AssemblyName System.Windows.Forms, System.Drawing
 Add-Type @'
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 public static class ShellWin {
     [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd);
     [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hWnd, int cmd);
     [DllImport("user32.dll")] public static extern int GetWindowLong(IntPtr hWnd, int index);
+    [DllImport("user32.dll")] public static extern bool SetCursorPos(int x, int y);
+    [DllImport("user32.dll")] public static extern void mouse_event(int flags, int dx, int dy, int data, IntPtr extra);
+    [DllImport("user32.dll")] static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr w, IntPtr l);
+    [DllImport("user32.dll")] static extern int GetMenuItemCount(IntPtr menu);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)] static extern int GetMenuString(IntPtr menu, uint item, StringBuilder text, int max, uint flags);
+    [DllImport("user32.dll")] static extern uint GetMenuState(IntPtr menu, uint item, uint flags);
+    [DllImport("user32.dll")] static extern bool IsWindowVisible(IntPtr hWnd);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)] static extern int GetClassName(IntPtr hWnd, StringBuilder name, int max);
+    delegate bool EnumProc(IntPtr hWnd, IntPtr data);
+    [DllImport("user32.dll")] static extern bool EnumWindows(EnumProc callback, IntPtr data);
+    const uint ByPosition = 0x400, Separator = 0x800, Highlighted = 0x80;
+
+    // The open popup menus, oldest first: Windows draws each in a "#32768" window.
+    public static List<IntPtr> PopupMenus() {
+        var menus = new List<IntPtr>();
+        EnumWindows((hWnd, data) => {
+            var name = new StringBuilder(64);
+            GetClassName(hWnd, name, 64);
+            if (name.ToString() == "#32768" && IsWindowVisible(hWnd)) {
+                IntPtr menu = SendMessage(hWnd, 0x1E1, IntPtr.Zero, IntPtr.Zero); // MN_GETHMENU
+                if (menu != IntPtr.Zero) menus.Insert(0, menu);
+            }
+            return true;
+        }, IntPtr.Zero);
+        return menus;
+    }
+
+    public static string[] Items(IntPtr menu) {
+        int count = GetMenuItemCount(menu);
+        var items = new string[Math.Max(count, 0)];
+        for (int i = 0; i < count; i++) {
+            var text = new StringBuilder(256);
+            GetMenuString(menu, (uint)i, text, 256, ByPosition);
+            items[i] = (GetMenuState(menu, (uint)i, ByPosition) & Separator) != 0 ? "-" : text.ToString().Replace("&", "");
+        }
+        return items;
+    }
+
+    public static string Highlighted(IntPtr menu) {
+        var items = Items(menu);
+        for (int i = 0; i < items.Length; i++) {
+            if ((GetMenuState(menu, (uint)i, ByPosition) & Highlighted) != 0) return items[i];
+        }
+        return null;
+    }
 }
 '@
 
@@ -200,11 +247,15 @@ foreach ($layout in $layouts) {
 
 # --------------------------------------------------------- The native right-click menu
 Log '--- Right-clicking a file shows the Windows menu ---'
-$root = [System.Windows.Automation.AutomationElement]::RootElement
-$menuCondition = New-Object System.Windows.Automation.PropertyCondition ([System.Windows.Automation.AutomationElement]::ClassNameProperty, '#32768')
-$itemCondition = New-Object System.Windows.Automation.PropertyCondition ([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::MenuItem)
-function Menus { @($root.FindAll([System.Windows.Automation.TreeScope]::Children, $menuCondition)) }
-function Menu-Items($menu) { @($menu.FindAll([System.Windows.Automation.TreeScope]::Descendants, $itemCondition)) }
+# Moves the keyboard highlight in the newest open menu to the item named $name.
+function Highlight-Menu-Item([string] $name) {
+    for ($step = 0; $step -lt 40; $step++) {
+        $menu = [ShellWin]::PopupMenus() | Select-Object -Last 1
+        if ($menu -and [ShellWin]::Highlighted($menu) -like $name) { return $true }
+        Keys '{DOWN}' 250
+    }
+    return $false
+}
 
 foreach ($lang in 'en', 'ar') {
     $archive = Join-Path $menuFolder 'report.7z'
@@ -213,22 +264,22 @@ foreach ($lang in 'en', 'ar') {
     $process = Start-Fahras $menuFolder "menu-$lang"
     # The folder's only file is selected; Shift+F10 opens its menu.
     Keys '+{F10}' 2500
-    $menu = Menus | Select-Object -First 1
+    $menu = [ShellWin]::PopupMenus() | Select-Object -First 1
     Check "[$lang] Shift+F10 on a file opens the Windows menu" ([bool] $menu)
     Shot "explorer-05-native-menu-$lang" | Out-Null
     if ($menu) {
-        $names = @(Menu-Items $menu | ForEach-Object { $_.Current.Name })
+        $names = [ShellWin]::Items($menu)
         Log "      menu: $($names -join ' | ')"
-        $sevenZip = Menu-Items $menu | Where-Object { $_.Current.Name -eq '7-Zip' } | Select-Object -First 1
-        Check "[$lang] the menu has 7-Zip's entries" ([bool] $sevenZip)
-        if ($sevenZip) {
-            $sevenZip.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Expand()
-            Start-Sleep -Seconds 2
-            $add = Menus | ForEach-Object { Menu-Items $_ } | Where-Object { $_.Current.Name -like 'Add to "report.7z"' } | Select-Object -First 1
+        Check "[$lang] the menu has 7-Zip's entries" ($names -contains '7-Zip')
+        if (Highlight-Menu-Item '7-Zip') {
+            Keys '{RIGHT}' 1500
+            $submenu = [ShellWin]::PopupMenus() | Select-Object -Last 1
+            Log "      7-Zip: $(([ShellWin]::Items($submenu)) -join ' | ')"
             Shot "explorer-06-7zip-submenu-$lang" | Out-Null
-            Check "[$lang] 7-Zip offers Add to report.7z" ([bool] $add)
-            if ($add) {
-                $add.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
+            $found = Highlight-Menu-Item 'Add to "report.7z"'
+            Check "[$lang] 7-Zip offers Add to report.7z" $found
+            if ($found) {
+                Keys '{ENTER}' 1000
                 Check "[$lang] choosing it creates the archive" (Wait-Until { Test-Path $archive } 60)
             }
         }
@@ -243,7 +294,32 @@ Log '--- Settings: open folders in Fahras ---'
 function Folder-Verb([string] $class) {
     (Get-ItemProperty -Path "HKCU:\Software\Classes\$class\shell" -ErrorAction SilentlyContinue).'(default)'
 }
-# Settings search shows the one row; four Tabs reach its switch and Space flips it.
+function Click([int] $x, [int] $y) {
+    [ShellWin]::SetCursorPos($x, $y) | Out-Null
+    Start-Sleep -Milliseconds 150
+    [ShellWin]::mouse_event(0x2, 0, 0, 0, [IntPtr]::Zero)
+    [ShellWin]::mouse_event(0x4, 0, 0, 0, [IntPtr]::Zero)
+    Start-Sleep -Milliseconds 1500
+}
+
+# The switch's knob: the light grey or white disc at the row's far end, right
+# (or left, right to left) of the text column.
+function Find-Switch([bool] $rightToLeft) {
+    $bitmap = Screen
+    $columns = if ($rightToLeft) { 20..140 } else { ($bitmap.Width - 140)..($bitmap.Width - 20) }
+    try {
+        foreach ($y in 150..400) {
+            foreach ($x in $columns) {
+                $pixel = $bitmap.GetPixel($x, $y)
+                $grey = [math]::Max([math]::Abs($pixel.R - $pixel.G), [math]::Abs($pixel.G - $pixel.B)) -lt 14
+                if ($grey -and $pixel.R -gt 150) { return @($x + 4, $y + 6) }
+            }
+        }
+    } finally { $bitmap.Dispose() }
+    return $null
+}
+
+# Settings search shows the one row; its switch is found on screen and clicked.
 function Flip-Folder-Switch([string] $lang) {
     Write-Settings @{ language = $lang; explorer_skin = 'windows11'; browser_mode = 'list' }
     $process = Start-Fahras $folder "default-$lang"
@@ -252,9 +328,11 @@ function Flip-Folder-Switch([string] $lang) {
     Set-Clipboard -Value 'Open folders in Fahras'
     Keys '^v' 1500
     Shot "explorer-07-settings-$lang" | Out-Null
-    Keys '{TAB}{TAB}{TAB}{TAB}' 800
-    Keys ' ' 1500
+    $switch = Find-Switch ($lang -eq 'ar')
+    Log "      switch at: $switch"
+    if ($switch) { Click $switch[0] $switch[1] }
     Shot "explorer-08-switched-$lang" | Out-Null
+    Keys '{ESC}' 500
     Keys '{ESC}' 500
     Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
     Start-Sleep -Seconds 1

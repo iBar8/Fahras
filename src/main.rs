@@ -232,6 +232,7 @@ fn run_udiskie_hook(arguments: &[OsString]) -> gtk::glib::ExitCode {
 }
 
 fn main() -> gtk::glib::ExitCode {
+    fahras::launch::prefer_system_title_bars();
     let arguments: Vec<OsString> = std::env::args_os()
         .map(fahras::launch::repaired_argument)
         .collect();
