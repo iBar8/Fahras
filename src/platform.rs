@@ -10,6 +10,9 @@ pub(crate) use rustix_compat::unix;
 #[path = "platform/windows/console.rs"]
 pub(crate) mod windows_console;
 #[cfg(windows)]
+#[path = "platform/windows/frame.rs"]
+pub(crate) mod windows_frame;
+#[cfg(windows)]
 #[path = "platform/windows/shell.rs"]
 pub(crate) mod windows_shell;
 #[cfg(unix)]

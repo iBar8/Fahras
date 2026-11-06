@@ -67,7 +67,9 @@ jobs:
         run: cargo build --release --locked
 
       - name: Test the Windows stand-ins for Linux file APIs
-        run: cargo test --locked --manifest-path crates/rustix-compat/Cargo.toml
+        run: |
+          cargo test --locked --manifest-path crates/rustix-compat/Cargo.toml
+          cargo test --locked --manifest-path crates/shell-images/Cargo.toml
 
       - name: Package with the GTK runtime
         run: |

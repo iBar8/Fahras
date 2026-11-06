@@ -117,6 +117,9 @@ pub(super) fn set_fallback_icon(
     clear_displayed_thumbnail(image);
     let (texture, customized) = path_icon_texture(path, icon, IconSizing::of(image));
     image.set_fallback(icon, texture.as_ref());
+    // A folder the person customized keeps Fahras's icon and color.
+    #[cfg(windows)]
+    super::windows_images::show(image, path.filter(|_| !customized), size);
     if let Some(p) = path {
         register_tracked_icon(image, p, icon, customized);
     } else {

@@ -34,6 +34,8 @@ pub(in crate::ui::window) struct ExplorerParts<'a> {
 
 /// One Explorer layout per tab; it follows the look live.
 pub(in crate::ui::window) fn install(parts: &ExplorerParts) {
+    #[cfg(windows)]
+    crate::platform::windows_frame::style_when_shown(parts.window);
     let ribbon = ribbon(parts);
     let (address_row, address_slot) = address_row(parts.browser);
     let window_controls = window_controls(parts.window);

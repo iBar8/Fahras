@@ -245,8 +245,10 @@ Check 'File Explorer opens the same folder for comparison' ([bool] $explorerShot
 
 $layouts = @(
     @{ lang = 'en'; skin = 'windows11' },
+    @{ lang = 'en'; skin = 'windows11-legacy' },
     @{ lang = 'en'; skin = 'windows10' },
-    @{ lang = 'ar'; skin = 'windows11' }
+    @{ lang = 'ar'; skin = 'windows11' },
+    @{ lang = 'ar'; skin = 'windows11-legacy' }
 )
 foreach ($layout in $layouts) {
     $label = "$($layout.lang)-$($layout.skin)"

@@ -26,6 +26,8 @@ mod slot;
 #[cfg(test)]
 mod tests;
 mod viewport;
+#[cfg(windows)]
+mod windows_images;
 #[cfg(test)]
 pub(super) use cache::remember_thumbnail_for_test;
 use cache::{CacheHit, THUMBNAIL_CACHE};

@@ -880,6 +880,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "fahras-shell-images"
+version = "0.1.0"
+dependencies = [
+ "windows",
+]
+
+[[package]]
 name = "fast-float2"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1170,6 +1177,33 @@ dependencies = [
  "glib-sys",
  "libc",
  "system-deps 7.0.8",
+]
+
+[[package]]
+name = "gdk4-win32"
+version = "0.11.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dc22bb56e61bb3c8a18d3fb565f58a497caf01fdc05e7f0cf7993f85dedb8c9b"
+dependencies = [
+ "cairo-rs",
+ "gdk4",
+ "gdk4-win32-sys",
+ "gio",
+ "glib",
+ "libc",
+]
+
+[[package]]
+name = "gdk4-win32-sys"
+version = "0.11.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fd81f5145c5203b3852c4b02af462322b19311772f7d84f68084b18df055789c"
+dependencies = [
+ "cairo-sys-rs",
+ "gdk4-sys",
+ "glib-sys",
+ "libc",
+ "system-deps 9.0.0",
 ]
 
 [[package]]
@@ -3050,6 +3084,7 @@ dependencies = [
  "fahras-ashpd-compat",
  "fahras-gio-unix-compat",
  "fahras-rustix-compat",
+ "fahras-shell-images",
  "fitparser",
  "flate2",
  "frizbee",
@@ -3057,6 +3092,7 @@ dependencies = [
  "futures-lite",
  "gdk-pixbuf",
  "gdk4-wayland",
+ "gdk4-win32",
  "gdk4-x11",
  "gio",
  "gio-unix",

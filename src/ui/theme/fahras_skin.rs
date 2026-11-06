@@ -43,6 +43,11 @@ thread_local! {
 pub(super) fn tokens(skin: ExplorerSkin, theme: &ThemeTokens) -> ThemeTokens {
     crate::fahras::explorer_icons::set_active(skin != ExplorerSkin::Off);
     crate::fahras::explorer_details::set_polished(skin.is_polished());
+    #[cfg(windows)]
+    crate::platform::windows_frame::follow_look(
+        skin != ExplorerSkin::Off && is_dark(&theme.background),
+        skin == ExplorerSkin::Windows11,
+    );
     let Some(palette) = palette(skin, is_dark(&theme.background)) else {
         return theme.clone();
     };
