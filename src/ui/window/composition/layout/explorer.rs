@@ -101,6 +101,9 @@ impl Layout {
         chrome.set_visible(explorer);
         set_visible(&self.header, !explorer);
         set_visible(&self.status, explorer);
+        if let Some(status) = self.status.upgrade() {
+            polish::arrange_status(&status, skin.is_polished());
+        }
         set_visible(&self.ribbon, skin.base() == ExplorerSkin::Windows10);
         set_visible(&self.command_bar, skin.base() == ExplorerSkin::Windows11);
         self.place_location(explorer);

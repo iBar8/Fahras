@@ -135,3 +135,45 @@ pub(super) fn view_switches(preferences: &Rc<PreferenceManager>) -> gtk::Box {
     show_when_polished(&switches, preferences);
     switches
 }
+
+/// Explorer's status bar is plain text: the item count first and no
+/// shortcuts button. Fahras's own look keeps its footer as it was.
+pub(super) fn arrange_status(status: &gtk::Box, polished: bool) {
+    let Some(row) = status.parent().and_downcast::<gtk::Box>() else {
+        return;
+    };
+    let mut anchor = None;
+    let mut child = row.first_child();
+    while let Some(current) = child {
+        child = current.next_sibling();
+        if current.has_css_class("shortcut-footer-count") {
+            anchor = Some(current.clone());
+        }
+        if current.is::<gtk::ToggleButton>() && current.has_css_class("shortcut-footer-button") {
+            keep_shortcuts_button(&current, polished);
+        }
+    }
+    let after = if polished { None } else { anchor };
+    row.reorder_child_after(status, after.as_ref());
+}
+
+const HIDDEN_FOR_EXPLORER: &str = "explorer-hidden";
+
+fn keep_shortcuts_button(button: &gtk::Widget, polished: bool) {
+    if button.has_css_class(HIDDEN_FOR_EXPLORER) == polished {
+        return;
+    }
+    if polished {
+        button.add_css_class(HIDDEN_FOR_EXPLORER);
+        button.set_visible(false);
+        // The footer shows it again as hints change; the Explorer look keeps it hidden.
+        button.connect_visible_notify(|button| {
+            if button.has_css_class(HIDDEN_FOR_EXPLORER) && button.is_visible() {
+                button.set_visible(false);
+            }
+        });
+    } else {
+        button.remove_css_class(HIDDEN_FOR_EXPLORER);
+        button.set_visible(PreferenceManager::shared().show_keybinding_hints());
+    }
+}

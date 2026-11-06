@@ -70,3 +70,20 @@ fn switching_skins_restyles_open_windows_without_restarting() {
         },
     );
 }
+
+#[test]
+fn only_the_windows_11_look_takes_explorers_measured_sizes() {
+    assert!(stylesheet(ExplorerSkin::Windows11).contains(WINDOWS_11_EXPLORER_CSS));
+    for skin in [
+        ExplorerSkin::Windows11Legacy,
+        ExplorerSkin::Windows10,
+        ExplorerSkin::Windows10Legacy,
+        ExplorerSkin::Off,
+    ] {
+        assert!(
+            !stylesheet(skin).contains(WINDOWS_11_EXPLORER_CSS),
+            "{skin:?} keeps its own sizes"
+        );
+    }
+    assert!(stylesheet(ExplorerSkin::Windows11Legacy).contains(WINDOWS_11_CSS));
+}

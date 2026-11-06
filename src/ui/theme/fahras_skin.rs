@@ -11,6 +11,8 @@ use crate::fahras::look::ExplorerSkin;
 
 const WINDOWS_10_CSS: &str = include_str!("../../../branding/skins/windows10.css");
 const WINDOWS_11_CSS: &str = include_str!("../../../branding/skins/windows11.css");
+const WINDOWS_11_EXPLORER_CSS: &str =
+    include_str!("../../../branding/skins/windows11-explorer.css");
 
 /// background, surface, text, accent, danger, muted, highlight, border, dim text.
 type Palette = [&'static str; 9];
@@ -93,16 +95,20 @@ pub(super) fn apply_stylesheet(skin: ExplorerSkin) {
             gtk::style_context_add_provider_for_display(&display, provider, TOKEN_STYLE_PRIORITY);
         }
         if LOADED.replace(Some(skin)) != Some(skin) {
-            provider.load_from_string(stylesheet(skin));
+            provider.load_from_string(&stylesheet(skin));
         }
     });
 }
 
-fn stylesheet(skin: ExplorerSkin) -> &'static str {
-    match skin.base() {
-        ExplorerSkin::Windows10 => WINDOWS_10_CSS,
-        ExplorerSkin::Windows11 => WINDOWS_11_CSS,
-        _ => "",
+/// The Windows 11 look adds Explorer's measured sizes; its legacy look does not.
+fn stylesheet(skin: ExplorerSkin) -> String {
+    match skin {
+        ExplorerSkin::Windows11 => format!("{WINDOWS_11_CSS}\n{WINDOWS_11_EXPLORER_CSS}"),
+        _ => match skin.base() {
+            ExplorerSkin::Windows10 => WINDOWS_10_CSS.to_owned(),
+            ExplorerSkin::Windows11 => WINDOWS_11_CSS.to_owned(),
+            _ => String::new(),
+        },
     }
 }
 

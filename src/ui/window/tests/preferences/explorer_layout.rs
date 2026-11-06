@@ -69,6 +69,21 @@ fn sidebar_names(open: &OpenWindow) -> Vec<String> {
     names
 }
 
+/// The footer row's first widget, and whether its shortcuts button shows.
+fn footer_start(open: &OpenWindow) -> (gtk::Widget, bool) {
+    let status = with_class(open, "explorer-status")
+        .into_iter()
+        .next()
+        .expect("status bar");
+    let row = status.parent().expect("footer row");
+    let shortcuts = std::iter::successors(row.first_child(), gtk::Widget::next_sibling)
+        .find(|widget| {
+            widget.is::<gtk::ToggleButton>() && widget.has_css_class("shortcut-footer-button")
+        })
+        .is_some_and(|button| button.get_visible());
+    (row.first_child().expect("first"), shortcuts)
+}
+
 /// The icon the command bar's New shows, by name.
 fn new_icon(open: &OpenWindow) -> Option<String> {
     with_class(open, "explorer-command-bar")
@@ -254,6 +269,11 @@ fn explorer_looks_swap_the_window_layout_live() {
                 new_icon(&open).as_deref(),
                 Some("fahras-fluent-new-symbolic")
             );
+            let (first, _) = footer_start(&open);
+            assert!(
+                !first.has_css_class("explorer-status"),
+                "legacy keeps Fahras's footer"
+            );
             wait_until_or(
                 || !sidebar_names(&open).contains(&"Gallery".to_owned()),
                 || format!("{:?}", sidebar_names(&open)),
@@ -270,6 +290,12 @@ fn explorer_looks_swap_the_window_layout_live() {
             assert!(shown(&open, "explorer-details-pane"));
             assert!(shown(&open, "explorer-view-switches"));
             assert_eq!(new_icon(&open).as_deref(), Some("fahras-fluent-new-color"));
+            let (first, shortcuts_shown) = footer_start(&open);
+            assert!(
+                first.has_css_class("explorer-status"),
+                "the count comes first"
+            );
+            assert!(!shortcuts_shown, "no shortcuts button, as in Explorer");
             // Gallery shows the Pictures folder, so it needs one.
             let has_pictures = glib::user_special_dir(glib::UserDirectory::Pictures).is_some();
             wait_until_or(

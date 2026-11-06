@@ -1,0 +1,116 @@
+/* Fahras's Windows 11 look, on top of windows11.css: File Explorer's sizes and
+   surfaces, measured from Explorer at 100% scale. The legacy look does not load it. */
+
+/* Navigation row: 48px, a shade off white, with a rounded 32px address box. */
+.explorer-chrome {
+  background: @strata_bg;
+}
+
+.explorer-address-row {
+  background: mix(@strata_bg, @strata_text, 0.03);
+  border-bottom: 1px solid @strata_border;
+  min-height: 48px;
+  padding: 0 8px;
+}
+
+.explorer-address {
+  background: @strata_bg;
+  border: 1px solid @strata_border;
+  border-radius: 4px;
+  min-height: 32px;
+  padding: 0 6px;
+}
+
+.explorer-search {
+  border: 1px solid @strata_border;
+  border-radius: 4px;
+  min-height: 32px;
+  min-width: 232px;
+}
+
+.explorer-nav {
+  min-height: 32px;
+  min-width: 40px;
+  padding: 0 8px;
+}
+
+.explorer-address .breadcrumb-separator {
+  margin: 0 6px;
+}
+
+/* Command bar: 47px on white, a line under it. */
+.explorer-command-bar {
+  background: @strata_bg;
+  border-bottom: 1px solid @strata_border;
+  min-height: 46px;
+  padding: 0 8px;
+}
+
+.explorer-command,
+.explorer-command > button {
+  min-height: 32px;
+  padding: 0 10px;
+}
+
+.explorer-separator {
+  margin: 10px 4px;
+}
+
+/* Sidebar on white with a divider, rows 32px apart. */
+.sidebar {
+  background: @strata_bg;
+}
+
+.sidebar-shell {
+  border-right: 1px solid @strata_border;
+}
+
+.sidebar-shell:dir(rtl) {
+  border-left: 1px solid @strata_border;
+  border-right: none;
+}
+
+.sidebar-row,
+.sidebar-device {
+  min-height: 32px;
+}
+
+/* Column headings on white with dividers between them. */
+.list-headings {
+  background: @strata_bg;
+  border-bottom: none;
+}
+
+.list-heading-cell {
+  border-right: 1px solid @strata_border;
+}
+
+.list-heading-cell:dir(rtl) {
+  border-left: 1px solid @strata_border;
+  border-right: none;
+}
+
+.list-heading-button {
+  color: alpha(@strata_text, 0.8);
+}
+
+/* Rows 28px, selected as Explorer does: a light accent fill, no outline. */
+.list-row {
+  min-height: 28px;
+}
+
+.file-list row:selected,
+.file-list-mode row:selected {
+  background: alpha(@strata_accent, 0.2);
+}
+
+/* Status bar: plain text on white, the count at the start. */
+.shortcut-footer {
+  background: @strata_bg;
+  min-height: 26px;
+}
+
+.explorer-status {
+  background: transparent;
+  padding: 0 6px;
+}
