@@ -32,7 +32,7 @@ public static class ShellWin {
     [DllImport("user32.dll", CharSet = CharSet.Unicode)] static extern int GetClassName(IntPtr hWnd, StringBuilder name, int max);
     delegate bool EnumProc(IntPtr hWnd, IntPtr data);
     [DllImport("user32.dll")] static extern bool EnumWindows(EnumProc callback, IntPtr data);
-    const uint ByPosition = 0x400, Separator = 0x800, Highlighted = 0x80;
+    const uint ByPosition = 0x400, Separator = 0x800, Hilite = 0x80;
 
     // The open popup menus, oldest first: Windows draws each in a "#32768" window.
     public static List<IntPtr> PopupMenus() {
@@ -63,7 +63,7 @@ public static class ShellWin {
     public static string Highlighted(IntPtr menu) {
         var items = Items(menu);
         for (int i = 0; i < items.Length; i++) {
-            if ((GetMenuState(menu, (uint)i, ByPosition) & Highlighted) != 0) return items[i];
+            if ((GetMenuState(menu, (uint)i, ByPosition) & Hilite) != 0) return items[i];
         }
         return null;
     }
