@@ -64,3 +64,45 @@ fn details_columns_read_like_file_explorer_while_its_look_is_on() {
         },
     );
 }
+
+fn named(name: &str, kind: EntryKind) -> FileEntry {
+    FileEntry {
+        display_name: name.to_owned(),
+        native_name: OsString::from(name),
+        ..entry(kind, 1)
+    }
+}
+
+#[test]
+fn known_extensions_are_hidden_and_headings_follow_explorer() {
+    crate::test_support::gtk_test(
+        "fahras::explorer_details::tests::known_extensions_are_hidden_and_headings_follow_explorer",
+        || {
+            set_polished(false);
+            assert_eq!(shown_name(&named("notes.txt", EntryKind::File)), None);
+            assert_eq!(heading("Modified"), None);
+
+            set_polished(true);
+            rust_i18n::set_locale("en");
+            assert_eq!(
+                shown_name(&named("notes.txt", EntryKind::File)).as_deref(),
+                Some("notes")
+            );
+            assert_eq!(
+                shown_name(&named("photo.png", EntryKind::File)).as_deref(),
+                Some("photo")
+            );
+            assert_eq!(
+                shown_name(&named("data.fahrasunknownext", EntryKind::File)),
+                None,
+                "unknown types keep their extension"
+            );
+            assert_eq!(shown_name(&named("My.Folder", EntryKind::Directory)), None);
+            assert_eq!(shown_name(&named(".bashrc", EntryKind::File)), None);
+            assert_eq!(heading("Modified").as_deref(), Some("Date modified"));
+            assert_eq!(heading("Name"), None);
+            rust_i18n::set_locale("ar");
+            assert_eq!(heading("Modified").as_deref(), Some("تاريخ التعديل"));
+        },
+    );
+}

@@ -42,8 +42,19 @@ impl SidebarState {
         }
         self.append_pinned_places();
         self.append_devices();
-        self.append_separator();
-        self.append_ordered_place("network");
+        if polished(&self.preference_manager) {
+            // Network is a tree row beside This PC, as in Explorer.
+            let before = sidebar_rows(self.widget.upcast_ref());
+            self.append_ordered_place("network");
+            for row in sidebar_rows(self.widget.upcast_ref()) {
+                if !before.contains(&row) {
+                    tree_row(&row);
+                }
+            }
+        } else {
+            self.append_separator();
+            self.append_ordered_place("network");
+        }
         self.append_ordered_place("trash");
     }
 
@@ -139,4 +150,40 @@ fn mark_pinned(row: &gtk::Button) {
         Some(&crate::i18n::tr("fahras.sidebar.pinned")),
     );
     content.append(&pin);
+}
+
+fn sidebar_rows(root: &gtk::Widget) -> Vec<gtk::Widget> {
+    let mut rows = Vec::new();
+    let mut pending = vec![root.clone()];
+    while let Some(widget) = pending.pop() {
+        if widget.has_css_class("sidebar-row") {
+            rows.push(widget.clone());
+        }
+        pending.extend(std::iter::successors(
+            widget.first_child(),
+            gtk::Widget::next_sibling,
+        ));
+    }
+    rows
+}
+
+/// A top-level tree row: a collapsed chevron before its icon.
+fn tree_row(row: &gtk::Widget) {
+    let button = if row.has_css_class("sidebar-row") {
+        Some(row.clone())
+    } else {
+        std::iter::successors(row.first_child(), gtk::Widget::next_sibling)
+            .find(|child| child.has_css_class("sidebar-row"))
+    };
+    let Some(content) = button
+        .and_then(|button| button.downcast::<gtk::Button>().ok())
+        .and_then(|button| button.child())
+        .and_downcast::<gtk::Box>()
+    else {
+        return;
+    };
+    row.add_css_class("explorer-tree-row");
+    let chevron = crate::assets::primary_icon(crate::assets::icons::CHEVRON_RIGHT, 14);
+    chevron.add_css_class("sidebar-heading-chevron");
+    content.prepend(&chevron);
 }

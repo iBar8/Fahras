@@ -177,3 +177,33 @@ fn keep_shortcuts_button(button: &gtk::Widget, polished: bool) {
         button.set_visible(PreferenceManager::shared().show_keybinding_hints());
     }
 }
+
+/// Explorer greys out the commands that act on a selection while nothing is
+/// selected; the legacy looks keep them available.
+pub(super) fn grey_without_selection(
+    buttons: &[&gtk::Button],
+    controller: &Rc<crate::app::Browser>,
+    preferences: &Rc<PreferenceManager>,
+) {
+    let anchor = buttons.first().map(|button| (*button).clone());
+    let buttons: Vec<_> = buttons.iter().map(|button| button.downgrade()).collect();
+    let weak = Rc::downgrade(controller);
+    let manager = Rc::downgrade(preferences);
+    let update = Rc::new(move || {
+        let (Some(controller), Some(manager)) = (weak.upgrade(), manager.upgrade()) else {
+            return;
+        };
+        let available = !polished(&manager) || controller.selected_count() > 0;
+        for button in buttons.iter().filter_map(gtk::glib::WeakRef::upgrade) {
+            button.set_sensitive(available);
+        }
+    });
+    update();
+    {
+        let update = update.clone();
+        controller.observe(move |_| update());
+    }
+    if let Some(anchor) = anchor {
+        preferences.bind_preference(&anchor, polished, move |_, _| update());
+    }
+}

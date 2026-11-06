@@ -69,6 +69,14 @@ fn sidebar_names(open: &OpenWindow) -> Vec<String> {
     names
 }
 
+fn command_sensitive(open: &OpenWindow, name: &str) -> bool {
+    with_class(open, "explorer-command")
+        .into_iter()
+        .filter(|widget| widget.is::<gtk::Button>() && widget.is_mapped())
+        .find(|button| button.tooltip_text().as_deref() == Some(name))
+        .is_some_and(|button| button.is_sensitive())
+}
+
 /// The footer row's first widget, and whether its shortcuts button shows.
 fn footer_start(open: &OpenWindow) -> (gtk::Widget, bool) {
     let status = with_class(open, "explorer-status")
@@ -269,6 +277,8 @@ fn explorer_looks_swap_the_window_layout_live() {
                 new_icon(&open).as_deref(),
                 Some("fahras-fluent-new-symbolic")
             );
+            open.content.browser.browser().clear_active_selection();
+            wait_until(|| command_sensitive(&open, "Copy"));
             let (first, _) = footer_start(&open);
             assert!(
                 !first.has_css_class("explorer-status"),
@@ -279,6 +289,7 @@ fn explorer_looks_swap_the_window_layout_live() {
                 || format!("{:?}", sidebar_names(&open)),
             );
             assert!(!shown(&open, "explorer-pin"));
+            assert!(!shown(&open, "explorer-tree-row"));
             assert!(!shown(&open, "explorer-this-pc"));
             wait_until_or(
                 || separators(&open).iter().all(|text| text == "/"),
@@ -290,6 +301,13 @@ fn explorer_looks_swap_the_window_layout_live() {
             assert!(shown(&open, "explorer-details-pane"));
             assert!(shown(&open, "explorer-view-switches"));
             assert_eq!(new_icon(&open).as_deref(), Some("fahras-fluent-new-color"));
+            let browser = open.content.browser.browser();
+            browser.clear_active_selection();
+            wait_until(|| !command_sensitive(&open, "Copy"));
+            assert!(!command_sensitive(&open, "Delete"), "nothing to act on");
+            browser.select(0, 0);
+            wait_until(|| command_sensitive(&open, "Copy"));
+            browser.clear_active_selection();
             let (first, shortcuts_shown) = footer_start(&open);
             assert!(
                 first.has_css_class("explorer-status"),
@@ -307,6 +325,10 @@ fn explorer_looks_swap_the_window_layout_live() {
                 || format!("{:?}", sidebar_names(&open)),
             );
             assert!(shown(&open, "explorer-pin"), "user folders are pinned");
+            assert!(
+                shown(&open, "explorer-tree-row"),
+                "Network is a tree row beside This PC"
+            );
             assert!(
                 with_class(&open, "sidebar-heading-toggle")
                     .iter()

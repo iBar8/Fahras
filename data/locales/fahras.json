@@ -607,5 +607,21 @@
     "zh-CN": "已固定",
     "zh-TW": "已釘選",
     "ar": "مثبّت"
+  },
+  "fahras.columns.date_modified": {
+    "en": "Date modified",
+    "fr": "Modifié le",
+    "hu": "Módosítás dátuma",
+    "de": "Änderungsdatum",
+    "es": "Fecha de modificación",
+    "ja": "更新日時",
+    "pt-BR": "Data de modificação",
+    "ko": "수정한 날짜",
+    "vi": "Ngày sửa đổi",
+    "it": "Ultima modifica",
+    "ru": "Дата изменения",
+    "zh-CN": "修改日期",
+    "zh-TW": "修改日期",
+    "ar": "تاريخ التعديل"
   }
 }

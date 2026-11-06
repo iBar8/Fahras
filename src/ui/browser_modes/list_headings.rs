@@ -113,7 +113,10 @@ impl HeadingCells<'_> {
         register_list_column_cell(self.columns, index, &cell);
 
         let row = gtk::Box::new(gtk::Orientation::Horizontal, 5);
-        let label = gtk::Label::new(Some(&crate::i18n::tr(text)));
+        let label = gtk::Label::new(Some(
+            &crate::fahras::explorer_details::heading(text)
+                .unwrap_or_else(|| crate::i18n::tr(text)),
+        ));
         label.set_xalign(0.0);
         label.set_hexpand(true);
         label.set_ellipsize(gtk::pango::EllipsizeMode::End);

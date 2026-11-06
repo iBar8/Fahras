@@ -541,6 +541,11 @@ fn commands(parts: &ExplorerParts, ribbon: bool) -> Commands {
         ("New tab", new_tab),
         ("Settings", settings),
     ])));
+    polish::grey_without_selection(
+        &[&cut, &copy, &rename, &delete],
+        &view_ref.browser(),
+        parts.preferences,
+    );
     Commands {
         new,
         cut,

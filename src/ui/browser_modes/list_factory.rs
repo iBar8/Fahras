@@ -226,7 +226,11 @@ impl ListRow {
     }
 
     fn bind_labels(&self, item: &gtk::ListItem, entry: &FileEntry, pending_name: Option<&str>) {
-        set_label_if_changed(&self.name, pending_name.unwrap_or(&entry.display_name));
+        let shown = crate::fahras::explorer_details::shown_name(entry);
+        set_label_if_changed(
+            &self.name,
+            pending_name.unwrap_or(shown.as_deref().unwrap_or(&entry.display_name)),
+        );
         self.name
             .set_opacity(if entry.is_hidden { 0.65 } else { 1.0 });
         set_label_if_changed(&self.mode, &entry_mode(entry));

@@ -114,3 +114,8 @@
   background: transparent;
   padding: 0 6px;
 }
+
+/* Network sits beside This PC as a tree row. */
+.explorer-tree-row {
+  margin-top: 2px;
+}

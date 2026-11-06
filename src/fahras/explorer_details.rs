@@ -3,6 +3,11 @@
 //! Details view columns as File Explorer writes them: the system's short date
 //! and time, sizes in whole kilobytes, "File folder", and no size for folders.
 
+#![cfg_attr(
+    windows,
+    expect(unsafe_code, reason = "dates and file types come from Win32 APIs")
+)]
+
 use std::cell::Cell;
 
 use crate::model::{FileEntry, MetadataValue};
@@ -64,7 +69,6 @@ pub(crate) fn date(seconds: i64) -> Option<String> {
 }
 
 #[cfg(windows)]
-#[expect(unsafe_code, reason = "Windows formats dates through a Win32 API")]
 fn system_date(local: &gtk::glib::DateTime) -> String {
     use windows_sys::Win32::{
         Foundation::SYSTEMTIME,
@@ -123,6 +127,91 @@ fn fallback_date(local: &gtk::glib::DateTime) -> String {
         .format("%-m/%-d/%Y %-I:%M %p")
         .map(|text| text.to_string())
         .unwrap_or_default()
+}
+
+/// The name Explorer shows: without the extension of a known file type,
+/// unless Windows is set to show extensions.
+pub(crate) fn shown_name(entry: &FileEntry) -> Option<String> {
+    if !is_polished() || entry.is_directory() || !hides_extensions() {
+        return None;
+    }
+    let (stem, extension) = entry.display_name.rsplit_once('.')?;
+    (!stem.is_empty() && known_type(extension)).then(|| stem.to_owned())
+}
+
+/// The heading Explorer gives a column, for those it names differently.
+pub(crate) fn heading(text: &str) -> Option<String> {
+    (is_polished() && text == "Modified").then(|| crate::i18n::tr("fahras.columns.date_modified"))
+}
+
+thread_local! {
+    static KNOWN_TYPES: std::cell::RefCell<std::collections::HashMap<String, bool>> =
+        std::cell::RefCell::new(std::collections::HashMap::new());
+}
+
+fn known_type(extension: &str) -> bool {
+    let extension = extension.to_ascii_lowercase();
+    if let Some(known) = KNOWN_TYPES.with_borrow(|known| known.get(&extension).copied()) {
+        return known;
+    }
+    let known = registered_type(&extension);
+    KNOWN_TYPES.with_borrow_mut(|types| types.insert(extension, known));
+    known
+}
+
+/// Windows hides extensions unless "Hide extensions for known file types" is off.
+#[cfg(windows)]
+fn hides_extensions() -> bool {
+    use windows_sys::Win32::System::Registry::{HKEY_CURRENT_USER, RRF_RT_REG_DWORD, RegGetValueW};
+    let key: Vec<u16> = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\0"
+        .encode_utf16()
+        .collect();
+    let name: Vec<u16> = "HideFileExt\0".encode_utf16().collect();
+    let mut value = 1_u32;
+    let mut size = size_of::<u32>() as u32;
+    // SAFETY: the buffers are valid for the sizes passed.
+    let status = unsafe {
+        RegGetValueW(
+            HKEY_CURRENT_USER,
+            key.as_ptr(),
+            name.as_ptr(),
+            RRF_RT_REG_DWORD,
+            std::ptr::null_mut(),
+            std::ptr::from_mut(&mut value).cast(),
+            &mut size,
+        )
+    };
+    status != 0 || value != 0
+}
+
+#[cfg(not(windows))]
+fn hides_extensions() -> bool {
+    true
+}
+
+/// A type is known when Windows has a class registered for its extension.
+#[cfg(windows)]
+fn registered_type(extension: &str) -> bool {
+    use windows_sys::Win32::System::Registry::{
+        HKEY, HKEY_CLASSES_ROOT, KEY_READ, RegCloseKey, RegOpenKeyExW,
+    };
+    let name: Vec<u16> = format!(".{extension}\0").encode_utf16().collect();
+    let mut key: HKEY = std::ptr::null_mut();
+    // SAFETY: the name is terminated and the key is closed when opened.
+    unsafe {
+        if RegOpenKeyExW(HKEY_CLASSES_ROOT, name.as_ptr(), 0, KEY_READ, &mut key) != 0 {
+            return false;
+        }
+        RegCloseKey(key);
+    }
+    true
+}
+
+/// Elsewhere a type is known when the system's MIME database knows it.
+#[cfg(not(windows))]
+fn registered_type(extension: &str) -> bool {
+    let (content_type, _) = gtk::gio::content_type_guess(Some(format!("file.{extension}")), None);
+    !gtk::gio::content_type_is_unknown(&content_type)
 }
 
 #[cfg(test)]
