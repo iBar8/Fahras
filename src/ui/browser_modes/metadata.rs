@@ -48,6 +48,9 @@ pub(in crate::ui) fn icon_details_need_fill(entry: &FileEntry) -> bool {
 }
 
 pub(in crate::ui) fn entry_size(entry: &FileEntry) -> String {
+    if let Some(size) = crate::fahras::explorer_details::size(entry) {
+        return size;
+    }
     if entry.is_directory() {
         return folder_item_info(entry).unwrap_or_default();
     }
@@ -58,6 +61,9 @@ pub(in crate::ui) fn entry_size(entry: &FileEntry) -> String {
 }
 
 pub(super) fn entry_type(entry: &FileEntry) -> String {
+    if let Some(kind) = crate::fahras::explorer_details::kind(entry) {
+        return kind;
+    }
     match crate::services::entry_type(entry) {
         crate::services::EntryType::Known(description) => description,
         kind => crate::i18n::tr(kind.description()),

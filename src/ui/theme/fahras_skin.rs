@@ -42,6 +42,7 @@ thread_local! {
 /// syntax colors. Light or dark follows the theme.
 pub(super) fn tokens(skin: ExplorerSkin, theme: &ThemeTokens) -> ThemeTokens {
     crate::fahras::explorer_icons::set_active(skin != ExplorerSkin::Off);
+    crate::fahras::explorer_details::set_polished(skin.is_polished());
     let Some(palette) = palette(skin, is_dark(&theme.background)) else {
         return theme.clone();
     };
@@ -93,20 +94,20 @@ pub(super) fn apply_stylesheet(skin: ExplorerSkin) {
 }
 
 fn stylesheet(skin: ExplorerSkin) -> &'static str {
-    match skin {
-        ExplorerSkin::Off => "",
+    match skin.base() {
         ExplorerSkin::Windows10 => WINDOWS_10_CSS,
         ExplorerSkin::Windows11 => WINDOWS_11_CSS,
+        _ => "",
     }
 }
 
 fn palette(skin: ExplorerSkin, dark: bool) -> Option<Palette> {
-    match (skin, dark) {
-        (ExplorerSkin::Off, _) => None,
+    match (skin.base(), dark) {
         (ExplorerSkin::Windows10, false) => Some(WINDOWS_10_LIGHT),
         (ExplorerSkin::Windows10, true) => Some(WINDOWS_10_DARK),
         (ExplorerSkin::Windows11, false) => Some(WINDOWS_11_LIGHT),
         (ExplorerSkin::Windows11, true) => Some(WINDOWS_11_DARK),
+        _ => None,
     }
 }
 

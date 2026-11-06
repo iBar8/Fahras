@@ -169,6 +169,11 @@ pub fn modified_date_example(format: DateFormat) -> String {
 }
 
 fn modified_date_for_seconds(seconds: i64, display: DateDisplay) -> String {
+    if matches!(display, DateDisplay::Preferred)
+        && let Some(date) = crate::fahras::explorer_details::date(seconds)
+    {
+        return date;
+    }
     let format = MODIFIED_DATE_FORMAT.with(Cell::get);
     let Some(modified) = glib::DateTime::from_unix_local(seconds).ok() else {
         return "—".to_owned();

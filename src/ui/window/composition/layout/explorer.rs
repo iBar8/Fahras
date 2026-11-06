@@ -94,8 +94,8 @@ impl Layout {
         chrome.set_visible(explorer);
         set_visible(&self.header, !explorer);
         set_visible(&self.status, explorer);
-        set_visible(&self.ribbon, skin == ExplorerSkin::Windows10);
-        set_visible(&self.command_bar, skin == ExplorerSkin::Windows11);
+        set_visible(&self.ribbon, skin.base() == ExplorerSkin::Windows10);
+        set_visible(&self.command_bar, skin.base() == ExplorerSkin::Windows11);
         self.place_location(explorer);
         // The footer hides its own count while the Explorer one shows.
         self.footer.refresh_filter();

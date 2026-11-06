@@ -21,6 +21,14 @@ pub(super) fn append_look_options(content: &gtk::Box, preferences: &Rc<Preferenc
             ("Fahras", ExplorerSkin::Off),
             ("Windows 10", ExplorerSkin::Windows10),
             ("Windows 11", ExplorerSkin::Windows11),
+            (
+                "fahras.look.windows10_legacy",
+                ExplorerSkin::Windows10Legacy,
+            ),
+            (
+                "fahras.look.windows11_legacy",
+                ExplorerSkin::Windows11Legacy,
+            ),
         ],
         PreferenceManager::explorer_skin,
         PreferenceManager::set_explorer_skin,

@@ -42,17 +42,44 @@ pub(crate) enum ExplorerSkin {
     Off,
     Windows10,
     Windows11,
+    /// The first Explorer looks, kept for those who prefer Fahras's own icons,
+    /// dates and address bar inside Explorer's layout.
+    Windows10Legacy,
+    Windows11Legacy,
 }
 
 impl ExplorerSkin {
-    pub(crate) const ALL: [Self; 3] = [Self::Off, Self::Windows10, Self::Windows11];
+    pub(crate) const ALL: [Self; 5] = [
+        Self::Off,
+        Self::Windows10,
+        Self::Windows11,
+        Self::Windows10Legacy,
+        Self::Windows11Legacy,
+    ];
 
     fn id(self) -> &'static str {
         match self {
             Self::Off => "off",
             Self::Windows10 => "windows10",
             Self::Windows11 => "windows11",
+            Self::Windows10Legacy => "windows10-legacy",
+            Self::Windows11Legacy => "windows11-legacy",
         }
+    }
+
+    /// The Windows version whose layout and colors this look uses.
+    pub(crate) fn base(self) -> Self {
+        match self {
+            Self::Windows10Legacy => Self::Windows10,
+            Self::Windows11Legacy => Self::Windows11,
+            skin => skin,
+        }
+    }
+
+    /// Whether this look also copies Explorer's details: Windows' own icons,
+    /// its date and size formats and its address bar.
+    pub(crate) fn is_polished(self) -> bool {
+        matches!(self, Self::Windows10 | Self::Windows11)
     }
 }
 

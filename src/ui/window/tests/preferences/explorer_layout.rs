@@ -212,6 +212,16 @@ fn explorer_looks_swap_the_window_layout_live() {
             settle();
             assert!(shown(&open, "explorer-ribbon"));
             assert!(!shown(&open, "explorer-command-bar"));
+            manager.set_explorer_skin(ExplorerSkin::Windows11Legacy);
+            settle();
+            assert!(
+                shown(&open, "explorer-command-bar"),
+                "legacy keeps the layout"
+            );
+            assert!(!crate::fahras::explorer_details::is_polished());
+            manager.set_explorer_skin(ExplorerSkin::Windows11);
+            settle();
+            assert!(crate::fahras::explorer_details::is_polished());
 
             manager.set_explorer_skin(ExplorerSkin::Off);
             settle();
