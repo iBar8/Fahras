@@ -197,6 +197,7 @@ fn pane_header(chrome: &PaneChrome) -> (gtk::Box, gtk::Spinner, gtk::Image) {
         )),
     );
     truncated_hint.set_visible(false);
+    crate::ui::fahras_layout::keep_in_explorer_layout(&truncated_hint);
     heading_box.append(&heading);
     heading_box.append(&truncated_hint);
     chrome.leading.set_valign(gtk::Align::Center);

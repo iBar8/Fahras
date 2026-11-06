@@ -9,21 +9,28 @@ use std::{ffi::OsStr, io, os::windows::ffi::OsStrExt, path::PathBuf};
 
 use windows::{
     Win32::{
-        Foundation::{HWND, POINT},
-        System::Com::{COINIT_APARTMENTTHREADED, CoInitializeEx, CoTaskMemFree},
+        Foundation::{HWND, LPARAM, LRESULT, POINT, WPARAM},
+        Graphics::Gdi::ClientToScreen,
+        System::{
+            Com::{COINIT_APARTMENTTHREADED, CoInitializeEx, CoTaskMemFree, CoUninitialize},
+            Threading::GetCurrentThreadId,
+        },
         UI::{
             Shell::{
                 CMF_EXPLORE, CMF_NORMAL, CMIC_MASK_PTINVOKE, CMINVOKECOMMANDINFO,
-                CMINVOKECOMMANDINFOEX, Common::ITEMIDLIST, IContextMenu, ILFindLastID,
-                IShellFolder, SHBindToParent, SHParseDisplayName,
+                CMINVOKECOMMANDINFOEX, Common::ITEMIDLIST, DefSubclassProc, IContextMenu,
+                IContextMenu2, IContextMenu3, ILFindLastID, IShellFolder, RemoveWindowSubclass,
+                SHBindToParent, SHParseDisplayName, SetWindowSubclass,
             },
             WindowsAndMessaging::{
-                CreatePopupMenu, DestroyMenu, GetCursorPos, GetForegroundWindow, SW_SHOWNORMAL,
-                SetForegroundWindow, TPM_RETURNCMD, TPM_RIGHTBUTTON, TrackPopupMenuEx,
+                CreatePopupMenu, DestroyMenu, GetCursorPos, GetForegroundWindow,
+                GetWindowThreadProcessId, SW_SHOWNORMAL, SetForegroundWindow, TPM_RETURNCMD,
+                TPM_RIGHTBUTTON, TrackPopupMenuEx, WM_DRAWITEM, WM_INITMENUPOPUP, WM_MEASUREITEM,
+                WM_MENUCHAR,
             },
         },
     },
-    core::{HSTRING, PCSTR, PCWSTR},
+    core::{HSTRING, Interface, PCSTR, PCWSTR},
 };
 use windows_sys::Win32::{
     Foundation::ERROR_SUCCESS,
@@ -39,10 +46,11 @@ const VERB: &str = "Fahras";
 /// Folders and drives: the shell classes Explorer opens by their default verb.
 const FOLDER_CLASSES: [&str; 2] = [r"Software\Classes\Directory", r"Software\Classes\Drive"];
 
-/// Shows the shell's own menu for `paths`, which share one folder, at the
-/// pointer, and runs the command chosen from it.
-pub(crate) fn show_context_menu(paths: &[PathBuf]) -> bool {
-    match context_menu(paths) {
+/// Shows the shell's own menu for `paths`, which share one folder, and runs
+/// the command chosen from it. It opens at `anchor`, a point in the window's
+/// client area, or at the pointer.
+pub(crate) fn show_context_menu(paths: &[PathBuf], anchor: Option<(i32, i32)>) -> bool {
+    match context_menu(paths, anchor) {
         Ok(()) => true,
         Err(error) => {
             tracing::warn!(%error, "could not show the Windows context menu");
@@ -61,10 +69,109 @@ impl Drop for Pidls {
     }
 }
 
-fn context_menu(paths: &[PathBuf]) -> windows::core::Result<()> {
-    unsafe {
+/// Holds this thread's COM use for one menu and releases it afterwards.
+struct ComUse(bool);
+
+impl ComUse {
+    fn begin() -> Self {
         // GTK has already set up COM on this thread; a second call only counts it.
-        let _ = CoInitializeEx(None, COINIT_APARTMENTTHREADED);
+        Self(unsafe { CoInitializeEx(None, COINIT_APARTMENTTHREADED) }.is_ok())
+    }
+}
+
+impl Drop for ComUse {
+    fn drop(&mut self) {
+        if self.0 {
+            unsafe { CoUninitialize() };
+        }
+    }
+}
+
+/// Send to, Open with and other submenus fill themselves in from messages
+/// sent to the menu's owner window, so those reach the shell's menu.
+struct MenuMessages<'a> {
+    window: HWND,
+    installed: bool,
+    menu: std::marker::PhantomData<&'a IContextMenu>,
+}
+
+const SUBCLASS_ID: usize = 0x4661_6872;
+
+impl<'a> MenuMessages<'a> {
+    fn forward(window: HWND, menu: &'a IContextMenu) -> Self {
+        // A window can only be subclassed from the thread that owns it.
+        let ours = unsafe { GetWindowThreadProcessId(window, None) == GetCurrentThreadId() };
+        let installed = ours
+            && unsafe {
+                SetWindowSubclass(
+                    window,
+                    Some(forward_menu_message),
+                    SUBCLASS_ID,
+                    std::ptr::from_ref(menu) as usize,
+                )
+            }
+            .as_bool();
+        Self {
+            window,
+            installed,
+            menu: std::marker::PhantomData,
+        }
+    }
+}
+
+impl Drop for MenuMessages<'_> {
+    fn drop(&mut self) {
+        if self.installed {
+            let _ = unsafe {
+                RemoveWindowSubclass(self.window, Some(forward_menu_message), SUBCLASS_ID)
+            };
+        }
+    }
+}
+
+unsafe extern "system" fn forward_menu_message(
+    window: HWND,
+    message: u32,
+    wparam: WPARAM,
+    lparam: LPARAM,
+    _id: usize,
+    data: usize,
+) -> LRESULT {
+    if matches!(
+        message,
+        WM_INITMENUPOPUP | WM_DRAWITEM | WM_MEASUREITEM | WM_MENUCHAR
+    ) {
+        // SAFETY: `MenuMessages` removes this subclass before the menu is dropped.
+        let menu = unsafe { &*(data as *const IContextMenu) };
+        if let Ok(menu) = menu.cast::<IContextMenu3>() {
+            let mut result = LRESULT(0);
+            if unsafe { menu.HandleMenuMsg2(message, wparam, lparam, Some(&mut result)) }.is_ok() {
+                return result;
+            }
+        } else if let Ok(menu) = menu.cast::<IContextMenu2>()
+            && unsafe { menu.HandleMenuMsg(message, wparam, lparam) }.is_ok()
+        {
+            return LRESULT(0);
+        }
+    }
+    unsafe { DefSubclassProc(window, message, wparam, lparam) }
+}
+
+fn menu_point(window: HWND, anchor: Option<(i32, i32)>) -> windows::core::Result<POINT> {
+    let mut point = POINT::default();
+    match anchor {
+        Some((x, y)) => {
+            point = POINT { x, y };
+            let _ = unsafe { ClientToScreen(window, &mut point) };
+        }
+        None => unsafe { GetCursorPos(&mut point)? },
+    }
+    Ok(point)
+}
+
+fn context_menu(paths: &[PathBuf], anchor: Option<(i32, i32)>) -> windows::core::Result<()> {
+    let _com = ComUse::begin();
+    unsafe {
         let mut pidls = Pidls(Vec::with_capacity(paths.len()));
         for path in paths {
             let mut pidl = std::ptr::null_mut();
@@ -86,9 +193,9 @@ fn context_menu(paths: &[PathBuf]) -> windows::core::Result<()> {
         let shown = (|| {
             menu.QueryContextMenu(popup, 0, 1, 0x7fff, CMF_NORMAL | CMF_EXPLORE)
                 .ok()?;
-            let mut point = POINT::default();
-            GetCursorPos(&mut point)?;
+            let point = menu_point(window, anchor)?;
             let _ = SetForegroundWindow(window);
+            let forwarding = MenuMessages::forward(window, &menu);
             let chosen = TrackPopupMenuEx(
                 popup,
                 (TPM_RETURNCMD | TPM_RIGHTBUTTON).0,
@@ -97,6 +204,7 @@ fn context_menu(paths: &[PathBuf]) -> windows::core::Result<()> {
                 window,
                 None,
             );
+            drop(forwarding);
             if chosen.0 > 0 {
                 let offset = (chosen.0 - 1) as usize;
                 let info = CMINVOKECOMMANDINFOEX {
@@ -204,7 +312,10 @@ pub(crate) fn set_opens_folders(enabled: bool) -> io::Result<()> {
 
 /// With an Explorer look on, right-clicking files shows the Windows menu in
 /// place of Fahras's own, as File Explorer does.
-pub(crate) fn replaces_item_menu(entries: &[crate::model::FileEntry]) -> bool {
+pub(crate) fn replaces_item_menu(
+    entries: &[crate::model::FileEntry],
+    anchor: Option<(i32, i32)>,
+) -> bool {
     if crate::ui::preferences::PreferenceManager::shared().explorer_skin()
         == crate::fahras::look::ExplorerSkin::Off
     {
@@ -221,5 +332,5 @@ pub(crate) fn replaces_item_menu(entries: &[crate::model::FileEntry]) -> bool {
         .collect();
     paths.len() == entries.len()
         && crate::fahras::shell_menu::share_one_folder(&paths)
-        && show_context_menu(&paths)
+        && show_context_menu(&paths, anchor)
 }

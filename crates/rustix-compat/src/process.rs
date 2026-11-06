@@ -144,6 +144,29 @@ bitflags! {
     }
 }
 
+/// Whether `pid` is a running process, as `kill(pid, 0)` answers on Linux.
+pub fn test_kill_process(pid: Pid) -> Result<()> {
+    use windows_sys::Win32::{
+        Foundation::{CloseHandle, ERROR_ACCESS_DENIED, GetLastError, STILL_ACTIVE},
+        System::Threading::{GetExitCodeProcess, OpenProcess, PROCESS_QUERY_LIMITED_INFORMATION},
+    };
+    // SAFETY: the handle is checked before use and closed before returning.
+    unsafe {
+        let process = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, 0, pid.0 as u32);
+        if process.is_null() {
+            return if GetLastError() == ERROR_ACCESS_DENIED {
+                Err(Errno::PERM)
+            } else {
+                Err(Errno::SRCH)
+            };
+        }
+        let mut code = 0;
+        let running = GetExitCodeProcess(process, &mut code) != 0 && code == STILL_ACTIVE as u32;
+        CloseHandle(process);
+        if running { Ok(()) } else { Err(Errno::SRCH) }
+    }
+}
+
 pub fn kill_process(_pid: Pid, _signal: Signal) -> Result<()> {
     Err(Errno::NOSYS)
 }

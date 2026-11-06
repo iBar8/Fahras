@@ -711,7 +711,12 @@ impl ItemMenuTrigger {
             if let Some(gesture) = gesture {
                 gesture.set_state(gtk::EventSequenceState::Claimed);
             }
-            if crate::platform::windows_shell::replaces_item_menu(&entries) {
+            // From the keyboard, the menu opens at the row instead of the pointer.
+            let anchor = gesture
+                .is_none()
+                .then(|| crate::fahras::shell_menu::window_point(&widget, x, y))
+                .flatten();
+            if crate::platform::windows_shell::replaces_item_menu(&entries, anchor) {
                 return true;
             }
         }

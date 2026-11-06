@@ -101,6 +101,11 @@ impl Layout {
         self.footer.refresh_filter();
         if let Some(window) = self.window.upgrade() {
             use_system_title_bar(&window, explorer);
+            if let Some(header) = self.header.upgrade() {
+                crate::ui::fahras_layout::hide_window_buttons_under_system_frame(
+                    header.upcast_ref(),
+                );
+            }
             // A window that opened with Fahras's frame has no system buttons.
             set_visible(
                 &self.window_controls,

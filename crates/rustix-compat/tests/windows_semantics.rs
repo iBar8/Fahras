@@ -11,8 +11,8 @@ use std::{
 };
 
 use rustix_compat::fs::{
-    Access, AtFlags, CWD, Mode, OFlags, Timespec, Timestamps, accessat, fsync, open, renameat,
-    unlinkat, utimensat,
+    Access, AtFlags, CWD, Mode, OFlags, ResolveFlags, Timespec, Timestamps, accessat, fsync, open,
+    openat2, renameat, unlinkat, utimensat,
 };
 
 fn scratch(name: &str) -> PathBuf {
@@ -147,4 +147,73 @@ fn a_broken_folder_link_is_removed() {
     fs::remove_dir(&gone).expect("break the link");
     unlinkat(CWD, &link, AtFlags::empty()).expect("a dangling folder link is unlinked");
     assert!(fs::symlink_metadata(&link).is_err());
+}
+
+#[test]
+fn a_document_folder_opens_and_reads_an_image_beneath_it() {
+    use std::io::Read;
+    let root = scratch("beneath");
+    fs::create_dir(root.join("img")).expect("image folder");
+    fs::write(root.join("img").join("logo.png"), b"png").expect("image");
+    fs::write(root.with_extension("outside.png"), b"no").expect("outside file");
+    let folder = open(
+        &root,
+        OFlags::RDONLY | OFlags::DIRECTORY | OFlags::CLOEXEC,
+        Mode::empty(),
+    )
+    .expect("a folder opens");
+    let beneath = ResolveFlags::BENEATH | ResolveFlags::NO_MAGICLINKS;
+    let image = openat2(
+        &folder,
+        "img/logo.png",
+        OFlags::RDONLY,
+        Mode::empty(),
+        beneath,
+    )
+    .expect("an image inside the folder opens");
+    let mut bytes = Vec::new();
+    fs::File::from(image).read_to_end(&mut bytes).expect("read");
+    assert_eq!(bytes, b"png");
+    let outside = format!(
+        "../{}",
+        root.with_extension("outside.png")
+            .file_name()
+            .expect("name")
+            .to_string_lossy()
+    );
+    assert!(
+        openat2(
+            &folder,
+            outside.as_str(),
+            OFlags::RDONLY,
+            Mode::empty(),
+            beneath
+        )
+        .is_err()
+    );
+}
+
+#[test]
+fn folder_locks_are_reported_unsupported_instead_of_granted() {
+    use rustix_compat::fs::{FlockOperation, flock};
+    let root = scratch("flock");
+    let folder = open(&root, OFlags::RDONLY | OFlags::DIRECTORY, Mode::empty()).expect("folder");
+    assert_eq!(
+        flock(&folder, FlockOperation::NonBlockingLockExclusive),
+        Err(rustix_compat::io::Errno::OPNOTSUPP)
+    );
+}
+
+#[test]
+fn a_running_process_is_told_from_an_ended_one() {
+    use rustix_compat::process::{Pid, getpid, test_kill_process};
+    assert_eq!(test_kill_process(getpid()), Ok(()));
+    let mut child = std::process::Command::new("cmd")
+        .args(["/C", "exit 0"])
+        .spawn()
+        .expect("child");
+    let pid = Pid::from_child(&child);
+    child.wait().expect("child ends");
+    drop(child);
+    assert_eq!(test_kill_process(pid), Err(rustix_compat::io::Errno::SRCH));
 }

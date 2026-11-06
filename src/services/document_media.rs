@@ -98,7 +98,13 @@ fn read_image(parent: &Path, destination: &str) -> Result<(Vec<u8>, String), Str
         .canonicalize()
         .map_err(|_| "Image is missing or outside the document's folder")?;
     let _hold = super::file_activity::hold([parent, &image, &real], || {})?;
-    let root = File::open(parent).map_err(|_| "Cannot open the document's folder")?;
+    // Not `File::open`, which cannot open a folder on Windows.
+    let root = rustix::fs::open(
+        parent,
+        OFlags::RDONLY | OFlags::DIRECTORY | OFlags::CLOEXEC,
+        Mode::empty(),
+    )
+    .map_err(|_| "Cannot open the document's folder")?;
     // Resolve and open atomically beneath this directory, including symlink targets.
     let fd = openat2(
         &root,

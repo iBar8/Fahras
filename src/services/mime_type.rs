@@ -77,7 +77,7 @@ fn guess_mime_description(name: &str) -> String {
     if description.is_empty() {
         return OTHER_TYPE_NAME.to_owned();
     }
-    description.to_string()
+    crate::fahras::file_types::readable(&content_type, &description)
 }
 
 thread_local! {

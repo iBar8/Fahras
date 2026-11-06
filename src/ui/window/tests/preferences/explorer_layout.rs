@@ -136,6 +136,18 @@ fn explorer_looks_swap_the_window_layout_live() {
             let reopened = OpenWindow::open();
             assert!(reopened.window.titlebar().is_none(), "the system title bar");
             assert!(!shown(&reopened, "explorer-window-controls"));
+            manager.set_explorer_skin(ExplorerSkin::Off);
+            settle();
+            assert!(shown(&reopened, "browser-header"));
+            assert!(
+                !with_class(&reopened, "fahras-window-button")
+                    .iter()
+                    .any(gtk::Widget::is_visible),
+                "the system title bar keeps the only window buttons"
+            );
+            assert!(shown(&open, "fahras-window-button"));
+            manager.set_explorer_skin(ExplorerSkin::Windows11);
+            settle();
             reopened.window.destroy();
             assert!(
                 open.content.footer().widget().parent().is_some(),

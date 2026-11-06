@@ -34,6 +34,24 @@ public static class ShellWin {
     [DllImport("user32.dll")] static extern bool EnumWindows(EnumProc callback, IntPtr data);
     const uint ByPosition = 0x400, Separator = 0x800, Hilite = 0x80;
 
+    [StructLayout(LayoutKind.Sequential)] public struct Rect { public int Left, Top, Right, Bottom; }
+    [DllImport("user32.dll")] static extern bool GetWindowRect(IntPtr hWnd, out Rect rect);
+
+    // Where the newest open menu is on screen.
+    public static Rect MenuBounds() {
+        Rect bounds = new Rect();
+        EnumWindows((hWnd, data) => {
+            var name = new StringBuilder(64);
+            GetClassName(hWnd, name, 64);
+            if (name.ToString() == "#32768" && IsWindowVisible(hWnd)) {
+                GetWindowRect(hWnd, out bounds);
+                return false;
+            }
+            return true;
+        }, IntPtr.Zero);
+        return bounds;
+    }
+
     // The open popup menus, oldest first: Windows draws each in a "#32768" window.
     public static List<IntPtr> PopupMenus() {
         var menus = new List<IntPtr>();
@@ -262,11 +280,29 @@ foreach ($lang in 'en', 'ar') {
     Remove-Item $archive -ErrorAction SilentlyContinue
     Write-Settings @{ language = $lang; explorer_skin = 'windows11'; browser_mode = 'list' }
     $process = Start-Fahras $menuFolder "menu-$lang"
-    # The folder's only file is selected; Shift+F10 opens its menu.
+    # The folder's only file is selected; Shift+F10 opens its menu at the file,
+    # not at the pointer, which waits in the top corner.
+    [ShellWin]::SetCursorPos(1010, 3) | Out-Null
     Keys '+{F10}' 2500
     $menu = [ShellWin]::PopupMenus() | Select-Object -First 1
     Check "[$lang] Shift+F10 on a file opens the Windows menu" ([bool] $menu)
     Shot "explorer-05-native-menu-$lang" | Out-Null
+    if ($menu) {
+        $bounds = [ShellWin]::MenuBounds()
+        Log "      menu at: $($bounds.Left),$($bounds.Top)"
+        Check "[$lang] the keyboard opens the menu at the file" ($bounds.Top -gt 100 -and $bounds.Top -lt 400)
+        if (Highlight-Menu-Item 'Send to') {
+            Keys '{RIGHT}' 2000
+            $targets = @([ShellWin]::Items(([ShellWin]::PopupMenus() | Select-Object -Last 1)) | Where-Object { $_ -and $_ -ne '-' })
+            Log "      Send to: $($targets -join ' | ')"
+            Shot "explorer-05b-send-to-$lang" | Out-Null
+            Check "[$lang] Send to lists its places" ($targets.Count -ge 2)
+            Keys '{ESC}{ESC}' 800
+        } else {
+            Check "[$lang] the menu has Send to" $false
+        }
+        Keys '+{F10}' 2500
+    }
     if ($menu) {
         $names = [ShellWin]::Items($menu)
         Log "      menu: $($names -join ' | ')"

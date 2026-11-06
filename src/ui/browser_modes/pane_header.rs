@@ -76,6 +76,7 @@ pub(super) struct ContentActions {
 impl ContentActions {
     pub(super) fn append(actions: &gtk::Box, browser: &Rc<Browser>, depth: usize) -> Self {
         let leftovers = browser::leftovers_button(browser, depth);
+        crate::ui::fahras_layout::keep_in_explorer_layout(&leftovers);
         actions.append(&leftovers);
         let empty_trash = browser::empty_trash_button(browser);
         let is_trash = browser
@@ -83,6 +84,7 @@ impl ContentActions {
             .is_some_and(|location| browser::is_trash_root(&location));
         empty_trash.set_visible(is_trash);
         empty_trash.set_sensitive(false);
+        crate::ui::fahras_layout::keep_in_explorer_layout(&empty_trash);
         actions.append(&empty_trash);
         Self {
             leftovers,

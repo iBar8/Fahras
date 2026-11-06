@@ -415,5 +415,21 @@
     "zh-CN": "安装程序在完成前停止（代码 %{code}）。Fahras 未更新。",
     "zh-TW": "安裝程式在完成前停止（代碼 %{code}）。Fahras 未更新。",
     "ar": "توقف برنامج التثبيت قبل أن ينتهي (الرمز %{code}). لم يُحدَّث فهرس."
+  },
+  "fahras.file_type.extension": {
+    "en": "%{extension} File",
+    "fr": "Fichier %{extension}",
+    "hu": "%{extension}-fájl",
+    "de": "%{extension}-Datei",
+    "es": "Archivo %{extension}",
+    "ja": "%{extension} ファイル",
+    "pt-BR": "Arquivo %{extension}",
+    "ko": "%{extension} 파일",
+    "vi": "Tệp %{extension}",
+    "it": "File %{extension}",
+    "ru": "Файл %{extension}",
+    "zh-CN": "%{extension} 文件",
+    "zh-TW": "%{extension} 檔案",
+    "ar": "ملف %{extension}"
   }
 }

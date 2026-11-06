@@ -566,8 +566,10 @@ pub fn fcntl_setfl<Fd: AsFd>(fd: Fd, flags: OFlags) -> Result<()> {
     Ok(())
 }
 
+/// Windows has no advisory locks on folders. Reporting success would let a
+/// caller treat a lock another process relies on as free.
 pub fn flock<Fd: AsFd>(_fd: Fd, _operation: FlockOperation) -> Result<()> {
-    Ok(())
+    Err(Errno::OPNOTSUPP)
 }
 
 pub fn access<P: Arg>(path: P, access: Access) -> Result<()> {

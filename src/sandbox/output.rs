@@ -251,7 +251,15 @@ fn remove_if_orphaned(path: &Path, uid: u32) {
         return;
     };
     let ours = fstat(&fd).is_ok_and(|stat| stat.st_uid == uid);
-    if ours && flock(&fd, FlockOperation::NonBlockingLockExclusive).is_ok() {
+    let free = match flock(&fd, FlockOperation::NonBlockingLockExclusive) {
+        Ok(()) => true,
+        // Windows cannot lock folders; the process named in the folder must have ended.
+        Err(rustix::io::Errno::OPNOTSUPP) => {
+            crate::fahras::private_outputs::owner_has_exited(path, PRIVATE_OUTPUT_PREFIX)
+        }
+        Err(_) => false,
+    };
+    if ours && free {
         let _ignored = fs::remove_dir_all(path);
     }
 }

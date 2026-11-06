@@ -860,7 +860,10 @@ impl ViewState {
             if let Some(reported) = crate::adapters::content_type_of(&info) {
                 let content_type =
                     crate::services::refine_reported_content_type(&reported, Path::new(&name));
-                kind.set_text(&gio::content_type_get_description(&content_type));
+                kind.set_text(&crate::fahras::file_types::readable(
+                    &content_type,
+                    &gio::content_type_get_description(&content_type),
+                ));
                 if let Some(app) = gio::AppInfo::default_for_type(&content_type, false) {
                     opens_with.set_text(&app.display_name());
                 }
