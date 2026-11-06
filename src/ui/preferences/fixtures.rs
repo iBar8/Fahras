@@ -77,7 +77,8 @@ pub(in crate::ui) fn non_default_preferences() -> Preferences {
         interface_font: Some("Fixture Sans".into()),
         arabic_font: Some("Amiri".into()),
         app_icon: crate::fahras::look::AppIcon::Ink,
-        explorer_skin: crate::fahras::look::ExplorerSkin::Windows11,
+        // Off: an Explorer look replaces the layout Strata's tests are written for.
+        explorer_skin: crate::fahras::look::ExplorerSkin::Off,
         interface_renderer: InterfaceRenderer::Cairo,
         language: crate::i18n::Language::English,
         folders_first: false,

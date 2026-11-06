@@ -457,6 +457,8 @@ fn commands(parts: &ExplorerParts, ribbon: bool) -> Commands {
         ribbon,
     )));
     view.set_always_show_arrow(!ribbon);
+    // The header's own copy keeps the header styling; this one takes Explorer's.
+    view.remove_css_class("header-action");
     view.add_css_class(if ribbon {
         "explorer-ribbon-command"
     } else {

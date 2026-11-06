@@ -49,8 +49,6 @@ fn saved_omarchy_mode_loads_and_changes_through_the_same_binding() {
             seed_omarchy_for_test();
             let mut preferences = non_default_preferences();
             preferences.mode = "omarchy".into();
-            // An Explorer skin would replace the Omarchy palette under test.
-            preferences.explorer_skin = crate::fahras::look::ExplorerSkin::Off;
             fs::write(
                 settings_path(),
                 toml::to_string(&preferences).expect("Omarchy preference fixture"),
@@ -229,8 +227,6 @@ fn invalid_omarchy_palette_while_running_keeps_the_applied_palette() {
             let mut preferences = non_default_preferences();
             preferences.mode = "omarchy".into();
             preferences.omarchy_variants.clear();
-            // An Explorer skin would replace the Omarchy palette under test.
-            preferences.explorer_skin = crate::fahras::look::ExplorerSkin::Off;
             fs::write(
                 settings_path(),
                 toml::to_string(&preferences).expect("Omarchy preference fixture"),
