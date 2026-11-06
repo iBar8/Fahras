@@ -307,17 +307,28 @@ impl ViewState {
         }
 
         let home = Location::local(glib::home_dir());
-        let locations = visible_crumbs(location, &home);
+        let locations = if crate::fahras::explorer_crumbs::shows_full_path() {
+            location.breadcrumbs()
+        } else {
+            visible_crumbs(location, &home)
+        };
         let starts_at_root = locations.first().is_some_and(is_filesystem_root);
         let last = locations.len().saturating_sub(1);
+        let separator_text = crate::fahras::explorer_crumbs::separator().unwrap_or("/");
+        let leading = crate::fahras::explorer_crumbs::leading_crumb(location);
+        let has_leading = leading.is_some();
+        if let Some(leading) = leading {
+            self.breadcrumbs.append(&leading);
+        }
         for (index, crumb) in locations.into_iter().enumerate() {
             let joins_root = starts_at_root && index == 1;
-            if index > 0 && !joins_root {
-                let separator = gtk::Label::new(Some("/"));
+            if (index > 0 || has_leading) && !joins_root {
+                let separator = gtk::Label::new(Some(separator_text));
                 separator.add_css_class("breadcrumb-separator");
                 self.breadcrumbs.append(&separator);
             }
-            let label = crumb_label(&crumb, &home);
+            let label = crate::fahras::explorer_crumbs::crumb_label(&crumb)
+                .unwrap_or_else(|| crumb_label(&crumb, &home));
             if index == last {
                 self.breadcrumbs
                     .append(&current_crumb(&crumb, &label, location));

@@ -216,6 +216,11 @@ impl BrowserView {
         self.state.location_control.clone().upcast()
     }
 
+    /// Redraws the address bar, as a look that changes its crumbs needs.
+    pub(crate) fn refresh_location(&self) {
+        self.state.sync_displayed_location();
+    }
+
     /// Shows the shared header spinner until the returned activity guard is dropped.
     pub fn begin_global_activity(&self, label: impl Into<String>) -> GlobalActivity {
         self.state.begin_global_activity(label)

@@ -4,6 +4,7 @@
 
 pub(crate) mod arabic_fonts;
 pub(crate) mod branding;
+pub(crate) mod explorer_crumbs;
 pub(crate) mod explorer_details;
 pub(crate) mod explorer_icons;
 pub(crate) mod file_types;

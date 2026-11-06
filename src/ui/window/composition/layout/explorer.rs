@@ -66,6 +66,7 @@ pub(in crate::ui::window) fn install(parts: &ExplorerParts) {
         window_controls: window_controls.downgrade(),
         ribbon: ribbon.downgrade(),
         command_bar: command_bar.downgrade(),
+        browser: parts.browser.downgrade(),
     };
     parts.preferences.bind_preference(
         &chrome,
@@ -86,6 +87,7 @@ struct Layout {
     window_controls: glib::WeakRef<gtk::Box>,
     ribbon: glib::WeakRef<gtk::Box>,
     command_bar: glib::WeakRef<gtk::Box>,
+    browser: crate::ui::browser::WeakBrowserView,
 }
 
 impl Layout {
@@ -97,6 +99,13 @@ impl Layout {
         set_visible(&self.ribbon, skin.base() == ExplorerSkin::Windows10);
         set_visible(&self.command_bar, skin.base() == ExplorerSkin::Windows11);
         self.place_location(explorer);
+        // The theme marks the polished looks as it applies them; redraw after it.
+        let browser = self.browser.clone();
+        glib::idle_add_local_once(move || {
+            if let Some(browser) = browser.upgrade() {
+                browser.refresh_location();
+            }
+        });
         // The footer hides its own count while the Explorer one shows.
         self.footer.refresh_filter();
         if let Some(window) = self.window.upgrade() {

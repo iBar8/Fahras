@@ -69,6 +69,23 @@ fn sidebar_names(open: &OpenWindow) -> Vec<String> {
     names
 }
 
+fn separators(open: &OpenWindow) -> Vec<String> {
+    with_class(open, "breadcrumb-separator")
+        .iter()
+        .filter_map(|widget| widget.downcast_ref::<gtk::Label>())
+        .map(|label| label.text().to_string())
+        .collect()
+}
+
+/// The address bar's crumbs, ancestors and the current folder.
+fn crumb_names(open: &OpenWindow) -> Vec<String> {
+    with_class(open, "breadcrumb")
+        .iter()
+        .filter(|widget| widget.is::<gtk::Button>() || widget.has_css_class("current"))
+        .filter_map(row_name)
+        .collect()
+}
+
 fn status_text(open: &OpenWindow) -> Vec<String> {
     with_class(open, "explorer-status")
         .iter()
@@ -219,9 +236,30 @@ fn explorer_looks_swap_the_window_layout_live() {
                 "legacy keeps the layout"
             );
             assert!(!crate::fahras::explorer_details::is_polished());
+            wait_until_or(
+                || separators(&open).iter().all(|text| text == "/"),
+                || format!("{:?}", separators(&open)),
+            );
             manager.set_explorer_skin(ExplorerSkin::Windows11);
             settle();
             assert!(crate::fahras::explorer_details::is_polished());
+            let child = directory.path().join("child");
+            open.content
+                .browser
+                .navigate_location(crate::model::Location::local(&child));
+            wait_until_or(
+                || {
+                    let separators = separators(&open);
+                    !separators.is_empty() && separators.iter().all(|text| text == "›")
+                },
+                || format!("{:?}", separators(&open)),
+            );
+            assert_eq!(
+                crumb_names(&open).len(),
+                child.components().count(),
+                "the whole path, not from the home folder: {:?}",
+                crumb_names(&open)
+            );
 
             manager.set_explorer_skin(ExplorerSkin::Off);
             settle();
