@@ -113,6 +113,13 @@ if ($Step -eq 'install') {
         Check 'Start menu shortcut is removed' (-not (Test-Path $shortcut))
         Check 'Installed apps entry is removed' (-not (Test-Path $uninstallKey))
         Check 'settings are kept' (Test-Path (Join-Path $env:LOCALAPPDATA 'strata\settings.toml'))
+        foreach ($class in 'Directory', 'Drive', 'Directory\Background') {
+            Check "Open in Fahras is gone from $class" (-not (Test-Path "HKCU:\Software\Classes\$class\shell\Fahras"))
+        }
+        foreach ($class in 'Directory', 'Drive') {
+            $verb = (Get-ItemProperty -Path "HKCU:\Software\Classes\$class\shell" -ErrorAction SilentlyContinue).'(default)'
+            Check "$class opens in File Explorer again" ($verb -ne 'Fahras')
+        }
     }
 }
 

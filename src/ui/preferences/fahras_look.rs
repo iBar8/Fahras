@@ -1,7 +1,15 @@
 // SPDX-License-Identifier: MIT
 
-use super::PreferenceManager;
+use super::{ListColumnId, PreferenceManager};
 use crate::fahras::look::{AppIcon, ExplorerSkin};
+
+const EXPLORER_COLUMNS: [ListColumnId; 5] = [
+    ListColumnId::Name,
+    ListColumnId::Modified,
+    ListColumnId::Type,
+    ListColumnId::Size,
+    ListColumnId::Mode,
+];
 
 impl PreferenceManager {
     pub fn app_icon(&self) -> AppIcon {
@@ -20,11 +28,22 @@ impl PreferenceManager {
         self.preferences.borrow().explorer_skin
     }
 
+    /// Turning an Explorer look on opens folders in Details view with
+    /// Explorer's columns: Name, Date modified, Type and Size.
     pub fn set_explorer_skin(&self, skin: ExplorerSkin) {
-        if self.explorer_skin() == skin {
+        let previous = self.explorer_skin();
+        if previous == skin {
             return;
         }
-        self.preferences.borrow_mut().explorer_skin = skin;
+        {
+            let mut preferences = self.preferences.borrow_mut();
+            preferences.explorer_skin = skin;
+            if previous == ExplorerSkin::Off {
+                preferences.browser_mode = "list".to_owned();
+                preferences.list_column_order = EXPLORER_COLUMNS.to_vec();
+                preferences.list_hidden_columns = vec![ListColumnId::Mode];
+            }
+        }
         self.save_preferences();
     }
 }

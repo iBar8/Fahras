@@ -43,6 +43,15 @@ impl WindowContent {
         let sidebar = super::build_sidebar(browser.clone(), preferences.clone(), false);
         let root = layout::browser_layout(&browser, &preview, &sidebar, &header, preferences);
         let footer = layout::FooterBinding::new(window, &root, &browser, preferences);
+        layout::install_explorer(&layout::ExplorerParts {
+            window,
+            root: &root,
+            header: &header,
+            browser: &browser,
+            preview: &preview,
+            footer: &footer,
+            preferences,
+        });
         input::install_mouse_history(&root, &browser);
         crate::ui::scrolling::install_autoscroll_stop(&root);
         let overlay = gtk::Overlay::new();

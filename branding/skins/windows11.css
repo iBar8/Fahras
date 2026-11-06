@@ -81,3 +81,78 @@ headerbar.browser-header,
   border-bottom: 1px solid @strata_border;
   font-weight: 400;
 }
+
+/* The Explorer layout: address row, command bar and status bar. */
+
+.explorer-chrome {
+  background: @strata_surface;
+}
+
+.explorer-address-row {
+  padding: 6px 8px 4px 8px;
+}
+
+.explorer-nav,
+.explorer-command,
+.explorer-command > button {
+  border-radius: 4px;
+  color: @strata_text;
+  padding: 6px 8px;
+}
+
+.explorer-nav:hover,
+.explorer-command:hover,
+.explorer-command > button:hover {
+  background: alpha(@strata_text, 0.06);
+}
+
+.explorer-nav:active,
+.explorer-command:active,
+.explorer-command > button:active,
+.explorer-command > button:checked {
+  background: alpha(@strata_text, 0.10);
+}
+
+.explorer-nav:disabled {
+  opacity: 0.35;
+}
+
+.explorer-address,
+.explorer-search {
+  background: @strata_bg;
+  border: 1px solid @strata_border;
+  border-radius: 4px;
+  min-height: 30px;
+  padding: 0 6px;
+}
+
+.explorer-search {
+  min-width: 240px;
+}
+
+.explorer-command-bar {
+  border-bottom: 1px solid @strata_border;
+  padding: 2px 8px 6px 8px;
+}
+
+.explorer-separator {
+  background: @strata_border;
+  margin: 6px 6px;
+  min-width: 1px;
+}
+
+.explorer-status {
+  background: @strata_bg;
+  color: @strata_text;
+  font-size: 0.9em;
+  padding: 4px 14px;
+}
+
+.explorer-chrome button,
+.explorer-chrome menubutton > button {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  min-height: 0;
+  min-width: 0;
+}

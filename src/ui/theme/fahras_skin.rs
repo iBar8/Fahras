@@ -41,6 +41,7 @@ thread_local! {
 /// The theme's tokens with the skin's palette, keeping the theme's name and
 /// syntax colors. Light or dark follows the theme.
 pub(super) fn tokens(skin: ExplorerSkin, theme: &ThemeTokens) -> ThemeTokens {
+    crate::fahras::explorer_icons::set_active(skin != ExplorerSkin::Off);
     let Some(palette) = palette(skin, is_dark(&theme.background)) else {
         return theme.clone();
     };

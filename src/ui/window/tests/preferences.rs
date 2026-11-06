@@ -9,6 +9,7 @@ use crate::ui::tenxer_mode::UNUSED_SUBTITLE;
 
 mod browsing_prefs;
 mod column_prefs;
+mod explorer_layout;
 mod folder_views;
 mod item_customizations;
 mod sidebar_prefs;

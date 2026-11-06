@@ -706,6 +706,15 @@ impl ItemMenuTrigger {
         focus_context_entry(&state, depth, position, &entry);
         self.menu.target.replace(Some((position, entry.clone())));
         let entries = context_entries(&state, &self.menu.target);
+        #[cfg(windows)]
+        {
+            if let Some(gesture) = gesture {
+                gesture.set_state(gtk::EventSequenceState::Claimed);
+            }
+            if crate::platform::windows_shell::replaces_item_menu(&entries) {
+                return true;
+            }
+        }
         self.action_section
             .rebuild_for_selection(&state, &entries, location_path(&state, depth));
         let target = MenuTarget {

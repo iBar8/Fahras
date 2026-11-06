@@ -568,6 +568,18 @@ fn primary_icon_texture_at(
     logical_px: i32,
     context: IconContext,
 ) -> Option<gdk::Texture> {
+    let fluent = crate::fahras::explorer_icons::substitute(name).or_else(|| {
+        name.starts_with(crate::fahras::explorer_icons::PREFIX)
+            .then_some(name)
+    });
+    if let Some(fluent) = fluent {
+        return texture_from_svg(&format!("{fluent}@{logical_px}"), color, texture_px, || {
+            Some(svg_at_texture_size(
+                crate::fahras::explorer_icons::svg(fluent, color)?,
+                texture_px,
+            ))
+        });
+    }
     if name.starts_with(CATPPUCCIN_ICON_PREFIX) {
         return catppuccin_icon_texture_at(name, color, texture_px, logical_px, context);
     }

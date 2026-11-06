@@ -157,7 +157,7 @@ impl SidebarState {
     }
 
     pub(super) fn append_section_header(self: &Rc<Self>, section: SidebarSection) -> SectionHeader {
-        let title = crate::i18n::tr(section.title());
+        let title = crate::i18n::tr(self.section_title(section));
         let label = gtk::Label::new(Some(&title));
         label.add_css_class("sidebar-heading");
         label.set_xalign(0.0);

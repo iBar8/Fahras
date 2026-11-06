@@ -30,11 +30,36 @@ pub(super) fn append_look_options(content: &gtk::Box, preferences: &Rc<Preferenc
         "Looks like Windows File Explorer, with its colors in light or dark to match your theme.",
         &skin,
     ));
+    #[cfg(windows)]
+    group.append(&folder_handler_row());
     group.append(&super::control_row(
         "App icon",
         "Shown on the window and the taskbar.",
         &app_icon_choice(preferences),
     ));
+}
+
+/// The setting lives in the Windows registry, not in Fahras's settings file.
+#[cfg(windows)]
+fn folder_handler_row() -> gtk::Box {
+    let switch = gtk::Switch::new();
+    switch.set_valign(gtk::Align::Center);
+    switch.set_active(crate::platform::windows_shell::opens_folders());
+    crate::ui::accessibility::set_label(&switch, &crate::i18n::tr("Open folders in Fahras"));
+    switch.connect_state_set(
+        |_, enabled| match crate::platform::windows_shell::set_opens_folders(enabled) {
+            Ok(()) => gtk::glib::Propagation::Proceed,
+            Err(error) => {
+                tracing::warn!(%error, "could not change the program that opens folders");
+                gtk::glib::Propagation::Stop
+            }
+        },
+    );
+    super::control_row(
+        "Open folders in Fahras",
+        "Double-clicking a folder in Windows opens it in Fahras instead of File Explorer.",
+        &switch,
+    )
 }
 
 fn app_icon_choice(preferences: &Rc<PreferenceManager>) -> gtk::Box {

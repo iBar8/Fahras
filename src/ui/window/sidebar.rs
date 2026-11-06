@@ -339,6 +339,7 @@ impl SidebarState {
     }
 
     fn bind_order(self: &Rc<Self>) {
+        self.bind_explorer_arrangement();
         let weak = Rc::downgrade(self);
         self.preference_manager.bind_preference(
             &self.widget,

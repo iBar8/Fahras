@@ -51,6 +51,8 @@ en.LaunchFahras=Open Fahras
 ar.LaunchFahras=افتح فهرس
 en.FahrasComment=Browse and manage your files
 ar.FahrasComment=تصفح ملفاتك وأدرها
+en.OpenInFahras=Open in Fahras
+ar.OpenInFahras=فتح في فهرس
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -63,6 +65,18 @@ Type: filesandordirs; Name: "{app}\share"
 
 [Files]
 Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[Registry]
+; "Open in Fahras" on folders, drives and a folder's empty space in Explorer.
+Root: HKA; Subkey: "Software\Classes\Directory\shell\Fahras"; ValueType: string; ValueName: ""; ValueData: "{cm:OpenInFahras}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\Directory\shell\Fahras"; ValueType: string; ValueName: "Icon"; ValueData: "{app}\bin\Fahras.exe"
+Root: HKA; Subkey: "Software\Classes\Directory\shell\Fahras\command"; ValueType: string; ValueName: ""; ValueData: """{app}\bin\Fahras.exe"" ""%1"""
+Root: HKA; Subkey: "Software\Classes\Drive\shell\Fahras"; ValueType: string; ValueName: ""; ValueData: "{cm:OpenInFahras}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\Drive\shell\Fahras"; ValueType: string; ValueName: "Icon"; ValueData: "{app}\bin\Fahras.exe"
+Root: HKA; Subkey: "Software\Classes\Drive\shell\Fahras\command"; ValueType: string; ValueName: ""; ValueData: """{app}\bin\Fahras.exe"" ""%1"""
+Root: HKA; Subkey: "Software\Classes\Directory\Background\shell\Fahras"; ValueType: string; ValueName: ""; ValueData: "{cm:OpenInFahras}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\Directory\Background\shell\Fahras"; ValueType: string; ValueName: "Icon"; ValueData: "{app}\bin\Fahras.exe"
+Root: HKA; Subkey: "Software\Classes\Directory\Background\shell\Fahras\command"; ValueType: string; ValueName: ""; ValueData: """{app}\bin\Fahras.exe"" ""%V"""
 
 [Icons]
 Name: "{autoprograms}\Fahras"; Filename: "{app}\bin\Fahras.exe"; WorkingDir: "{userdocs}"; IconFilename: "{app}\fahras.ico"; Comment: "{cm:FahrasComment}"
@@ -77,4 +91,24 @@ Filename: "{app}\bin\Fahras.exe"; Flags: nowait runasoriginaluser; Check: Relaun
 function RelaunchAfterUpdate: Boolean;
 begin
   Result := WizardSilent and (ExpandConstant('{param:relaunch|0}') = '1');
+end;
+
+{ Settings can make Fahras open folders for this user; give them back to
+  File Explorer when Fahras goes. }
+procedure ReleaseFolderClass(ClassKey: String);
+var
+  Verb: String;
+begin
+  if RegQueryStringValue(HKCU, ClassKey + '\shell', '', Verb) and (Verb = 'Fahras') then
+    RegDeleteValue(HKCU, ClassKey + '\shell', '');
+  RegDeleteKeyIncludingSubkeys(HKCU, ClassKey + '\shell\Fahras');
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+  if CurUninstallStep = usPostUninstall then
+  begin
+    ReleaseFolderClass('Software\Classes\Directory');
+    ReleaseFolderClass('Software\Classes\Drive');
+  end;
 end;

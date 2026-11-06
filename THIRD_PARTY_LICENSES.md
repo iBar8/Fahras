@@ -73,6 +73,17 @@ The SVGs retain Lucide geometry. The table sort caret uses the Lucide triangle w
 
 The SVG geometry is unchanged. Each `var(--vscode-ctp-*)` color is resolved at render time to the Catppuccin Mocha or Latte palette depending on the active theme's background, and strokes are scaled with the same weight factor as the Lucide icons.
 
+## Fluent UI System Icons (Fahras)
+
+- Project: <https://github.com/microsoft/fluentui-system-icons>
+- Revision: `e15fc0de25fab983e3e42bac8798be69a85c23bf`
+- Copyright: 2020 Microsoft Corporation
+- License: MIT
+- Included assets: `branding/fluent/fahras-fluent-*.svg`, used by the Windows 10 and Windows 11 Explorer looks
+- Full license: [`branding/fluent/LICENSE`](branding/fluent/LICENSE)
+
+The colored file and place icons come unchanged from upstream's `color` set. The folder, archive, music, drive, USB, desktop and downloads icons are upstream's `filled` icons with a vertical gradient fill in Explorer-like colors. The `-symbolic` toolbar icons are upstream's 20-unit `regular` icons, recolored from `#212121` to the theme's text color at render time.
+
 ## Tinted Theming schemes
 
 - Project: <https://github.com/tinted-theming/schemes>

@@ -36,6 +36,7 @@ mod sidebar;
 mod sidebar_context_menu;
 mod sidebar_devices;
 mod sidebar_drop_feedback;
+mod sidebar_explorer;
 mod sidebar_file_drop;
 mod sidebar_pins;
 mod sidebar_places;

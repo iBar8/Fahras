@@ -17,6 +17,7 @@ mod document_view;
 mod enter_target;
 mod entry_list_model;
 pub(crate) mod fahras_app_icon;
+pub(crate) mod fahras_layout;
 mod file_providers;
 mod focus_navigation;
 mod folder_picker;

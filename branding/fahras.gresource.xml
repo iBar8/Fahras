@@ -6,4 +6,39 @@
     <file alias="fahras-ink.svg">variants/fahras-ink.svg</file>
     <file alias="fahras-clay.svg">variants/fahras-clay.svg</file>
   </gresource>
+  <gresource prefix="/io/github/lgse/Strata/icons/fluent">
+    <file alias="fahras-fluent-back-symbolic.svg">fluent/fahras-fluent-back-symbolic.svg</file>
+    <file alias="fahras-fluent-book.svg">fluent/fahras-fluent-book.svg</file>
+    <file alias="fahras-fluent-chevron-symbolic.svg">fluent/fahras-fluent-chevron-symbolic.svg</file>
+    <file alias="fahras-fluent-code.svg">fluent/fahras-fluent-code.svg</file>
+    <file alias="fahras-fluent-copy-symbolic.svg">fluent/fahras-fluent-copy-symbolic.svg</file>
+    <file alias="fahras-fluent-cut-symbolic.svg">fluent/fahras-fluent-cut-symbolic.svg</file>
+    <file alias="fahras-fluent-delete-symbolic.svg">fluent/fahras-fluent-delete-symbolic.svg</file>
+    <file alias="fahras-fluent-desktop.svg">fluent/fahras-fluent-desktop.svg</file>
+    <file alias="fahras-fluent-document-text.svg">fluent/fahras-fluent-document-text.svg</file>
+    <file alias="fahras-fluent-document.svg">fluent/fahras-fluent-document.svg</file>
+    <file alias="fahras-fluent-downloads.svg">fluent/fahras-fluent-downloads.svg</file>
+    <file alias="fahras-fluent-drive.svg">fluent/fahras-fluent-drive.svg</file>
+    <file alias="fahras-fluent-folder-zip.svg">fluent/fahras-fluent-folder-zip.svg</file>
+    <file alias="fahras-fluent-folder.svg">fluent/fahras-fluent-folder.svg</file>
+    <file alias="fahras-fluent-forward-symbolic.svg">fluent/fahras-fluent-forward-symbolic.svg</file>
+    <file alias="fahras-fluent-home.svg">fluent/fahras-fluent-home.svg</file>
+    <file alias="fahras-fluent-image.svg">fluent/fahras-fluent-image.svg</file>
+    <file alias="fahras-fluent-more-symbolic.svg">fluent/fahras-fluent-more-symbolic.svg</file>
+    <file alias="fahras-fluent-music.svg">fluent/fahras-fluent-music.svg</file>
+    <file alias="fahras-fluent-network.svg">fluent/fahras-fluent-network.svg</file>
+    <file alias="fahras-fluent-new-folder-symbolic.svg">fluent/fahras-fluent-new-folder-symbolic.svg</file>
+    <file alias="fahras-fluent-new-symbolic.svg">fluent/fahras-fluent-new-symbolic.svg</file>
+    <file alias="fahras-fluent-paste-symbolic.svg">fluent/fahras-fluent-paste-symbolic.svg</file>
+    <file alias="fahras-fluent-refresh-symbolic.svg">fluent/fahras-fluent-refresh-symbolic.svg</file>
+    <file alias="fahras-fluent-rename-symbolic.svg">fluent/fahras-fluent-rename-symbolic.svg</file>
+    <file alias="fahras-fluent-search-symbolic.svg">fluent/fahras-fluent-search-symbolic.svg</file>
+    <file alias="fahras-fluent-sort-symbolic.svg">fluent/fahras-fluent-sort-symbolic.svg</file>
+    <file alias="fahras-fluent-table.svg">fluent/fahras-fluent-table.svg</file>
+    <file alias="fahras-fluent-this-pc.svg">fluent/fahras-fluent-this-pc.svg</file>
+    <file alias="fahras-fluent-up-symbolic.svg">fluent/fahras-fluent-up-symbolic.svg</file>
+    <file alias="fahras-fluent-usb.svg">fluent/fahras-fluent-usb.svg</file>
+    <file alias="fahras-fluent-video.svg">fluent/fahras-fluent-video.svg</file>
+    <file alias="fahras-fluent-view-symbolic.svg">fluent/fahras-fluent-view-symbolic.svg</file>
+  </gresource>
 </gresources>

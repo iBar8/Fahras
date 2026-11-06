@@ -149,7 +149,7 @@ jobs:
     name: Verify the installer and the zip on a fresh Windows machine
     needs: build
     runs-on: windows-latest
-    timeout-minutes: 30
+    timeout-minutes: 50
     permissions:
       contents: write
     steps:
@@ -191,7 +191,19 @@ jobs:
         shell: pwsh
         run: ./.github/fahras/windows-installer.ps1 -Setup (Get-ChildItem setup/*.exe)[0].FullName -Evidence evidence -Step update
 
+      - name: Make sure 7-Zip and its Explorer menu are installed
+        shell: pwsh
+        run: |
+          if (-not (Test-Path 'C:\Program Files\7-Zip\7-zip.dll')) { choco install 7zip.install -y --no-progress }
+          Get-ChildItem 'C:\Program Files\7-Zip' | Select-Object -First 5 | Format-Table Name
+
+      - name: Fahras in the Windows shell (Open in Fahras, Explorer layout, native menu, default folders)
+        timeout-minutes: 15
+        shell: pwsh
+        run: ./.github/fahras/windows-explorer.ps1 -App "$env:LOCALAPPDATA\Programs\Fahras" -Evidence evidence
+
       - name: Uninstall
+        if: always()
         timeout-minutes: 5
         shell: pwsh
         run: ./.github/fahras/windows-installer.ps1 -Setup (Get-ChildItem setup/*.exe)[0].FullName -Evidence evidence -Step uninstall

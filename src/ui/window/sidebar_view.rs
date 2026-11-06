@@ -134,8 +134,12 @@ impl SidebarState {
         self.pinned_section.replace(None);
         self.devices_section.replace(None);
 
-        self.append_static_places();
-        self.append_devices();
+        if super::sidebar_explorer::arranged_like_explorer(&self.preference_manager) {
+            self.append_explorer_places();
+        } else {
+            self.append_static_places();
+            self.append_devices();
+        }
         self.sync_active_place();
         self.schedule_scroll_restore();
         self.sync_rail_rows();

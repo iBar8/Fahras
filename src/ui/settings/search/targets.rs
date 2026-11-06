@@ -272,6 +272,13 @@ pub(super) const TARGETS: &[Target] = &[
         title: "Explorer look",
         aliases: "appearance skin windows 10 11 file explorer style",
     },
+    #[cfg(windows)]
+    Target {
+        id: "open-folders",
+        page: "theme",
+        title: "Open folders in Fahras",
+        aliases: "default file manager explorer double click folder windows",
+    },
     Target {
         id: "app-icon",
         page: "theme",

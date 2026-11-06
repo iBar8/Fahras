@@ -25,6 +25,10 @@ use super::super::{
     pin_status, sidebar_rail_width,
 };
 
+mod explorer;
+
+pub(super) use explorer::{ExplorerParts, install as install_explorer};
+
 pub(super) struct Header {
     widget: gtk::HeaderBar,
     pub(super) actions: gtk::Box,
