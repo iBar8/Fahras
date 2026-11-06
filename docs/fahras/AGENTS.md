@@ -56,7 +56,10 @@ interface must work right to left.
 
 - Fahras uses Strata's version from `Cargo.toml`; release after an upstream
   sync brings a new version. Switch to Fahras's own numbers only when the owner
-  wants to ship between syncs.
+  wants to ship between syncs: raise the patch number (1.1.1 became 1.1.2),
+  staying below upstream's next minor so the following sync takes its version.
+  Never use a pre-release suffix; it sorts before the release and installed
+  copies would not update.
 - To release, the owner creates the release on GitHub with tag `v<version>`
   from `main`. `fahras-windows.yml` builds, tests and signs the installer with
   the `FAHRAS_UPDATE_SIGNING_KEY` secret and attaches the files.
