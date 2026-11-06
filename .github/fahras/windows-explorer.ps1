@@ -178,6 +178,8 @@ function Start-Fahras([string] $path, [string] $label) {
         -RedirectStandardError (Join-Path $Evidence "explorer-$label.log") -RedirectStandardOutput (Join-Path $Evidence "explorer-$label.out")
     $opened = Wait-Until { $process.Refresh(); $process.HasExited -or $process.MainWindowHandle -ne [IntPtr]::Zero } 60
     Check "[$label] Fahras opens" ($opened -and -not $process.HasExited)
+    $log = Get-Content (Join-Path $Evidence "explorer-$label.log") -Raw -ErrorAction SilentlyContinue
+    Check "[$label] no Linux-only warnings" (-not ($log -match 'could not watch the mount table|stale Strata portal'))
     Start-Sleep -Seconds 5
     Focus $process.MainWindowHandle
     return $process

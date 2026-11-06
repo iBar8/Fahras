@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MIT
 
+// A windowed program on Windows: no console window opens beside Fahras.
+#![cfg_attr(all(windows, not(debug_assertions)), windows_subsystem = "windows")]
 // Fahras: Linux-only features (portal service, sandbox helpers) are compiled
 // but unreachable on Windows; Linux builds keep the strict lints.
 #![cfg_attr(
@@ -233,6 +235,8 @@ fn run_udiskie_hook(arguments: &[OsString]) -> gtk::glib::ExitCode {
 
 fn main() -> gtk::glib::ExitCode {
     fahras::launch::prefer_system_title_bars();
+    #[cfg(windows)]
+    platform::windows_console::use_parent_terminal();
     let arguments: Vec<OsString> = std::env::args_os()
         .map(fahras::launch::repaired_argument)
         .collect();
@@ -364,7 +368,10 @@ fn main() -> gtk::glib::ExitCode {
         return restart_for_gtk_environment(&arguments, select_cairo, service_debug);
     }
 
-    if let Err(error) = portal_setup::refresh_stale_portal() {
+    // The portal is a Linux desktop service.
+    if !cfg!(windows)
+        && let Err(error) = portal_setup::refresh_stale_portal()
+    {
         tracing::warn!(%error, "could not refresh the stale Strata portal");
     }
 

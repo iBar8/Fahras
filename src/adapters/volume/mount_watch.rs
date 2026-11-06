@@ -231,6 +231,11 @@ fn watcher() -> Option<&'static Watcher> {
             crate::util::ui_thread::assert_off();
             match Mountinfo::open() {
                 Ok(source) => Some(Watcher::start(source, forget_mount_capabilities)),
+                // Windows has no mount table; GIO reports its drives instead.
+                Err(error) if cfg!(windows) => {
+                    tracing::debug!(%error, "no mount table to watch");
+                    None
+                }
                 Err(error) => {
                     tracing::warn!(%error, "could not watch the mount table");
                     None

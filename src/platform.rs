@@ -7,6 +7,9 @@
 pub(crate) use rustix_compat::unix;
 
 #[cfg(windows)]
+#[path = "platform/windows/console.rs"]
+pub(crate) mod windows_console;
+#[cfg(windows)]
 #[path = "platform/windows/shell.rs"]
 pub(crate) mod windows_shell;
 #[cfg(unix)]

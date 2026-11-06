@@ -70,6 +70,10 @@ if ($Step -eq 'install') {
     Check 'Fahras.exe is installed under the user profile' (Test-Path $exe)
     Check "a first install leaves other files in the folder alone" (Test-Path $foreign)
     Check 'Start menu shortcut exists' (Test-Path $shortcut)
+    # The PE header's subsystem: 2 is a windowed program, 3 opens a console beside it.
+    $bytes = [System.IO.File]::ReadAllBytes($exe)
+    $subsystem = [BitConverter]::ToUInt16($bytes, [BitConverter]::ToInt32($bytes, 0x3C) + 0x5C)
+    Check 'Fahras opens without a console window' ($subsystem -eq 2)
     $entry = Get-ItemProperty -Path $uninstallKey -ErrorAction SilentlyContinue
     Check 'listed in Installed apps as Fahras' ($entry -and $entry.DisplayName -eq 'Fahras')
     if ($entry) { Log "      version: $($entry.DisplayVersion)" }
