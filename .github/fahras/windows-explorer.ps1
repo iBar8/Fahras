@@ -302,6 +302,7 @@ foreach ($lang in 'en', 'ar') {
             Check "[$lang] the menu has Send to" $false
         }
         Keys '+{F10}' 2500
+        $menu = [ShellWin]::PopupMenus() | Select-Object -First 1
     }
     if ($menu) {
         $names = [ShellWin]::Items($menu)
