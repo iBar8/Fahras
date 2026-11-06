@@ -22,6 +22,10 @@ use windows::{
 
 use super::{Image, Kind, opaque_if_alpha_missing};
 
+const PENDING_RETRIES: u32 = 40;
+/// "The data necessary to complete this operation is not yet available."
+const E_PENDING: windows::core::HRESULT = windows::core::HRESULT(0x8000_000A_u32 as i32);
+
 /// Sets up COM for the calling thread; call it once on each thread that reads images.
 pub fn initialize_thread() {
     // A thread that already set it up only has its count raised.
@@ -39,8 +43,18 @@ pub fn image(path: &Path, size: u32, kind: Kind) -> Result<Image, String> {
         Kind::ThumbnailOrIcon => SIIGBF_RESIZETOFIT,
     };
     let side = size as i32;
-    let bitmap = unsafe { factory.GetImage(SIZE { cx: side, cy: side }, flags) }
-        .map_err(|error| error.to_string())?;
+    // The shell answers E_PENDING while it is still preparing an image; it
+    // has the image a moment later.
+    let mut attempt = 0;
+    let bitmap = loop {
+        match unsafe { factory.GetImage(SIZE { cx: side, cy: side }, flags) } {
+            Err(error) if error.code() == E_PENDING && attempt < PENDING_RETRIES => {
+                attempt += 1;
+                std::thread::sleep(std::time::Duration::from_millis(50));
+            }
+            result => break result.map_err(|error| error.to_string())?,
+        }
+    };
     let pixels = read_bitmap(bitmap);
     let _ = unsafe { DeleteObject(HGDIOBJ(bitmap.0)) };
     pixels
