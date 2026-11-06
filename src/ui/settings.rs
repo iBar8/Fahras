@@ -24,6 +24,7 @@ mod compact_bin;
 mod diagnostics;
 mod exclusions;
 mod fahras_look;
+mod fahras_releases;
 mod general;
 pub(crate) use general::abbreviate_home;
 mod install;
@@ -486,6 +487,12 @@ impl PageHost {
     }
 
     fn build_updates_page(&self) {
+        if !crate::fahras::updates::in_app_updates() {
+            let page = fahras_releases::releases_page();
+            search::apply(&page, &self.search_state);
+            self.updates_container.append(&page);
+            return;
+        }
         let host = self.clone();
         resolve_update_method_async(move |method| host.fill_updates_page(method));
     }

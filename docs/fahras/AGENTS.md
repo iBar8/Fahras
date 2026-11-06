@@ -43,6 +43,15 @@ Every new user-facing string needs all fourteen. Arabic is plain Modern
 Standard Arabic (Fusha) with simple, common words and no dialect, and the
 interface must work right to left.
 
+## Updates and file types
+
+- Only Windows updates itself, through the signed installer. Linux builds
+  leave the in-app updater off and their Updates page points to the Fahras
+  Releases page (`src/fahras/updates.rs`).
+- File type names come from Windows itself, in the system language, as File
+  Explorer shows them. Fahras only names types Windows has no description for
+  (`src/fahras/file_types.rs`); do not translate Windows' own names.
+
 ## Releases
 
 - Fahras uses Strata's version from `Cargo.toml`; release after an upstream

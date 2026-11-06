@@ -49,7 +49,7 @@ pub fn updater_enabled() -> bool {
     if UPDATER_DISABLED_FOR_TEST.load(std::sync::atomic::Ordering::Relaxed) {
         return false;
     }
-    !cfg!(strata_updater_disabled)
+    !cfg!(strata_updater_disabled) && crate::fahras::updates::in_app_updates()
 }
 
 #[cfg(test)]

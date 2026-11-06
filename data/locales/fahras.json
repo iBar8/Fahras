@@ -431,5 +431,53 @@
     "zh-CN": "%{extension} 文件",
     "zh-TW": "%{extension} 檔案",
     "ar": "ملف %{extension}"
+  },
+  "fahras.releases.title": {
+    "en": "New versions",
+    "fr": "Nouvelles versions",
+    "hu": "Új verziók",
+    "de": "Neue Versionen",
+    "es": "Nuevas versiones",
+    "ja": "新しいバージョン",
+    "pt-BR": "Novas versões",
+    "ko": "새 버전",
+    "vi": "Phiên bản mới",
+    "it": "Nuove versioni",
+    "ru": "Новые версии",
+    "zh-CN": "新版本",
+    "zh-TW": "新版本",
+    "ar": "الإصدارات الجديدة"
+  },
+  "fahras.releases.description": {
+    "en": "On Linux, Fahras does not update itself. New versions come from the Fahras Releases page.",
+    "fr": "Sous Linux, Fahras ne se met pas à jour lui-même. Les nouvelles versions sont publiées sur la page des versions de Fahras.",
+    "hu": "Linuxon a Fahras nem frissíti magát. Az új verziók a Fahras Kiadások oldaláról érhetők el.",
+    "de": "Unter Linux aktualisiert sich Fahras nicht selbst. Neue Versionen gibt es auf der Releases-Seite von Fahras.",
+    "es": "En Linux, Fahras no se actualiza solo. Las nuevas versiones están en la página de versiones de Fahras.",
+    "ja": "Linux では Fahras は自動で更新されません。新しいバージョンは Fahras のリリースページから入手できます。",
+    "pt-BR": "No Linux, o Fahras não se atualiza sozinho. As novas versões ficam na página de versões do Fahras.",
+    "ko": "Linux에서는 Fahras가 스스로 업데이트하지 않습니다. 새 버전은 Fahras 릴리스 페이지에서 받을 수 있습니다.",
+    "vi": "Trên Linux, Fahras không tự cập nhật. Phiên bản mới có trên trang phát hành của Fahras.",
+    "it": "Su Linux, Fahras non si aggiorna da solo. Le nuove versioni sono disponibili nella pagina delle release di Fahras.",
+    "ru": "В Linux Fahras не обновляется сам. Новые версии публикуются на странице выпусков Fahras.",
+    "zh-CN": "在 Linux 上，Fahras 不会自动更新。新版本请从 Fahras 发布页面获取。",
+    "zh-TW": "在 Linux 上，Fahras 不會自動更新。新版本請從 Fahras 發行頁面取得。",
+    "ar": "على لينكس، لا يحدّث فهرس نفسه. تتوفر الإصدارات الجديدة في صفحة إصدارات فهرس."
+  },
+  "fahras.releases.open": {
+    "en": "Open Releases Page",
+    "fr": "Ouvrir la page des versions",
+    "hu": "Kiadások oldal megnyitása",
+    "de": "Releases-Seite öffnen",
+    "es": "Abrir la página de versiones",
+    "ja": "リリースページを開く",
+    "pt-BR": "Abrir a página de versões",
+    "ko": "릴리스 페이지 열기",
+    "vi": "Mở trang phát hành",
+    "it": "Apri la pagina delle release",
+    "ru": "Открыть страницу выпусков",
+    "zh-CN": "打开发布页面",
+    "zh-TW": "開啟發行頁面",
+    "ar": "فتح صفحة الإصدارات"
   }
 }

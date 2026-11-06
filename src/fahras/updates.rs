@@ -30,5 +30,31 @@ pub(crate) fn this_target() -> String {
     }
 }
 
+pub(crate) const RELEASES_PAGE: &str = "https://github.com/iBar8/Fahras/releases";
+
+#[cfg(test)]
+static ACT_AS_LINUX_FOR_TEST: std::sync::atomic::AtomicBool =
+    std::sync::atomic::AtomicBool::new(false);
+
+/// Makes this test process behave like a Linux release build. Process-wide,
+/// so only for isolated GTK test processes.
+#[cfg(test)]
+pub(crate) fn act_as_linux_release_for_test() {
+    ACT_AS_LINUX_FOR_TEST.store(true, std::sync::atomic::Ordering::Relaxed);
+}
+
+/// Fahras publishes signed updates for Windows only, so Linux builds leave the
+/// updater off and point to the Releases page. Tests keep Strata's updater on
+/// unless they ask for Linux release behavior.
+#[cfg(not(test))]
+pub(crate) fn in_app_updates() -> bool {
+    cfg!(windows)
+}
+
+#[cfg(test)]
+pub(crate) fn in_app_updates() -> bool {
+    !ACT_AS_LINUX_FOR_TEST.load(std::sync::atomic::Ordering::Relaxed)
+}
+
 #[cfg(test)]
 mod tests;

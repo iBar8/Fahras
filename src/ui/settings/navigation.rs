@@ -16,7 +16,9 @@ pub(super) struct NavigationEntry {
 }
 
 pub(super) fn page_shown(page: &str) -> bool {
-    page != "updates" || crate::build_info::updater_enabled()
+    page != "updates"
+        || crate::build_info::updater_enabled()
+        || !crate::fahras::updates::in_app_updates()
 }
 
 /// Settings pages in navigation order. Search finds page titles here and routes
