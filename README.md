@@ -22,14 +22,18 @@ Instant search, rich previews, sandboxed security, and full Arabic support.
 > Star or watch the repository to follow along.
 
 <div align="center">
+<img src="docs/assets/fahras-windows11.png" alt="Fahras on Windows 11 with the Explorer look: title bar, address bar, command bar, Details view and sidebar" width="900">
+<br><sub>Fahras on Windows 11 with the Explorer look.</sub>
+<br><br>
 <img src="docs/assets/strata-columns.png" alt="Columns, Icons and List views with search, a context menu, file properties and settings" width="900">
-<br><sub>Current interface on Linux. The Windows look and the Explorer-style layouts are on the way.</sub>
+<br><sub>Fahras's own look, here on Linux.</sub>
 </div>
 
 ## Why Fahras?
 
 *Fahras* (فهرس) is Arabic for **index**: the list that helps you find anything fast.
 
+- 🪟 **Feels like Windows.** An Explorer look with the Windows title bar, command bar, Details view, Explorer sidebar and Fluent icons. "Open in Fahras" in File Explorer, the real Windows right-click menu with your other apps' entries (7-Zip, Send to, Open with), and an option to open every folder in Fahras.
 - ⚡ **Fast with huge folders.** A folder of 100,000 files loads in under two seconds on Linux, and the window never freezes.
 - 🔍 **Instant search.** Fuzzy filename search across all your drives, with results as you type.
 - 🛡️ **Safe previews.** Images, PDFs and videos are opened in an isolated sandbox, so a malicious file can't reach your system just by being previewed.
@@ -82,6 +86,7 @@ Instant search, rich previews, sandboxed security, and full Arabic support.
 | Markdown, code, RAW and video previews | ⚠️ Limited | ✅ |
 | Full keyboard control and custom shortcuts | ⚠️ | ✅ |
 | Custom right-click actions without registry edits | ❌ | ✅ |
+| Windows right-click menu with your other apps' entries | ✅ | ✅ |
 | Themes | ❌ | ✅ 95 |
 | Built into Windows, opens instantly | ✅ | ❌ |
 | Open source | ❌ | ✅ |
@@ -118,14 +123,16 @@ Instant search, rich previews, sandboxed security, and full Arabic support.
 - [ ] Sandboxed previews on Windows
 
 **Phase 4: Integration**
-- [ ] Network shares, "Open in Fahras" in Explorer, run as administrator
+- [x] "Open in Fahras" in File Explorer, and an option to open every folder in Fahras
+- [x] The Windows right-click menu with other apps' entries (7-Zip, Send to, Open with)
+- [ ] Network shares, run as administrator
 
 **Phase 5: Release**
 - [x] Installer in English and Arabic, first public release
-- [ ] Signed automatic updates on Windows
+- [x] Signed automatic updates on Windows
 
 **Planned features**
-- [x] Windows 10 and Windows 11 Explorer looks (Settings → Appearance → Look)
+- [x] Windows 10 and Windows 11 Explorer looks with Explorer's layout (Settings → Appearance → Look)
 - [x] Choose your app icon: Manila, Forest, Ink or Clay
 - [ ] Folder sizes in the list
 - [ ] Dual-pane mode
@@ -167,15 +174,21 @@ Third-party components and their licenses are listed in [THIRD_PARTY_LICENSES.md
 > 📌 **فهرس في مرحلة التطوير الأولى.** جرّب النسخة التجريبية لويندوز: نزّل برنامج التثبيت من [أحدث إصدار](https://github.com/iBar8/Fahras/releases/latest).
 > تابع المستودع ليصلك كل جديد.
 
+<div align="center">
+<img src="docs/assets/fahras-windows11-ar.png" alt="فهرس على ويندوز 11 بمظهر مستكشف الملفات وواجهة عربية من اليمين إلى اليسار" width="900">
+<br><sub>فهرس على ويندوز 11 بمظهر مستكشف الملفات.</sub>
+</div>
+
 ## لماذا فهرس؟
 
 **الفهرس** هو القائمة التي تساعدك على الوصول إلى أي شيء بسرعة، وهذا ما صُمم البرنامج من أجله.
 
+- 🪟 **كأنه جزء من ويندوز.** مظهر مستكشف الملفات بشريط عنوان ويندوز، وشريط الأوامر، وعرض التفاصيل، والشريط الجانبي، وأيقونات Fluent. وأمر «فتح في فهرس» داخل مستكشف الملفات، وقائمة الزر الأيمن الأصلية في ويندوز مع أوامر برامجك الأخرى (7-Zip، وإرسال إلى، وفتح باستخدام)، وخيار لفتح كل المجلدات في فهرس.
 - ⚡ **سريع مع المجلدات الضخمة.** يفتح مجلدًا فيه مئة ألف ملف في أقل من ثانيتين على لينكس، دون أن تتجمد النافذة.
 - 🔍 **بحث فوري.** ابحث عن الملفات بالاسم في جميع أقراصك، وتظهر النتائج أثناء الكتابة.
 - 🛡️ **معاينة آمنة.** تُفتح الصور وملفات PDF والفيديو داخل بيئة معزولة، فلا يستطيع ملف ضار أن يصل إلى نظامك لمجرد معاينته.
 - ⌨️ **لوحة المفاتيح أولًا.** لكل أمر اختصار، ويمكنك استخدام الفأرة متى شئت.
- - ▶️ **معاينة غنية.** ملفات Markdown، والشيفرة البرمجية، وPDF، وصور الكاميرا الخام (RAW)، والفيديو، والصوت.
+- ▶️ **معاينة غنية.** ملفات Markdown، والشيفرة البرمجية، وPDF، وصور الكاميرا الخام (RAW)، والفيديو، والصوت.
 - 🌍 **العربية جزء أساسي.** واجهة عربية كاملة من اليمين إلى اليسار، مع تسعة عشر خطًا عربيًا مدمجًا تختار منها ما يناسبك، إلى جانب ثلاث عشرة لغة أخرى.
 - 🎨 **بأسلوبك.** خمسة وتسعون مظهرًا بألوان فاتحة وداكنة، ومظهر يشبه مستكشف الملفات في ويندوز 10 و11، وأربع أيقونات للبرنامج تختار منها.
 
@@ -223,6 +236,7 @@ Third-party components and their licenses are listed in [THIRD_PARTY_LICENSES.md
 | معاينة Markdown والشيفرة والصور الخام والفيديو | ⚠️ محدودة | ✅ |
 | تحكم كامل من لوحة المفاتيح واختصارات مخصصة | ⚠️ | ✅ |
 | أوامر مخصصة في قائمة الزر الأيمن دون تعديل السجل | ❌ | ✅ |
+| قائمة الزر الأيمن في ويندوز مع أوامر برامجك الأخرى | ✅ | ✅ |
 | المظاهر | ❌ | ✅ 95 |
 | مدمج في ويندوز ويفتح فورًا | ✅ | ❌ |
 | مفتوح المصدر | ❌ | ✅ |
@@ -259,14 +273,16 @@ Third-party components and their licenses are listed in [THIRD_PARTY_LICENSES.md
 - [ ] معاينة معزولة على ويندوز
 
 **المرحلة الرابعة: التكامل مع النظام**
-- [ ] مجلدات الشبكة، وأمر «فتح في فهرس» داخل مستكشف الملفات، والتشغيل بصلاحيات المسؤول
+- [x] أمر «فتح في فهرس» داخل مستكشف الملفات، وخيار لفتح كل المجلدات في فهرس
+- [x] قائمة الزر الأيمن في ويندوز مع أوامر البرامج الأخرى (7-Zip، وإرسال إلى، وفتح باستخدام)
+- [ ] مجلدات الشبكة، والتشغيل بصلاحيات المسؤول
 
 **المرحلة الخامسة: الإصدار**
 - [x] برنامج تثبيت بالعربية والإنجليزية، وأول إصدار عام
-- [ ] تحديثات تلقائية موقّعة على ويندوز
+- [x] تحديثات تلقائية موقّعة على ويندوز
 
 **مزايا مخطط لها**
-- [x] مظهر يشبه مستكشف الملفات في ويندوز 10 و11 (الإعدادات ← المظهر)
+- [x] مظهر مستكشف الملفات في ويندوز 10 و11 بتخطيطه نفسه (الإعدادات ← المظهر)
 - [x] اختيار أيقونة البرنامج: مانيلا، أو الغابة، أو الحبر، أو الطين
 - [ ] عرض أحجام المجلدات في القائمة
 - [ ] وضع اللوحتين المتجاورتين
