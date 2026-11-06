@@ -18,7 +18,9 @@ fn from_bytes(bytes: &[u8]) -> io::Result<PathBuf> {
         Ok(text) => Ok(PathBuf::from(text)),
         // SAFETY: non-UTF-8 names only reach here from `Dir` entries, which this
         // crate produces from `OsStr::as_encoded_bytes`.
-        Err(_) => Ok(PathBuf::from(unsafe { OsStr::from_encoded_bytes_unchecked(bytes) })),
+        Err(_) => Ok(PathBuf::from(unsafe {
+            OsStr::from_encoded_bytes_unchecked(bytes)
+        })),
     }
 }
 
@@ -33,8 +35,19 @@ macro_rules! by_as_ref {
 }
 
 by_as_ref!(
-    &str, &String, String, &Path, &PathBuf, PathBuf, &OsStr, &OsString, OsString,
-    Cow<'_, OsStr>, Cow<'_, Path>, Component<'_>, Components<'_>
+    &str,
+    &String,
+    String,
+    &Path,
+    &PathBuf,
+    PathBuf,
+    &OsStr,
+    &OsString,
+    OsString,
+    Cow<'_, OsStr>,
+    Cow<'_, Path>,
+    Component<'_>,
+    Components<'_>
 );
 
 impl Arg for Cow<'_, str> {

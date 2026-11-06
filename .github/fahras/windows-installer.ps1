@@ -58,11 +58,17 @@ if ($Step -eq 'install') {
     if (-not $wizard.HasExited) { Stop-Process -Id $wizard.Id -Force -ErrorAction SilentlyContinue }
     Start-Sleep -Seconds 2
 
+    # A folder that already holds someone else's files keeps them on a first install.
+    $foreign = Join-Path $app 'share\keep-me.txt'
+    New-Item -ItemType Directory -Force -Path (Split-Path $foreign) | Out-Null
+    Set-Content $foreign 'not Fahras'
+
     $log = Join-Path $Evidence 'installer-install.log'
     $install = Start-Process -FilePath $Setup -Wait -PassThru -ArgumentList @(
         '/VERYSILENT', '/SUPPRESSMSGBOXES', '/CURRENTUSER', '/NORESTART', "/LOG=`"$log`"")
     Check 'installer exits successfully' ($install.ExitCode -eq 0)
     Check 'Fahras.exe is installed under the user profile' (Test-Path $exe)
+    Check "a first install leaves other files in the folder alone" (Test-Path $foreign)
     Check 'Start menu shortcut exists' (Test-Path $shortcut)
     $entry = Get-ItemProperty -Path $uninstallKey -ErrorAction SilentlyContinue
     Check 'listed in Installed apps as Fahras' ($entry -and $entry.DisplayName -eq 'Fahras')

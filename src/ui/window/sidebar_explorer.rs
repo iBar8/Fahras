@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 
 //! The sidebar as File Explorer arranges it: Home, the user folders, pinned
-//! folders, This PC with its drives, then Network.
+//! folders, This PC with its drives, then Network and the trash. Its order is
+//! fixed, so dragging cannot rearrange Fahras's own sidebar order.
 
 use std::rc::Rc;
 
@@ -35,6 +36,7 @@ impl SidebarState {
         self.append_devices();
         self.append_separator();
         self.append_ordered_place("network");
+        self.append_ordered_place("trash");
     }
 
     fn append_explorer_user_folder(self: &Rc<Self>, id: &'static str, icon: &str) {
@@ -44,7 +46,7 @@ impl SidebarState {
         if let Some((_, name, directory)) = standard_place(id)
             && let Some(path) = glib::user_special_dir(directory)
         {
-            self.append_reorderable_place(id, icon, &crate::i18n::tr(name), Location::local(path));
+            self.append_place(icon, &crate::i18n::tr(name), Location::local(path));
         }
     }
 

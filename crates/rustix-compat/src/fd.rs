@@ -78,7 +78,11 @@ impl<'a> BorrowedFd<'a> {
 
     pub fn try_clone_to_owned(&self) -> io::Result<OwnedFd> {
         let file = self.file()?.try_clone()?;
-        Ok(OwnedFd::new(file, self.path().map(Path::to_path_buf), self.flags()))
+        Ok(OwnedFd::new(
+            file,
+            self.path().map(Path::to_path_buf),
+            self.flags(),
+        ))
     }
 
     pub(crate) fn file(&self) -> io::Result<&'a File> {

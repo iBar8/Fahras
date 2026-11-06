@@ -14,10 +14,10 @@ use std::{
 };
 
 use windows_sys::Win32::Storage::FileSystem::{
-    BY_HANDLE_FILE_INFORMATION, FILE_ATTRIBUTE_DIRECTORY, FILE_ATTRIBUTE_READONLY, FILE_BASIC_INFO, FILE_FLAG_BACKUP_SEMANTICS,
-    FILE_FLAG_OPEN_REPARSE_POINT, FILE_NAME_NORMALIZED, FileBasicInfo, GetDiskFreeSpaceExW,
-    GetFileInformationByHandle, GetFileInformationByHandleEx, GetFinalPathNameByHandleW,
-    GetVolumeInformationByHandleW,
+    BY_HANDLE_FILE_INFORMATION, FILE_ATTRIBUTE_DIRECTORY, FILE_ATTRIBUTE_READONLY, FILE_BASIC_INFO,
+    FILE_FLAG_BACKUP_SEMANTICS, FILE_FLAG_OPEN_REPARSE_POINT, FILE_NAME_NORMALIZED, FileBasicInfo,
+    GetDiskFreeSpaceExW, GetFileInformationByHandle, GetFileInformationByHandleEx,
+    GetFinalPathNameByHandleW, GetVolumeInformationByHandleW,
 };
 
 const FILE_READ_ATTRIBUTES: u32 = 0x80;
@@ -172,7 +172,10 @@ pub(crate) fn volume(file: &File) -> io::Result<Volume> {
     if ok == 0 {
         return Err(io::Error::last_os_error());
     }
-    let end = filesystem.iter().position(|&c| c == 0).unwrap_or(filesystem.len());
+    let end = filesystem
+        .iter()
+        .position(|&c| c == 0)
+        .unwrap_or(filesystem.len());
     Ok(Volume {
         filesystem: String::from_utf16_lossy(&filesystem[..end]),
         name_max,

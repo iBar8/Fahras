@@ -49,7 +49,9 @@ pub struct SendAncillaryBuffer<'buf, 'slice, 'fd> {
 
 impl<'buf, 'slice, 'fd> SendAncillaryBuffer<'buf, 'slice, 'fd> {
     pub fn new(_buffer: &'buf mut [MaybeUninit<u8>]) -> Self {
-        Self { _marker: PhantomData }
+        Self {
+            _marker: PhantomData,
+        }
     }
 
     pub fn push(&mut self, _message: SendAncillaryMessage<'slice, 'fd>) -> bool {
@@ -63,7 +65,9 @@ pub struct RecvAncillaryBuffer<'buf> {
 
 impl<'buf> RecvAncillaryBuffer<'buf> {
     pub fn new(_buffer: &'buf mut [MaybeUninit<u8>]) -> Self {
-        Self { _marker: PhantomData }
+        Self {
+            _marker: PhantomData,
+        }
     }
 
     pub fn drain(&mut self) -> std::vec::IntoIter<RecvAncillaryMessage<'buf>> {

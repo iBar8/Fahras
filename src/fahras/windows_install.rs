@@ -58,9 +58,20 @@ pub(super) fn install(
         return Err(InstallStop::Cancelled);
     }
     let _sent = progress.send(UpdateInstall::Finalizing);
-    Command::new(&setup)
-        .args(INSTALLER_ARGUMENTS)
+    // The installer runs from this directory; the next update removes it.
+    let workdir = workdir.keep();
+    let mut installer = Command::new(workdir.join(&request.asset_name));
+    installer.args(INSTALLER_ARGUMENTS);
+    run_installer(&mut installer).map_err(InstallStop::Failed)
+}
+
+/// A successful installer closes Fahras and opens the new version, so this
+/// returns only when it did not finish: the person declined the
+/// administrator prompt, or the install failed.
+fn run_installer(installer: &mut Command) -> Result<(), String> {
+    let status = installer
         .spawn()
+        .and_then(|mut child| child.wait())
         .map_err(|error| {
             rust_i18n::t!(
                 "fahras.update.start_failed",
@@ -68,9 +79,15 @@ pub(super) fn install(
             )
             .into_owned()
         })?;
-    // The installer runs from this directory; the next update removes it.
-    let _kept = workdir.keep();
-    Ok(())
+    if status.success() {
+        Ok(())
+    } else {
+        Err(rust_i18n::t!(
+            "fahras.update.installer_stopped",
+            code = status.code().unwrap_or(-1)
+        )
+        .into_owned())
+    }
 }
 
 /// A copy unpacked from the zip has no uninstaller, and running the installer
@@ -101,3 +118,7 @@ fn remove_earlier_downloads() {
         }
     }
 }
+
+#[cfg(test)]
+#[path = "windows_install/tests.rs"]
+mod tests;

@@ -4,10 +4,7 @@ use std::{
     ffi::{CString, OsStr},
     fs::{self, File, FileTimes, OpenOptions},
     io::{Seek, SeekFrom as StdSeekFrom},
-    os::windows::{
-        ffi::OsStrExt,
-        fs::OpenOptionsExt,
-    },
+    os::windows::{ffi::OsStrExt, fs::OpenOptionsExt},
     path::{Component, Path, PathBuf},
     time::{Duration, SystemTime, UNIX_EPOCH},
 };
@@ -31,6 +28,7 @@ pub const CWD: BorrowedFd<'static> = crate::fd::CWD;
 
 const FILE_READ_ATTRIBUTES: u32 = 0x80;
 const FILE_WRITE_ATTRIBUTES: u32 = 0x100;
+const GENERIC_READ: u32 = 0x8000_0000;
 
 fn errno(error: std::io::Error) -> Errno {
     Errno::from_io(error)
@@ -215,8 +213,15 @@ fn open_options(plan: &OpenPlan) -> OpenOptions {
         return options;
     }
     let access = flags & OFlags::ACCMODE;
+    let writes = access == OFlags::WRONLY || access == OFlags::RDWR;
     options.read(access != OFlags::WRONLY);
-    options.write(access == OFlags::WRONLY || access == OFlags::RDWR);
+    options.write(writes);
+    // Linux creates a file through a read-only descriptor; Rust's Windows
+    // OpenOptions refuses to create without write, so ask for write and keep
+    // the handle's access read-only.
+    if flags.contains(OFlags::CREATE) && !writes && !flags.contains(OFlags::APPEND) {
+        options.write(true).access_mode(GENERIC_READ);
+    }
     options.append(flags.contains(OFlags::APPEND));
     options.truncate(flags.contains(OFlags::TRUNC));
     if flags.contains(OFlags::CREATE) {
@@ -246,8 +251,17 @@ pub fn open<P: Arg>(path: P, flags: OFlags, mode: Mode) -> Result<OwnedFd> {
     open_path(resolve(CWD, path, AtFlags::empty())?, flags, mode)
 }
 
-pub fn openat<P: Arg, Fd: AsFd>(dirfd: Fd, path: P, oflags: OFlags, create_mode: Mode) -> Result<OwnedFd> {
-    open_path(resolve(dirfd.as_fd(), path, AtFlags::empty())?, oflags, create_mode)
+pub fn openat<P: Arg, Fd: AsFd>(
+    dirfd: Fd,
+    path: P,
+    oflags: OFlags,
+    create_mode: Mode,
+) -> Result<OwnedFd> {
+    open_path(
+        resolve(dirfd.as_fd(), path, AtFlags::empty())?,
+        oflags,
+        create_mode,
+    )
 }
 
 /// `RESOLVE_BENEATH`/`IN_ROOT` refuse absolute paths and `..`; `NO_SYMLINKS`
@@ -288,11 +302,10 @@ pub fn mkdirat<P: Arg, Fd: AsFd>(dirfd: Fd, path: P, _mode: Mode) -> Result<()> 
 fn clear_readonly(path: &Path) -> bool {
     fs::symlink_metadata(path).is_ok_and(|metadata| {
         let mut permissions = metadata.permissions();
-        permissions.readonly()
-            && {
-                permissions.set_readonly(false);
-                fs::set_permissions(path, permissions).is_ok()
-            }
+        permissions.readonly() && {
+            permissions.set_readonly(false);
+            fs::set_permissions(path, permissions).is_ok()
+        }
     })
 }
 
@@ -300,7 +313,9 @@ fn clear_readonly(path: &Path) -> bool {
 /// until the read-only attribute is cleared.
 fn retry_writable(path: &Path, remove: impl Fn(&Path) -> std::io::Result<()>) -> Result<()> {
     match remove(path) {
-        Err(error) if Errno::from_io_error(&error) == Some(Errno::ACCESS) && clear_readonly(path) => {
+        Err(error)
+            if Errno::from_io_error(&error) == Some(Errno::ACCESS) && clear_readonly(path) =>
+        {
             remove(path).map_err(errno)
         }
         result => result.map_err(errno),
@@ -320,7 +335,10 @@ pub fn unlinkat<P: Arg, Fd: AsFd>(dirfd: Fd, path: P, flags: AtFlags) -> Result<
     if metadata.is_dir() {
         return Err(Errno::ISDIR);
     }
-    let is_directory_link = metadata.file_type().is_symlink() && fs::metadata(&path).is_ok_and(|m| m.is_dir());
+    // A directory link or junction is a directory entry even when its target is gone.
+    let is_directory_link =
+        std::os::windows::fs::FileTypeExt::is_symlink_dir(&metadata.file_type())
+            || (metadata.file_type().is_symlink() && fs::metadata(&path).is_ok_and(|m| m.is_dir()));
     if is_directory_link {
         return retry_writable(&path, |path| fs::remove_dir(path));
     }
@@ -352,7 +370,17 @@ pub fn renameat_with<P: Arg, Q: Arg, PFd: AsFd, QFd: AsFd>(
         }
         return Ok(());
     }
-    fs::rename(&from, &to).map_err(errno)
+    // Linux replaces a read-only file; Windows refuses until its read-only attribute is cleared.
+    match fs::rename(&from, &to) {
+        Err(error)
+            if Errno::from_io_error(&error) == Some(Errno::ACCESS)
+                && to.is_file()
+                && clear_readonly(&to) =>
+        {
+            fs::rename(&from, &to).map_err(errno)
+        }
+        result => result.map_err(errno),
+    }
 }
 
 pub fn renameat<P: Arg, Q: Arg, PFd: AsFd, QFd: AsFd>(
@@ -361,7 +389,13 @@ pub fn renameat<P: Arg, Q: Arg, PFd: AsFd, QFd: AsFd>(
     new_dirfd: QFd,
     new_path: Q,
 ) -> Result<()> {
-    renameat_with(old_dirfd, old_path, new_dirfd, new_path, RenameFlags::empty())
+    renameat_with(
+        old_dirfd,
+        old_path,
+        new_dirfd,
+        new_path,
+        RenameFlags::empty(),
+    )
 }
 
 pub fn linkat<P: Arg, Q: Arg, PFd: AsFd, QFd: AsFd>(
@@ -391,7 +425,11 @@ pub fn symlinkat<P: Arg, Q: Arg, Fd: AsFd>(old_path: P, new_dirfd: Fd, new_path:
     made.map_err(errno)
 }
 
-pub fn readlinkat<P: Arg, Fd: AsFd, B: Into<Vec<u8>>>(dirfd: Fd, path: P, _reuse: B) -> Result<CString> {
+pub fn readlinkat<P: Arg, Fd: AsFd, B: Into<Vec<u8>>>(
+    dirfd: Fd,
+    path: P,
+    _reuse: B,
+) -> Result<CString> {
     let target = fs::read_link(resolve(dirfd.as_fd(), path, AtFlags::empty())?).map_err(errno)?;
     CString::new(target.into_os_string().into_encoded_bytes()).map_err(|_| Errno::ILSEQ)
 }
@@ -403,12 +441,13 @@ fn system_time(time: Timespec) -> Option<SystemTime> {
         nanos if time.tv_sec >= 0 => {
             Some(UNIX_EPOCH + Duration::new(time.tv_sec as u64, nanos as u32))
         }
-        nanos => UNIX_EPOCH.checked_sub(Duration::from_secs(time.tv_sec.unsigned_abs()))
+        nanos => UNIX_EPOCH
+            .checked_sub(Duration::from_secs(time.tv_sec.unsigned_abs()))
             .map(|base| base + Duration::from_nanos(nanos as u64)),
     }
 }
 
-fn set_times(path: &Path, times: &Timestamps) -> Result<()> {
+fn set_times(path: &Path, times: &Timestamps, follow: bool) -> Result<()> {
     let mut file_times = FileTimes::new();
     if let Some(accessed) = system_time(times.last_access) {
         file_times = file_times.set_accessed(accessed);
@@ -419,14 +458,24 @@ fn set_times(path: &Path, times: &Timestamps) -> Result<()> {
     let file = OpenOptions::new()
         .access_mode(FILE_WRITE_ATTRIBUTES)
         .share_mode(7)
-        .custom_flags(FILE_FLAG_BACKUP_SEMANTICS)
+        .custom_flags(if follow {
+            FILE_FLAG_BACKUP_SEMANTICS
+        } else {
+            FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT
+        })
         .open(path)
         .map_err(errno)?;
     file.set_times(file_times).map_err(errno)
 }
 
-pub fn utimensat<P: Arg, Fd: AsFd>(dirfd: Fd, path: P, times: &Timestamps, flags: AtFlags) -> Result<()> {
-    set_times(&resolve(dirfd.as_fd(), path, flags)?, times)
+pub fn utimensat<P: Arg, Fd: AsFd>(
+    dirfd: Fd,
+    path: P,
+    times: &Timestamps,
+    flags: AtFlags,
+) -> Result<()> {
+    let follow = !flags.contains(AtFlags::SYMLINK_NOFOLLOW);
+    set_times(&resolve(dirfd.as_fd(), path, flags)?, times, follow)
 }
 
 fn location(fd: BorrowedFd<'_>) -> Result<PathBuf> {
@@ -434,7 +483,7 @@ fn location(fd: BorrowedFd<'_>) -> Result<PathBuf> {
 }
 
 pub fn futimens<Fd: AsFd>(fd: Fd, times: &Timestamps) -> Result<()> {
-    set_times(&location(fd.as_fd())?, times)
+    set_times(&location(fd.as_fd())?, times, true)
 }
 
 pub fn fchmod<Fd: AsFd>(fd: Fd, mode: Mode) -> Result<()> {
@@ -459,7 +508,13 @@ fn flush(fd: BorrowedFd<'_>, sync: impl Fn(&File) -> std::io::Result<()>) -> Res
     if file.metadata().is_ok_and(|metadata| metadata.is_dir()) {
         return Ok(());
     }
-    sync(file).map_err(errno)
+    // Linux flushes through any descriptor; Windows needs write access, so a
+    // read-only handle cannot flush, and the data it reads is already on disk.
+    let read_only = OFlags::from_bits_retain(fd.flags()) & OFlags::ACCMODE == OFlags::RDONLY;
+    match sync(file) {
+        Err(error) if read_only && Errno::from_io_error(&error) == Some(Errno::ACCESS) => Ok(()),
+        result => result.map_err(errno),
+    }
 }
 
 pub fn fsync<Fd: AsFd>(fd: Fd) -> Result<()> {
@@ -475,12 +530,20 @@ pub fn syncfs<Fd: AsFd>(_fd: Fd) -> Result<()> {
 }
 
 pub fn ftruncate<Fd: AsFd>(fd: Fd, length: u64) -> Result<()> {
-    fd.as_fd().file().map_err(errno)?.set_len(length).map_err(errno)
+    fd.as_fd()
+        .file()
+        .map_err(errno)?
+        .set_len(length)
+        .map_err(errno)
 }
 
 pub fn seek<Fd: AsFd>(fd: Fd, pos: SeekFrom) -> Result<u64> {
     let mut file = fd.as_fd().file().map_err(errno)?;
-    let length = || file.metadata().map(|metadata| metadata.len()).map_err(errno);
+    let length = || {
+        file.metadata()
+            .map(|metadata| metadata.len())
+            .map_err(errno)
+    };
     // Files are treated as fully allocated: all data, with the only hole at the end.
     let pos = match pos {
         SeekFrom::Start(offset) => StdSeekFrom::Start(offset),
@@ -511,9 +574,17 @@ pub fn access<P: Arg>(path: P, access: Access) -> Result<()> {
     accessat(CWD, path, access, AtFlags::empty())
 }
 
-pub fn accessat<P: Arg, Fd: AsFd>(dirfd: Fd, path: P, access: Access, flags: AtFlags) -> Result<()> {
+pub fn accessat<P: Arg, Fd: AsFd>(
+    dirfd: Fd,
+    path: P,
+    access: Access,
+    flags: AtFlags,
+) -> Result<()> {
     let metadata = fs::metadata(resolve(dirfd.as_fd(), path, flags)?).map_err(errno)?;
-    if access.contains(Access::WRITE_OK) && metadata.permissions().readonly() {
+    // Windows ignores the read-only attribute on folders, and Explorer sets it on
+    // customized ones such as Documents.
+    if access.contains(Access::WRITE_OK) && !metadata.is_dir() && metadata.permissions().readonly()
+    {
         return Err(Errno::ACCESS);
     }
     Ok(())
@@ -588,23 +659,45 @@ pub fn ioctl_getflags<Fd: AsFd>(_fd: Fd) -> Result<IFlags> {
     Err(Errno::NOTTY)
 }
 
-pub fn getxattr<P: Arg, Name: Arg, Buf: Buffer<u8>>(_path: P, _name: Name, _value: Buf) -> Result<Buf::Output> {
+pub fn getxattr<P: Arg, Name: Arg, Buf: Buffer<u8>>(
+    _path: P,
+    _name: Name,
+    _value: Buf,
+) -> Result<Buf::Output> {
     Err(Errno::OPNOTSUPP)
 }
 
-pub fn lgetxattr<P: Arg, Name: Arg, Buf: Buffer<u8>>(_path: P, _name: Name, _value: Buf) -> Result<Buf::Output> {
+pub fn lgetxattr<P: Arg, Name: Arg, Buf: Buffer<u8>>(
+    _path: P,
+    _name: Name,
+    _value: Buf,
+) -> Result<Buf::Output> {
     Err(Errno::OPNOTSUPP)
 }
 
-pub fn fgetxattr<Fd: AsFd, Name: Arg, Buf: Buffer<u8>>(_fd: Fd, _name: Name, _value: Buf) -> Result<Buf::Output> {
+pub fn fgetxattr<Fd: AsFd, Name: Arg, Buf: Buffer<u8>>(
+    _fd: Fd,
+    _name: Name,
+    _value: Buf,
+) -> Result<Buf::Output> {
     Err(Errno::OPNOTSUPP)
 }
 
-pub fn setxattr<P: Arg, Name: Arg>(_path: P, _name: Name, _value: &[u8], _flags: XattrFlags) -> Result<()> {
+pub fn setxattr<P: Arg, Name: Arg>(
+    _path: P,
+    _name: Name,
+    _value: &[u8],
+    _flags: XattrFlags,
+) -> Result<()> {
     Err(Errno::OPNOTSUPP)
 }
 
-pub fn fsetxattr<Fd: AsFd, Name: Arg>(_fd: Fd, _name: Name, _value: &[u8], _flags: XattrFlags) -> Result<()> {
+pub fn fsetxattr<Fd: AsFd, Name: Arg>(
+    _fd: Fd,
+    _name: Name,
+    _value: &[u8],
+    _flags: XattrFlags,
+) -> Result<()> {
     Err(Errno::OPNOTSUPP)
 }
 
@@ -620,7 +713,13 @@ pub fn flistxattr<Fd: AsFd, Buf: Buffer<u8>>(_fd: Fd, _list: Buf) -> Result<Buf:
     Err(Errno::OPNOTSUPP)
 }
 
-pub fn mknodat<P: Arg, Fd: AsFd>(_dirfd: Fd, _path: P, _file_type: FileType, _mode: Mode, _dev: Dev) -> Result<()> {
+pub fn mknodat<P: Arg, Fd: AsFd>(
+    _dirfd: Fd,
+    _path: P,
+    _file_type: FileType,
+    _mode: Mode,
+    _dev: Dev,
+) -> Result<()> {
     Err(Errno::PERM)
 }
 
@@ -634,8 +733,13 @@ pub fn memfd_create<P: Arg>(name: P, _flags: MemfdFlags) -> Result<OwnedFd> {
     let unique = format!(
         "fahras-{}-{}-{}",
         std::process::id(),
-        SystemTime::now().duration_since(UNIX_EPOCH).unwrap_or_default().as_nanos(),
-        stem.file_name().unwrap_or(OsStr::new("memfd")).to_string_lossy()
+        SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap_or_default()
+            .as_nanos(),
+        stem.file_name()
+            .unwrap_or(OsStr::new("memfd"))
+            .to_string_lossy()
     );
     let path = std::env::temp_dir().join(unique);
     let file = OpenOptions::new()

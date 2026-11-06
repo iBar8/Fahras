@@ -35,7 +35,6 @@ pub(crate) fn substitute(name: &str) -> Option<&'static str> {
     Some(match name {
         icons::FOLDER
         | icons::FOLDER_OPEN
-        | icons::FOLDER_LOCK
         | icons::FOLDER_INPUT
         | icons::FOLDER_OUTPUT
         | icons::FOLDER_PLUS => "fahras-fluent-folder",

@@ -568,10 +568,15 @@ fn primary_icon_texture_at(
     logical_px: i32,
     context: IconContext,
 ) -> Option<gdk::Texture> {
-    let fluent = crate::fahras::explorer_icons::substitute(name).or_else(|| {
-        name.starts_with(crate::fahras::explorer_icons::PREFIX)
-            .then_some(name)
-    });
+    // A folder the person colored keeps Strata's icon in that color.
+    let themed = PRIMARY_ICON_COLOR.with(|primary| *primary.borrow() == color);
+    let fluent = themed
+        .then(|| crate::fahras::explorer_icons::substitute(name))
+        .flatten()
+        .or_else(|| {
+            name.starts_with(crate::fahras::explorer_icons::PREFIX)
+                .then_some(name)
+        });
     if let Some(fluent) = fluent {
         return texture_from_svg(&format!("{fluent}@{logical_px}"), color, texture_px, || {
             Some(svg_at_texture_size(

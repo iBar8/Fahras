@@ -23,8 +23,9 @@ AppUpdatesURL=https://github.com/iBar8/Fahras/releases
 DefaultDirName={autopf}\Fahras
 DefaultGroupName=Fahras
 DisableProgramGroupPage=yes
+; Per user only: no administrator prompt to install or update, and the
+; Open in Fahras and default-folder settings stay in this user's registry.
 PrivilegesRequired=lowest
-PrivilegesRequiredOverridesAllowed=dialog
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 MinVersion=10.0
@@ -59,9 +60,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [InstallDelete]
 ; Replace the runtime as a whole so files dropped by a newer GTK do not linger.
-Type: filesandordirs; Name: "{app}\bin"
-Type: filesandordirs; Name: "{app}\lib"
-Type: filesandordirs; Name: "{app}\share"
+Type: filesandordirs; Name: "{app}\bin"; Check: FahrasInstalledHere
+Type: filesandordirs; Name: "{app}\lib"; Check: FahrasInstalledHere
+Type: filesandordirs; Name: "{app}\share"; Check: FahrasInstalledHere
 
 [Files]
 Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -88,6 +89,13 @@ Filename: "{app}\bin\Fahras.exe"; Description: "{cm:LaunchFahras}"; Flags: nowai
 Filename: "{app}\bin\Fahras.exe"; Flags: nowait runasoriginaluser; Check: RelaunchAfterUpdate
 
 [Code]
+{ Only an earlier Fahras's runtime is cleared, never another program's
+  bin, lib or share folders in a folder the person picked. }
+function FahrasInstalledHere: Boolean;
+begin
+  Result := FileExists(ExpandConstant('{app}\bin\Fahras.exe'));
+end;
+
 function RelaunchAfterUpdate: Boolean;
 begin
   Result := WizardSilent and (ExpandConstant('{param:relaunch|0}') = '1');

@@ -232,7 +232,9 @@ fn run_udiskie_hook(arguments: &[OsString]) -> gtk::glib::ExitCode {
 }
 
 fn main() -> gtk::glib::ExitCode {
-    let arguments: Vec<OsString> = std::env::args_os().collect();
+    let arguments: Vec<OsString> = std::env::args_os()
+        .map(fahras::launch::repaired_argument)
+        .collect();
     let mode = launch_mode(&arguments);
     match mode {
         LaunchMode::BrowserWorker => {

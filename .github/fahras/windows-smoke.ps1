@@ -119,6 +119,8 @@ function Run-Suite([string] $root, [string] $label) {
     foreach ($folder in $ops.Values) { New-Item -ItemType Directory -Force -Path $folder | Out-Null }
     Set-Content (Join-Path $ops.rename 'alpha.txt') 'alpha'
     Set-Content (Join-Path $ops.copy 'beta.txt') 'beta'
+    New-Item -ItemType Directory -Force -Path (Join-Path $ops.copy 'album') | Out-Null
+    Set-Content (Join-Path $ops.copy 'album\one.txt') 'one'
     Set-Content (Join-Path $ops.move 'gamma.txt') 'gamma'
     Set-Content (Join-Path $ops.delete 'delta.txt') 'delta'
     Set-Content (Join-Path $ops.arabic 'تقرير الشهر.txt') 'تقرير'
@@ -165,6 +167,8 @@ function Run-Suite([string] $root, [string] $label) {
         (Test-Path (Join-Path $ops.copied 'beta.txt')) -and (Test-Path (Join-Path $ops.copy 'beta.txt')))
     Check "[$label] copied contents match" (
         (Get-Content (Join-Path $ops.copied 'beta.txt') -ErrorAction SilentlyContinue) -eq 'beta')
+    Check "[$label] copy a folder with a file in it" (
+        (Get-Content (Join-Path $ops.copied 'album\one.txt') -ErrorAction SilentlyContinue) -eq 'one')
 
     Go $ops.move
     Keys '^a' 500

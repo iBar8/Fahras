@@ -34,6 +34,8 @@ pub(in crate::ui::window) struct ExplorerParts<'a> {
 pub(in crate::ui::window) fn install(parts: &ExplorerParts) {
     let ribbon = ribbon(parts);
     let (address_row, address_slot) = address_row(parts.browser);
+    let window_controls = window_controls(parts.window);
+    address_row.append(&window_controls);
     let command_bar = command_bar(parts);
     let chrome = gtk::Box::new(gtk::Orientation::Vertical, 0);
     chrome.add_css_class("explorer-chrome");
@@ -43,11 +45,11 @@ pub(in crate::ui::window) fn install(parts: &ExplorerParts) {
     parts
         .root
         .insert_child_after(&chrome, Some(&parts.header.widget));
+    // Inside the footer, which keeps its job progress, prompts and shortcuts.
     let status = status_bar(parts.browser);
-    parts.root.append(&status);
+    parts.footer.shortcuts.set_activity(&status);
 
     let layout = Layout {
-        root: parts.root.downgrade(),
         window: parts.window.downgrade(),
         header: parts.header.widget.downgrade(),
         header_content: parts.header.content.downgrade(),
@@ -59,14 +61,9 @@ pub(in crate::ui::window) fn install(parts: &ExplorerParts) {
             .downgrade(),
         location: parts.browser.location_widget().downgrade(),
         address_slot: address_slot.downgrade(),
-        footer: parts
-            .footer
-            .shortcuts
-            .widget()
-            .clone()
-            .upcast::<gtk::Widget>()
-            .downgrade(),
+        footer: parts.footer.shortcuts.clone(),
         status: status.downgrade(),
+        window_controls: window_controls.downgrade(),
         ribbon: ribbon.downgrade(),
         command_bar: command_bar.downgrade(),
     };
@@ -78,15 +75,15 @@ pub(in crate::ui::window) fn install(parts: &ExplorerParts) {
 }
 
 struct Layout {
-    root: glib::WeakRef<gtk::Box>,
     window: glib::WeakRef<gtk::ApplicationWindow>,
     header: glib::WeakRef<gtk::HeaderBar>,
     header_content: glib::WeakRef<gtk::Box>,
     sidebar_toggle: glib::WeakRef<gtk::Widget>,
     location: glib::WeakRef<gtk::Widget>,
     address_slot: glib::WeakRef<gtk::Box>,
-    footer: glib::WeakRef<gtk::Widget>,
+    footer: crate::ui::shortcut_footer::ShortcutFooter,
     status: glib::WeakRef<gtk::Box>,
+    window_controls: glib::WeakRef<gtk::Box>,
     ribbon: glib::WeakRef<gtk::Box>,
     command_bar: glib::WeakRef<gtk::Box>,
 }
@@ -96,32 +93,19 @@ impl Layout {
         let explorer = skin != ExplorerSkin::Off;
         chrome.set_visible(explorer);
         set_visible(&self.header, !explorer);
-        self.place_footer(explorer);
         set_visible(&self.status, explorer);
         set_visible(&self.ribbon, skin == ExplorerSkin::Windows10);
         set_visible(&self.command_bar, skin == ExplorerSkin::Windows11);
         self.place_location(explorer);
+        // The footer hides its own count while the Explorer one shows.
+        self.footer.refresh_filter();
         if let Some(window) = self.window.upgrade() {
             use_system_title_bar(&window, explorer);
-        }
-    }
-
-    /// The footer shows itself whenever its status changes, so the Explorer
-    /// layout takes it out rather than hiding it; it goes back above the
-    /// Explorer status bar.
-    fn place_footer(&self, explorer: bool) {
-        let (Some(root), Some(footer), Some(status)) = (
-            self.root.upgrade(),
-            self.footer.upgrade(),
-            self.status.upgrade(),
-        ) else {
-            return;
-        };
-        let placed = footer.parent().is_some();
-        if explorer && placed {
-            root.remove(&footer);
-        } else if !explorer && !placed {
-            root.insert_child_after(&footer, status.prev_sibling().as_ref());
+            // A window that opened with Fahras's frame has no system buttons.
+            set_visible(
+                &self.window_controls,
+                explorer && window.titlebar().is_some(),
+            );
         }
     }
 
@@ -175,6 +159,42 @@ fn use_system_title_bar(window: &gtk::ApplicationWindow, system: bool) {
     }
 }
 
+/// Minimize, maximize and close for a window still drawn with Fahras's frame,
+/// where the header that holds them is hidden.
+fn window_controls(window: &gtk::ApplicationWindow) -> gtk::Box {
+    let controls = gtk::Box::new(gtk::Orientation::Horizontal, 0);
+    controls.add_css_class("explorer-window-controls");
+    let minimize = nav_button(crate::assets::icons::MINUS, "Minimize window");
+    let maximize = nav_button(crate::assets::icons::MAXIMIZE, "Maximize window");
+    let close = nav_button(crate::assets::icons::X, "Close window");
+    let weak = window.downgrade();
+    minimize.connect_clicked(move |_| {
+        if let Some(window) = weak.upgrade() {
+            window.minimize();
+        }
+    });
+    let weak = window.downgrade();
+    maximize.connect_clicked(move |_| {
+        if let Some(window) = weak.upgrade() {
+            if window.is_maximized() {
+                window.unmaximize();
+            } else {
+                window.maximize();
+            }
+        }
+    });
+    let weak = window.downgrade();
+    close.connect_clicked(move |_| {
+        if let Some(window) = weak.upgrade() {
+            window.close();
+        }
+    });
+    for button in [&minimize, &maximize, &close] {
+        controls.append(button);
+    }
+    controls
+}
+
 fn address_row(browser: &BrowserView) -> (gtk::Box, gtk::Box) {
     let row = gtk::Box::new(gtk::Orientation::Horizontal, 4);
     row.add_css_class("explorer-address-row");
@@ -221,11 +241,8 @@ fn address_row(browser: &BrowserView) -> (gtk::Box, gtk::Box) {
         let view = browser.clone();
         search.connect_search_changed(move |entry| {
             let query = entry.text();
-            if query.is_empty() {
-                view.clear_listing_filter();
-            } else {
-                view.set_listing_filter(&query);
-            }
+            // An empty query clears the filter and leaves focus in the box.
+            view.set_listing_filter(&query);
         });
     }
     for button in [&back, &forward, &up, &refresh] {
@@ -450,6 +467,8 @@ fn commands(parts: &ExplorerParts, ribbon: bool) -> Commands {
         ribbon,
     )));
     view.set_always_show_arrow(!ribbon);
+    // A labelled command takes no tooltip.
+    view.set_tooltip_text(None);
     // The header's own copy keeps the header styling; this one takes Explorer's.
     view.remove_css_class("header-action");
     view.add_css_class(if ribbon {

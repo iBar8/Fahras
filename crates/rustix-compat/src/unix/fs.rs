@@ -231,7 +231,9 @@ impl FileExt for File {
 
 pub fn symlink<P: AsRef<Path>, Q: AsRef<Path>>(original: P, link: Q) -> io::Result<()> {
     let (original, link) = (original.as_ref(), link.as_ref());
-    let target = link.parent().map_or_else(|| original.to_path_buf(), |parent| parent.join(original));
+    let target = link
+        .parent()
+        .map_or_else(|| original.to_path_buf(), |parent| parent.join(original));
     if target.is_dir() {
         std::os::windows::fs::symlink_dir(original, link)
     } else {

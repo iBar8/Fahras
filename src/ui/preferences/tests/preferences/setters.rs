@@ -91,7 +91,7 @@ fn all_preference_setters_publish_and_persist_without_duplicate_notifications() 
                 |m| m.set_interface_font(None),
                 |m| m.set_arabic_font(None),
                 |m| m.set_app_icon(crate::fahras::look::AppIcon::default()),
-                |m| m.set_explorer_skin(crate::fahras::look::ExplorerSkin::default()),
+                |m| m.set_explorer_skin(crate::fahras::look::ExplorerSkin::Windows10),
                 |m| m.set_interface_renderer(InterfaceRenderer::System),
                 |m| m.set_language(crate::i18n::Language::Auto),
                 |m| m.set_checks_for_updates(true),

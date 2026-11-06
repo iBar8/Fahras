@@ -97,7 +97,10 @@ impl Errno {
     /// The errno an `io::Error` stands for, whether it carries an `Errno`
     /// produced here or a native Windows error code.
     pub fn from_io_error(error: &io::Error) -> Option<Self> {
-        if let Some(errno) = error.get_ref().and_then(|inner| inner.downcast_ref::<Self>()) {
+        if let Some(errno) = error
+            .get_ref()
+            .and_then(|inner| inner.downcast_ref::<Self>())
+        {
             return Some(*errno);
         }
         if let Some(code) = error.raw_os_error() {

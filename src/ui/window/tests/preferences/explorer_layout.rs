@@ -116,7 +116,7 @@ fn explorer_looks_swap_the_window_layout_live() {
                 || {
                     let names = sidebar_names(&open);
                     names.first().map(String::as_str) == Some("Home")
-                        && names.last().map(String::as_str) == Some("Network")
+                        && names.ends_with(&["Network".to_owned(), "Trash".to_owned()])
                 },
                 || format!("{:?}", sidebar_names(&open)),
             );
@@ -129,12 +129,44 @@ fn explorer_looks_swap_the_window_layout_live() {
                 open.window.titlebar().is_some(),
                 "a shown window keeps its frame"
             );
+            assert!(
+                shown(&open, "explorer-window-controls"),
+                "it keeps minimize, maximize and close"
+            );
             let reopened = OpenWindow::open();
             assert!(reopened.window.titlebar().is_none(), "the system title bar");
+            assert!(!shown(&reopened, "explorer-window-controls"));
             reopened.window.destroy();
             assert!(
-                open.content.footer().widget().parent().is_none(),
-                "Fahras's footer is out"
+                open.content.footer().widget().parent().is_some(),
+                "the footer keeps job progress and prompts"
+            );
+            let view = with_class(&open, "explorer-command-bar")
+                .iter()
+                .flat_map(descendants)
+                .filter_map(|widget| widget.downcast::<gtk::MenuButton>().ok())
+                .find(|button| row_name(button.upcast_ref()).as_deref() == Some("View"))
+                .expect("view command");
+            assert_eq!(
+                view.tooltip_text(),
+                None,
+                "a labelled command has no tooltip"
+            );
+            let search = with_class(&open, "explorer-search")
+                .into_iter()
+                .find_map(|widget| widget.downcast::<gtk::SearchEntry>().ok())
+                .expect("search box");
+            search.grab_focus();
+            search.set_text("a");
+            settle_for(std::time::Duration::from_millis(400));
+            search.set_text("");
+            settle_for(std::time::Duration::from_millis(400));
+            let search_widget: gtk::Widget = search.clone().upcast();
+            assert!(
+                gtk::prelude::GtkWindowExt::focus(&open.window).is_some_and(|focus| focus
+                    == search_widget
+                    || focus.is_ancestor(&search_widget)),
+                "clearing the search keeps focus in the box"
             );
             let browser = open.content.browser.browser();
             browser.clear_active_selection();

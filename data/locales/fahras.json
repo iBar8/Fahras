@@ -399,5 +399,21 @@
     "zh-CN": "在 Windows 中双击文件夹时，用 Fahras 而不是文件资源管理器打开。",
     "zh-TW": "在 Windows 中按兩下資料夾時，用 Fahras 而不是檔案總管開啟。",
     "ar": "النقر المزدوج على مجلد في ويندوز يفتحه في فهرس بدلًا من مستكشف الملفات."
+  },
+  "fahras.update.installer_stopped": {
+    "en": "The installer stopped before finishing (code %{code}). Fahras was not updated.",
+    "fr": "Le programme d’installation s’est arrêté avant la fin (code %{code}). Fahras n’a pas été mis à jour.",
+    "hu": "A telepítő a befejezés előtt leállt (kód: %{code}). A Fahras nem frissült.",
+    "de": "Das Installationsprogramm wurde vor dem Abschluss beendet (Code %{code}). Fahras wurde nicht aktualisiert.",
+    "es": "El instalador se detuvo antes de terminar (código %{code}). Fahras no se actualizó.",
+    "ja": "インストーラーが完了前に停止しました (コード %{code})。Fahras は更新されていません。",
+    "pt-BR": "O instalador parou antes de terminar (código %{code}). O Fahras não foi atualizado.",
+    "ko": "설치 프로그램이 완료되기 전에 중지되었습니다(코드 %{code}). Fahras가 업데이트되지 않았습니다.",
+    "vi": "Trình cài đặt đã dừng trước khi hoàn tất (mã %{code}). Fahras chưa được cập nhật.",
+    "it": "Il programma di installazione si è fermato prima di finire (codice %{code}). Fahras non è stato aggiornato.",
+    "ru": "Установщик остановился, не завершив работу (код %{code}). Fahras не обновлён.",
+    "zh-CN": "安装程序在完成前停止（代码 %{code}）。Fahras 未更新。",
+    "zh-TW": "安裝程式在完成前停止（代碼 %{code}）。Fahras 未更新。",
+    "ar": "توقف برنامج التثبيت قبل أن ينتهي (الرمز %{code}). لم يُحدَّث فهرس."
   }
 }

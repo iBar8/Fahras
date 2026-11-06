@@ -22,9 +22,9 @@ fn monotonic_origin() -> Instant {
 
 pub fn clock_gettime(id: ClockId) -> Timespec {
     let elapsed = match id {
-        ClockId::Realtime | ClockId::RealtimeCoarse => {
-            SystemTime::now().duration_since(UNIX_EPOCH).unwrap_or_default()
-        }
+        ClockId::Realtime | ClockId::RealtimeCoarse => SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap_or_default(),
         _ => monotonic_origin().elapsed(),
     };
     Timespec {
@@ -37,6 +37,9 @@ impl TryFrom<Timespec> for std::time::Duration {
     type Error = std::num::TryFromIntError;
 
     fn try_from(time: Timespec) -> std::result::Result<Self, Self::Error> {
-        Ok(Self::new(u64::try_from(time.tv_sec)?, u32::try_from(time.tv_nsec)?))
+        Ok(Self::new(
+            u64::try_from(time.tv_sec)?,
+            u32::try_from(time.tv_nsec)?,
+        ))
     }
 }

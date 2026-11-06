@@ -219,5 +219,7 @@ pub(crate) fn replaces_item_menu(entries: &[crate::model::FileEntry]) -> bool {
                 .map(std::path::Path::to_path_buf)
         })
         .collect();
-    !paths.is_empty() && paths.len() == entries.len() && show_context_menu(&paths)
+    paths.len() == entries.len()
+        && crate::fahras::shell_menu::share_one_folder(&paths)
+        && show_context_menu(&paths)
 }

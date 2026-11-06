@@ -278,6 +278,7 @@ impl ShortcutFooter {
         status: Option<&FilterStatus>,
     ) {
         update_item_count(&self.count, browser, status);
+        crate::ui::fahras_layout::hide_in_explorer_layout(&self.count);
         // A range over results is theirs; the hidden directory's never shows.
         let visual = match status {
             Some(status) if status.visual.is_some() => status.visual,

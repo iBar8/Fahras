@@ -205,7 +205,10 @@ impl WaitStatus {
 }
 
 /// Windows processes are waited on through `std::process::Child` instead.
-pub fn waitid<'a, Id: Into<WaitId<'a>>>(_id: Id, _options: WaitIdOptions) -> Result<Option<WaitIdStatus>> {
+pub fn waitid<'a, Id: Into<WaitId<'a>>>(
+    _id: Id,
+    _options: WaitIdOptions,
+) -> Result<Option<WaitIdStatus>> {
     Err(Errno::NOSYS)
 }
 
