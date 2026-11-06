@@ -302,8 +302,8 @@ function Click([int] $x, [int] $y) {
     Start-Sleep -Milliseconds 1500
 }
 
-# The switch's knob: the light grey or white disc at the row's far end, right
-# (or left, right to left) of the text column.
+# The switch's knob, grey when off and accent-coloured when on: the first bright
+# pixel at the row's far end, right (or left, right to left) of the text.
 function Find-Switch([bool] $rightToLeft) {
     $bitmap = Screen
     $columns = if ($rightToLeft) { 20..140 } else { ($bitmap.Width - 140)..($bitmap.Width - 20) }
@@ -311,8 +311,7 @@ function Find-Switch([bool] $rightToLeft) {
         foreach ($y in 150..400) {
             foreach ($x in $columns) {
                 $pixel = $bitmap.GetPixel($x, $y)
-                $grey = [math]::Max([math]::Abs($pixel.R - $pixel.G), [math]::Abs($pixel.G - $pixel.B)) -lt 14
-                if ($grey -and $pixel.R -gt 150) { return @(($x + 4), ($y + 6)) }
+                if ([math]::Max($pixel.R, [math]::Max($pixel.G, $pixel.B)) -gt 150) { return @(($x + 4), ($y + 6)) }
             }
         }
     } finally { $bitmap.Dispose() }
