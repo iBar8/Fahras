@@ -1,0 +1,7 @@
+
+(io.github.lgse.Strata:1844): GLib-GIO-WARNING **: 06:37:35.230: win32 session dbus binary not found
+
+(io.github.lgse.Strata:1844): Gtk-WARNING **: 06:37:49.041: GtkText - did not receive a focus-out event.
+If you handle this event, you must return
+GDK_EVENT_PROPAGATE so the default handler
+gets the event as well

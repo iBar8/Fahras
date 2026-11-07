@@ -1,0 +1,23 @@
+[2m2026-11-07T06:36:09.539093Z[0m [34mDEBUG[0m [2mstrata[0m[2m:[0m startup gvfs probe finished [3melapsed_ms[0m[2m=[0m103
+[2m2026-11-07T06:36:09.542568Z[0m [33m WARN[0m [2mstrata::ui::preferences::persistence[0m[2m:[0m settings file has invalid entries; keeping the valid ones [3merror[0m[2m=[0mmissing field `mode`
+
+[2m2026-11-07T06:36:09.851600Z[0m [34mDEBUG[0m [2mstrata[0m[2m:[0m startup bundled assets prepared [3melapsed_ms[0m[2m=[0m304 [3mtotal_elapsed_ms[0m[2m=[0m416
+[2m2026-11-07T06:36:09.852471Z[0m [34mDEBUG[0m [2mstrata::adapters::volume::mount_watch[0m[2m:[0m no mount table to watch [3merror[0m[2m=[0mNo such file or directory (os error 2)
+[2m2026-11-07T06:36:10.225630Z[0m [34mDEBUG[0m [2mstrata[0m[2m:[0m startup volume monitor ready [3melapsed_ms[0m[2m=[0m790
+[2m2026-11-07T06:36:10.226513Z[0m [33m WARN[0m [2mstrata::ui::preferences::persistence[0m[2m:[0m settings file has invalid entries; keeping the valid ones [3merror[0m[2m=[0mmissing field `mode`
+
+[2m2026-11-07T06:36:10.227244Z[0m [33m WARN[0m [2mstrata::ui::preferences::persistence[0m[2m:[0m settings file has invalid entries; keeping the valid ones [3merror[0m[2m=[0mmissing field `mode`
+
+[2m2026-11-07T06:36:10.272076Z[0m [34mDEBUG[0m [2mstrata::ui::window::launch[0m[2m:[0m present theme and styles ready [3melapsed_ms[0m[2m=[0m45
+[2m2026-11-07T06:36:10.637269Z[0m [32m INFO[0m [2mstrata::metrics[0m[2m:[0m application window presented [3melapsed_ms[0m[2m=[0m1201
+[2m2026-11-07T06:36:10.676168Z[0m [32m INFO[0m [2mstrata::metrics[0m[2m:[0m first themed frame painted [3melapsed_ms[0m[2m=[0m1240
+[2m2026-11-07T06:36:10.809841Z[0m [32m INFO[0m [2mstrata::adapters::local_files[0m[2m:[0m directory load started [3mrequest_id[0m[2m=[0m1 [3mbackend[0m[2m=[0mnative
+[2m2026-11-07T06:36:10.810361Z[0m [34mDEBUG[0m [2mstrata::adapters::local_files[0m[2m:[0m directory load location [3mrequest_id[0m[2m=[0m1 [3mlocation[0m[2m=[0mC:\fahras-menu
+[2m2026-11-07T06:36:10.841783Z[0m [32m INFO[0m [2mstrata::adapters::local_files::native[0m[2m:[0m first directory batch ready [3mrequest_id[0m[2m=[0m1 [3mentries[0m[2m=[0m1 [3melapsed_ms[0m[2m=[0m31
+[2m2026-11-07T06:36:10.842205Z[0m [32m INFO[0m [2mstrata::adapters::local_files::native[0m[2m:[0m directory load finished [3mrequest_id[0m[2m=[0m1 [3mentries[0m[2m=[0m1 [3melapsed_ms[0m[2m=[0m32
+[2m2026-11-07T06:36:10.847369Z[0m [34mDEBUG[0m [2mstrata::app::browser::publication[0m[2m:[0m directory publication finished [3mdepth[0m[2m=[0m0 [3mentries[0m[2m=[0m1
+[2m2026-11-07T06:36:10.925170Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m1 [3mstale[0m[2m=[0m0
+[2m2026-11-07T06:36:16.774395Z[0m [34mDEBUG[0m [2mstrata::app::browser::selection[0m[2m:[0m selection changed [3mdepth[0m[2m=[0m0 [3mselected[0m[2m=[0m1
+[2m2026-11-07T06:36:16.775101Z[0m [34mDEBUG[0m [2mstrata::app::browser::selection[0m[2m:[0m selection changed [3mdepth[0m[2m=[0m0 [3mselected[0m[2m=[0m1
+[2m2026-11-07T06:36:24.909612Z[0m [34mDEBUG[0m [2mstrata::app::browser::selection[0m[2m:[0m selection changed [3mdepth[0m[2m=[0m0 [3mselected[0m[2m=[0m1
+[2m2026-11-07T06:36:24.910367Z[0m [34mDEBUG[0m [2mstrata::app::browser::selection[0m[2m:[0m selection changed [3mdepth[0m[2m=[0m0 [3mselected[0m[2m=[0m1

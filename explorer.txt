@@ -1,0 +1,77 @@
+Fahras in the Windows shell - 2026-11-07T06:35:14.5681544+00:00
+--- "Open in Fahras" in File Explorer ---
+      Directory command: "C:\Users\runneradmin\AppData\Local\Programs\Fahras\bin\Fahras.exe" "%1"
+PASS  Explorer offers Open in Fahras on Directory
+      Drive command: "C:\Users\runneradmin\AppData\Local\Programs\Fahras\bin\Fahras.exe" "%1"
+PASS  Explorer offers Open in Fahras on Drive
+      Directory\Background command: "C:\Users\runneradmin\AppData\Local\Programs\Fahras\bin\Fahras.exe" "%V"
+PASS  Explorer offers Open in Fahras on Directory\Background
+      folder menu: Open | Pin to Quick access | Open in Terminal | Open with Visual Studio | Open in Fahras |  |  | Restore previous versions |  | Pin to Start | Copy as path |  | Cut | Copy | Create shortcut | Delete | Rename | Properties
+PASS  the folder right-click menu lists Open in Fahras
+PASS  Open in Fahras opens that folder in Fahras
+PASS  the drive right-click menu lists Open in Fahras
+--- Fahras beside File Explorer ---
+PASS  File Explorer opens the same folder for comparison
+PASS  [en-windows11] Fahras opens
+PASS  [en-windows11] no Linux-only warnings
+      window style: 0x15cf0000
+PASS  [en-windows11] uses the Windows title bar with minimize, maximize and close
+PASS  [en-windows11] Windows' minimize, maximize and close show beside the tabs
+PASS  [en-windows11-legacy] Fahras opens
+PASS  [en-windows11-legacy] no Linux-only warnings
+      window style: 0x15cf0000
+PASS  [en-windows11-legacy] uses the Windows title bar with minimize, maximize and close
+PASS  [en-windows10] Fahras opens
+PASS  [en-windows10] no Linux-only warnings
+      window style: 0x15cf0000
+PASS  [en-windows10] uses the Windows title bar with minimize, maximize and close
+PASS  [ar-windows11] Fahras opens
+PASS  [ar-windows11] no Linux-only warnings
+      window style: 0x15cf0000
+PASS  [ar-windows11] uses the Windows title bar with minimize, maximize and close
+PASS  [ar-windows11] Windows' minimize, maximize and close show beside the tabs
+PASS  [ar-windows11-legacy] Fahras opens
+PASS  [ar-windows11-legacy] no Linux-only warnings
+      window style: 0x15cf0000
+PASS  [ar-windows11-legacy] uses the Windows title bar with minimize, maximize and close
+--- Right-clicking a file shows the Windows menu ---
+PASS  [menu-en] Fahras opens
+PASS  [menu-en] no Linux-only warnings
+PASS  [en] Shift+F10 on a file opens the Windows menu
+      menu at: 592,190
+PASS  [en] the keyboard opens the menu at the file
+      Send to: Bluetooth device | Compressed (zipped) folder | Desktop (create shortcut) | Documents | Mail recipient
+PASS  [en] Send to lists its places
+      menu: Open | Print | Edit | Add to Favorites | 7-Zip | Open with... | Copy as path | Share | Restore previous versions | - | Send to | - | Cut | Copy | - | Create shortcut | Delete | - | Properties
+PASS  [en] the menu has 7-Zip's entries
+      7-Zip: Add to archive... | Compress and email... | Add to "report.7z" | Compress to "report.7z" and email | Add to "report.zip" | Compress to "report.zip" and email | -
+PASS  [en] 7-Zip offers Add to report.7z
+PASS  [en] choosing it creates the archive
+PASS  [menu-ar] Fahras opens
+PASS  [menu-ar] no Linux-only warnings
+PASS  [ar] Shift+F10 on a file opens the Windows menu
+      menu at: 432,190
+PASS  [ar] the keyboard opens the menu at the file
+      Send to: Bluetooth device | Compressed (zipped) folder | Desktop (create shortcut) | Documents | Mail recipient
+PASS  [ar] Send to lists its places
+      menu: Open | Print | Edit | Add to Favorites | 7-Zip | Open with... | Copy as path | Share | Restore previous versions | - | Send to | - | Cut | Copy | - | Create shortcut | Delete | - | Properties
+PASS  [ar] the menu has 7-Zip's entries
+      7-Zip: Add to archive... | Compress and email... | Add to "report.7z" | Compress to "report.7z" and email | Add to "report.zip" | Compress to "report.zip" and email | -
+PASS  [ar] 7-Zip offers Add to report.7z
+PASS  [ar] choosing it creates the archive
+--- Settings: open folders in Fahras ---
+PASS  [default-en] Fahras opens
+PASS  [default-en] no Linux-only warnings
+      switch at: 937 214
+PASS  turning it on makes Fahras open folders
+PASS  double-clicking a folder in Windows opens it in Fahras
+PASS  [default-ar] Fahras opens
+PASS  [default-ar] no Linux-only warnings
+      switch at: 69 212
+PASS  turning it off in Arabic gives folders back to File Explorer
+PASS  double-clicking a folder opens File Explorer again
+PASS  [default-en] Fahras opens
+PASS  [default-en] no Linux-only warnings
+      switch at: 937 214
+PASS  turned back on before uninstalling
+Failures: 0

@@ -1,0 +1,32 @@
+--- Installer: Fahras-Setup-1.1.2-x64.exe ---
+PASS  installer exits successfully
+PASS  Fahras.exe is installed under the user profile
+PASS  a first install leaves other files in the folder alone
+PASS  Start menu shortcut exists
+PASS  Fahras opens without a console window
+PASS  listed in Installed apps as Fahras
+      version: 1.1.2
+      --version: Fahras 1.1.2
+PASS  installed copy runs
+Failures: 0
+--- Update a running copy ---
+      starting the installed copy
+PASS  installed copy opens
+      running the installer over it
+      installer finished: True
+PASS  update installer exits successfully
+PASS  the running copy was closed
+PASS  Fahras opens again after the update
+Failures: 0
+--- Uninstaller ---
+PASS  uninstall entry exists
+PASS  program files are removed
+PASS  Start menu shortcut is removed
+PASS  Installed apps entry is removed
+PASS  settings are kept
+PASS  Open in Fahras is gone from Directory
+PASS  Open in Fahras is gone from Drive
+PASS  Open in Fahras is gone from Directory\Background
+PASS  Directory opens in File Explorer again
+PASS  Drive opens in File Explorer again
+Failures: 0

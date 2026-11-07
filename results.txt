@@ -1,0 +1,26 @@
+Fahras Windows smoke test - 2026-11-07T06:32:02.9426135+00:00
+--- English ---
+PASS  [en] window opens
+      window title: 'fahras-smoke-en — Fahras'
+      browsed drive D:\ (marker file: D:\fahras-drive-check.txt)
+PASS  [en] rename alpha.txt -> renamed.txt
+PASS  [en] copy beta.txt
+PASS  [en] copied contents match
+PASS  [en] copy a folder with a file in it
+PASS  [en] move gamma.txt
+PASS  [en] delete delta.txt to the Recycle Bin
+PASS  [en] still running after all operations
+--- Arabic ---
+PASS  [ar] window opens
+      window title: 'fahras-smoke-ar — Fahras'
+      browsed drive D:\ (marker file: D:\fahras-drive-check.txt)
+PASS  [ar] rename alpha.txt -> renamed.txt
+PASS  [ar] copy beta.txt
+PASS  [ar] copied contents match
+PASS  [ar] copy a folder with a file in it
+PASS  [ar] move gamma.txt
+PASS  [ar] delete delta.txt to the Recycle Bin
+PASS  [ar] still running after all operations
+Recycle Bin: delta, delta
+PASS  deleted files are in the Recycle Bin
+Failures: 0
