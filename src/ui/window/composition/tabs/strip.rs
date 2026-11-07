@@ -250,7 +250,8 @@ impl TabStrip {
 
     pub(super) fn refresh_visibility(&self) {
         self.widget.set_visible(
-            self.headers.borrow().len() > 1 || crate::fahras::look::tabs_in_title_bar(),
+            self.headers.borrow().len() > 1
+                || crate::fahras::look::holds_tabs_in_title_bar(&self.widget),
         );
     }
 

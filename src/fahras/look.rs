@@ -142,12 +142,26 @@ pub(crate) fn min_sidebar_width(fahras: i32) -> i32 {
     }
 }
 
-/// Explorer's tabs inside the title bar: an experiment, on only with
-/// `FAHRAS_TITLE_TABS`, in the Windows 11 look on Windows.
+/// Explorer's tabs inside the title bar, for windows opened in the Windows 11
+/// look on Windows.
+#[cfg(windows)]
 pub(crate) fn tabs_in_title_bar() -> bool {
-    #[cfg(windows)]
-    return explorer_windows11() && crate::platform::windows_title_tabs::enabled();
-    #[cfg(not(windows))]
+    explorer_windows11() && crate::platform::windows_title_tabs::enabled()
+}
+
+/// Whether `widget`'s window holds its tab row in its title bar; that row
+/// then stays shown, whatever the look, so content never meets the buttons.
+#[cfg(windows)]
+pub(crate) fn holds_tabs_in_title_bar(widget: &impl gtk::prelude::IsA<gtk::Widget>) -> bool {
+    use gtk::prelude::*;
+    widget
+        .as_ref()
+        .root()
+        .is_some_and(|root| root.has_css_class(crate::platform::windows_title_tabs::MERGED))
+}
+
+#[cfg(not(windows))]
+pub(crate) fn holds_tabs_in_title_bar(_widget: &impl gtk::prelude::IsA<gtk::Widget>) -> bool {
     false
 }
 

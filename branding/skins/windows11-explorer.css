@@ -195,8 +195,8 @@
   margin: 0;
 }
 
-/* Experiment (FAHRAS_TITLE_TABS): the tab row inside the title bar, see-through
-   where Windows draws minimize, maximize and close. */
+/* The tab row inside the title bar, see-through where Windows draws its
+   minimize, maximize and close. */
 window.fahras-title-tabs,
 window.fahras-title-tabs .tab-window {
   background: transparent;

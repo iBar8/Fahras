@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 
-//! An experiment, on only with `FAHRAS_TITLE_TABS`: Explorer's tabs inside the
-//! title bar. Windows keeps drawing the frame and its minimize, maximize and
-//! close buttons; the window's content extends up into the title area, where
-//! the tab row is drawn. It works only if GTK leaves that area see-through.
+//! Explorer's tabs inside the title bar, in the Windows 11 look. Windows keeps
+//! drawing the frame and its minimize, maximize and close buttons; the window's
+//! content extends up into the title area, where the tab row is drawn, and GTK
+//! leaves that row see-through. `FAHRAS_TITLE_TABS=0` turns it off.
 
 #![expect(unsafe_code, reason = "window frames are a Win32 API")]
 
@@ -29,8 +29,11 @@ pub(crate) const CAPTION_BUTTONS_WIDTH: i32 = 140;
 const SUBCLASS_ID: usize = 0x5469_746c;
 
 pub(crate) fn enabled() -> bool {
-    std::env::var_os("FAHRAS_TITLE_TABS").is_some()
+    std::env::var_os("FAHRAS_TITLE_TABS").is_none_or(|value| value != "0")
 }
+
+/// The class a window whose tabs sit in its title bar carries.
+pub(crate) const MERGED: &str = "fahras-title-tabs";
 
 unsafe extern "system" fn title_proc(
     window: HWND,
@@ -104,6 +107,17 @@ pub(crate) fn merge_when_shown(window: &impl IsA<gtk::Window>) {
                 SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER,
             );
         }
-        window.add_css_class("fahras-title-tabs");
+        window.add_css_class(MERGED);
+        // The tab row now holds the title area: keep it shown.
+        let mut pending = vec![window.clone().upcast::<gtk::Widget>()];
+        while let Some(widget) = pending.pop() {
+            if widget.has_css_class("tab-strip") {
+                widget.set_visible(true);
+            }
+            pending.extend(std::iter::successors(
+                widget.first_child(),
+                gtk::Widget::next_sibling,
+            ));
+        }
     });
 }

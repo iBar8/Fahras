@@ -266,26 +266,23 @@ foreach ($layout in $layouts) {
     Log ("      window style: 0x{0:x8}" -f $style)
     # WS_CAPTION, WS_SYSMENU, WS_MINIMIZEBOX and WS_MAXIMIZEBOX: the system title bar.
     Check "[$label] uses the Windows title bar with minimize, maximize and close" (($style -band 0x00CB0000) -eq 0x00CB0000)
+    if ($layout.skin -eq 'windows11') {
+        # The tab row sits in the title bar; Windows' own close button must still show.
+        $bitmap = Screen
+        $dark = 0
+        try {
+            foreach ($y in 4..28) { foreach ($x in 975..1015) {
+                $pixel = $bitmap.GetPixel($x, $y)
+                if (($pixel.R + $pixel.G + $pixel.B) -lt 300) { $dark++ }
+            } }
+        } finally { $bitmap.Dispose() }
+        Check "[$label] Windows' minimize, maximize and close show beside the tabs" ($dark -gt 10)
+    }
     $fahrasShot = Shot "explorer-03-fahras-$label"
     if ($explorerShot) { Side-By-Side $fahrasShot $explorerShot "explorer-04-beside-file-explorer-$label" }
     Stop-Process -Id $process.Id -Force
     Start-Sleep -Seconds 1
 }
-
-# Experiment: Explorer's tabs inside the title bar, with Windows' own buttons.
-Write-Settings @{
-    language = 'en'; mode = 'theme'; theme = 'github'; explorer_skin = 'windows11'; sidebar_devices_collapsed = $true
-    browser_mode = 'list'; list_column_order = @('name', 'modified', 'type', 'size', 'mode'); list_hidden_columns = @('mode')
-}
-$env:FAHRAS_TITLE_TABS = '1'
-$process = Start-Fahras $folder 'title-tabs'
-Remove-Item Env:FAHRAS_TITLE_TABS
-$style = [ShellWin]::GetWindowLong($process.MainWindowHandle, -16)
-Log ("      title-tabs window style: 0x{0:x8}" -f $style)
-$fahrasShot = Shot 'explorer-10-title-tabs-experiment'
-if ($explorerShot) { Side-By-Side $fahrasShot $explorerShot 'explorer-11-title-tabs-beside-file-explorer' }
-Stop-Process -Id $process.Id -Force
-Start-Sleep -Seconds 1
 
 # --------------------------------------------------------- The native right-click menu
 Log '--- Right-clicking a file shows the Windows menu ---'
