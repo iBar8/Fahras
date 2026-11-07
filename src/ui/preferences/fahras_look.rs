@@ -43,6 +43,10 @@ impl PreferenceManager {
                 preferences.list_column_order = EXPLORER_COLUMNS.to_vec();
                 preferences.list_hidden_columns = vec![ListColumnId::Mode];
             }
+            // Explorer opens with This PC folded, its drives a click away.
+            if skin == ExplorerSkin::Windows11 {
+                preferences.sidebar_devices_collapsed = true;
+            }
         }
         self.save_preferences();
     }

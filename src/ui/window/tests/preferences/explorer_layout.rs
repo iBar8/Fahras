@@ -309,9 +309,14 @@ fn explorer_looks_swap_the_window_layout_live() {
                 || separators(&open).iter().all(|text| text == "/"),
                 || format!("{:?}", separators(&open)),
             );
+            manager.set_sidebar_devices_collapsed(false);
             manager.set_explorer_skin(ExplorerSkin::Windows11);
             settle();
             assert!(crate::fahras::explorer_details::is_polished());
+            assert!(
+                manager.sidebar_devices_collapsed(),
+                "Explorer opens with This PC folded"
+            );
             assert!(shown(&open, "explorer-details-pane"));
             assert!(shown(&open, "explorer-view-switches"));
             assert_eq!(new_icon(&open).as_deref(), Some("fahras-fluent-new-color"));

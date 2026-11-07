@@ -59,6 +59,11 @@
 /* Sidebar on white with a divider, rows 32px apart. */
 .sidebar {
   background: @strata_bg;
+  padding: 4px 2px;
+}
+
+.explorer-pin {
+  margin: 0 2px;
 }
 
 .sidebar-shell {
@@ -146,13 +151,13 @@
    thin line between its groups. */
 .sidebar > .sidebar-row,
 .sidebar > box > .sidebar-row {
-  padding-left: 22px;
+  padding-left: 14px;
 }
 
 .sidebar > .sidebar-row:dir(rtl),
 .sidebar > box > .sidebar-row:dir(rtl) {
   padding-left: 0;
-  padding-right: 22px;
+  padding-right: 14px;
 }
 
 .sidebar > .sidebar-row.explorer-tree-row,
