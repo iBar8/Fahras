@@ -186,3 +186,11 @@
 .explorer-pin:dir(rtl) {
   margin: 0;
 }
+
+/* Explorer shows no item count beside a folded tree row. */
+.explorer-this-pc .sidebar-heading-count {
+  color: transparent;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+}
