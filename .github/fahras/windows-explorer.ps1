@@ -272,6 +272,21 @@ foreach ($layout in $layouts) {
     Start-Sleep -Seconds 1
 }
 
+# Experiment: Explorer's tabs inside the title bar, with Windows' own buttons.
+Write-Settings @{
+    language = 'en'; mode = 'theme'; theme = 'github'; explorer_skin = 'windows11'; sidebar_devices_collapsed = $true
+    browser_mode = 'list'; list_column_order = @('name', 'modified', 'type', 'size', 'mode'); list_hidden_columns = @('mode')
+}
+$env:FAHRAS_TITLE_TABS = '1'
+$process = Start-Fahras $folder 'title-tabs'
+Remove-Item Env:FAHRAS_TITLE_TABS
+$style = [ShellWin]::GetWindowLong($process.MainWindowHandle, -16)
+Log ("      title-tabs window style: 0x{0:x8}" -f $style)
+$fahrasShot = Shot 'explorer-10-title-tabs-experiment'
+if ($explorerShot) { Side-By-Side $fahrasShot $explorerShot 'explorer-11-title-tabs-beside-file-explorer' }
+Stop-Process -Id $process.Id -Force
+Start-Sleep -Seconds 1
+
 # --------------------------------------------------------- The native right-click menu
 Log '--- Right-clicking a file shows the Windows menu ---'
 # Moves the keyboard highlight in the newest open menu to the item named $name.

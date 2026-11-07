@@ -249,7 +249,9 @@ impl TabStrip {
     }
 
     pub(super) fn refresh_visibility(&self) {
-        self.widget.set_visible(self.headers.borrow().len() > 1);
+        self.widget.set_visible(
+            self.headers.borrow().len() > 1 || crate::fahras::look::tabs_in_title_bar(),
+        );
     }
 
     pub(super) fn show_open_drop(&self, show: bool) {

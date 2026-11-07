@@ -142,6 +142,15 @@ pub(crate) fn min_sidebar_width(fahras: i32) -> i32 {
     }
 }
 
+/// Explorer's tabs inside the title bar: an experiment, on only with
+/// `FAHRAS_TITLE_TABS`, in the Windows 11 look on Windows.
+pub(crate) fn tabs_in_title_bar() -> bool {
+    #[cfg(windows)]
+    return explorer_windows11() && crate::platform::windows_title_tabs::enabled();
+    #[cfg(not(windows))]
+    false
+}
+
 /// Explorer titles its window with the folder alone; Fahras adds its name.
 pub(crate) fn window_title(folder: &str) -> String {
     if explorer_windows11() {

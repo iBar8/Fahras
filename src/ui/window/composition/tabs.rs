@@ -74,6 +74,10 @@ impl TabWindow {
         persist: bool,
     ) -> Rc<Self> {
         crate::ui::decoration::claim_titlebar(window);
+        #[cfg(windows)]
+        if crate::fahras::look::tabs_in_title_bar() {
+            crate::platform::windows_title_tabs::merge_when_shown(window);
+        }
         let stack = gtk::Stack::new();
         stack.set_hhomogeneous(false);
         stack.set_vhomogeneous(false);

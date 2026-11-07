@@ -15,6 +15,9 @@ pub(crate) mod windows_frame;
 #[cfg(windows)]
 #[path = "platform/windows/shell.rs"]
 pub(crate) mod windows_shell;
+#[cfg(windows)]
+#[path = "platform/windows/title_tabs.rs"]
+pub(crate) mod windows_title_tabs;
 #[cfg(unix)]
 pub(crate) use std::os::unix;
 

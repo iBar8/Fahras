@@ -194,3 +194,20 @@
   padding: 0;
   margin: 0;
 }
+
+/* Experiment (FAHRAS_TITLE_TABS): the tab row inside the title bar, see-through
+   where Windows draws minimize, maximize and close. */
+window.fahras-title-tabs,
+window.fahras-title-tabs .tab-window {
+  background: transparent;
+}
+
+window.fahras-title-tabs .tab-strip {
+  background: transparent;
+  min-height: 40px;
+  padding-right: 140px;
+}
+
+window.fahras-title-tabs .tab-window stack {
+  background: @strata_bg;
+}
