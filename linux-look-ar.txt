@@ -1,0 +1,18 @@
+PASS  [linux-ar] icon-manila: window opens
+PASS  [linux-ar] icon-forest: window opens
+PASS  [linux-ar] icon-ink: window opens
+PASS  [linux-ar] icon-clay: window opens
+PASS  [linux-ar] each app icon gives the window its own icon
+PASS  [linux-ar] live: window opens
+PASS  [linux-ar] starts on Manila
+PASS  [linux-ar] live switch to windows11: sidebar #ffffff, expected #ffffff
+PASS  [linux-ar] windows11 is saved
+PASS  [linux-ar] live switch to windows10: sidebar #ffffff, expected #ffffff
+PASS  [linux-ar] windows10 is saved
+PASS  [linux-ar] live switch to off: sidebar #f6f8fa, expected #f6f8fa
+PASS  [linux-ar] off is saved
+PASS  [linux-ar] the open window shows Forest at once
+PASS  [linux-ar] Forest is saved
+PASS  [linux-ar] restart: window opens
+PASS  [linux-ar] Forest after a restart
+PASS  [linux-ar] Windows 11 skin after a restart

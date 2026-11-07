@@ -1,0 +1,12 @@
+libEGL warning: DRI3 error: Could not get DRI3 device
+libEGL warning: Ensure your X server supports DRI3 to get accelerated rendering
+
+(io.github.lgse.Strata:5681): GtkSourceView-WARNING **: 06:16:11.018: could not load style scheme file 'resource:///io/github/lgse/Strata/generated/source-styles/strata-current.xml': Failed to open file “resource:///io/github/lgse/Strata/generated/source-styles/strata-current.xml”: No such file or directory
+[2m2026-11-07T06:16:11.025637Z[0m [33m WARN[0m [2mstrata::adapters::local_files::monitors[0m[2m:[0m directory monitoring unavailable [3merror_domain[0m[2m=[0mg-io-error-quark [3merror_code[0m[2m=[0m15
+[2m2026-11-07T06:16:11.148918Z[0m [32m INFO[0m [2mstrata::metrics[0m[2m:[0m application window presented [3melapsed_ms[0m[2m=[0m236
+[2m2026-11-07T06:16:11.150849Z[0m [33m WARN[0m [2mstrata::ui::window::sidebar_trash[0m[2m:[0m unable to read trash contents [3merror_domain[0m[2m=[0mg-io-error-quark [3merror_code[0m[2m=[0m15
+[2m2026-11-07T06:16:11.190966Z[0m [32m INFO[0m [2mstrata::adapters::local_files[0m[2m:[0m directory load started [3mrequest_id[0m[2m=[0m1 [3mbackend[0m[2m=[0mnative
+[2m2026-11-07T06:16:11.291106Z[0m [32m INFO[0m [2mstrata::metrics[0m[2m:[0m first themed frame painted [3melapsed_ms[0m[2m=[0m378
+[2m2026-11-07T06:16:11.291212Z[0m [32m INFO[0m [2mstrata::adapters::local_files::native[0m[2m:[0m first directory batch ready [3mrequest_id[0m[2m=[0m1 [3mentries[0m[2m=[0m4 [3melapsed_ms[0m[2m=[0m100
+[2m2026-11-07T06:16:11.291220Z[0m [32m INFO[0m [2mstrata::adapters::local_files::native[0m[2m:[0m directory load finished [3mrequest_id[0m[2m=[0m1 [3mentries[0m[2m=[0m4 [3melapsed_ms[0m[2m=[0m100
+[2m2026-11-07T06:16:11.348028Z[0m [33m WARN[0m [2mstrata::ui::window::sidebar_trash[0m[2m:[0m unable to read trash contents [3merror_domain[0m[2m=[0mg-io-error-quark [3merror_code[0m[2m=[0m15

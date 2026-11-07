@@ -1,0 +1,18 @@
+[2m2026-11-07T06:13:19.451169Z[0m [33m WARN[0m [2mstrata::ui::preferences::persistence[0m[2m:[0m settings file has invalid entries; keeping the valid ones [3merror[0m[2m=[0mmissing field `mode`
+
+libEGL warning: DRI3 error: Could not get DRI3 device
+libEGL warning: Ensure your X server supports DRI3 to get accelerated rendering
+[2m2026-11-07T06:13:21.310736Z[0m [33m WARN[0m [2mstrata::ui::preferences::persistence[0m[2m:[0m settings file has invalid entries; keeping the valid ones [3merror[0m[2m=[0mmissing field `mode`
+
+[2m2026-11-07T06:13:21.311050Z[0m [33m WARN[0m [2mstrata::ui::preferences::persistence[0m[2m:[0m settings file has invalid entries; keeping the valid ones [3merror[0m[2m=[0mmissing field `mode`
+
+
+(io.github.lgse.Strata:4278): GtkSourceView-WARNING **: 06:13:21.351: could not load style scheme file 'resource:///io/github/lgse/Strata/generated/source-styles/strata-current.xml': Failed to open file “resource:///io/github/lgse/Strata/generated/source-styles/strata-current.xml”: No such file or directory
+[2m2026-11-07T06:13:21.358307Z[0m [33m WARN[0m [2mstrata::adapters::local_files::monitors[0m[2m:[0m directory monitoring unavailable [3merror_domain[0m[2m=[0mg-io-error-quark [3merror_code[0m[2m=[0m15
+[2m2026-11-07T06:13:22.090630Z[0m [32m INFO[0m [2mstrata::metrics[0m[2m:[0m application window presented [3melapsed_ms[0m[2m=[0m2661
+[2m2026-11-07T06:13:22.092555Z[0m [33m WARN[0m [2mstrata::ui::window::sidebar_trash[0m[2m:[0m unable to read trash contents [3merror_domain[0m[2m=[0mg-io-error-quark [3merror_code[0m[2m=[0m15
+[2m2026-11-07T06:13:22.123049Z[0m [32m INFO[0m [2mstrata::adapters::local_files[0m[2m:[0m directory load started [3mrequest_id[0m[2m=[0m1 [3mbackend[0m[2m=[0mnative
+[2m2026-11-07T06:13:23.008887Z[0m [32m INFO[0m [2mstrata::metrics[0m[2m:[0m first themed frame painted [3melapsed_ms[0m[2m=[0m3579
+[2m2026-11-07T06:13:23.009477Z[0m [32m INFO[0m [2mstrata::adapters::local_files::native[0m[2m:[0m first directory batch ready [3mrequest_id[0m[2m=[0m1 [3mentries[0m[2m=[0m4 [3melapsed_ms[0m[2m=[0m886
+[2m2026-11-07T06:13:23.009489Z[0m [32m INFO[0m [2mstrata::adapters::local_files::native[0m[2m:[0m directory load finished [3mrequest_id[0m[2m=[0m1 [3mentries[0m[2m=[0m4 [3melapsed_ms[0m[2m=[0m886
+[2m2026-11-07T06:13:23.124086Z[0m [33m WARN[0m [2mstrata::ui::window::sidebar_trash[0m[2m:[0m unable to read trash contents [3merror_domain[0m[2m=[0mg-io-error-quark [3merror_code[0m[2m=[0m15
