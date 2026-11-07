@@ -74,10 +74,7 @@ impl TabWindow {
         persist: bool,
     ) -> Rc<Self> {
         crate::ui::decoration::claim_titlebar(window);
-        #[cfg(windows)]
-        if crate::fahras::look::tabs_in_title_bar() {
-            crate::platform::windows_title_tabs::merge_when_shown(window);
-        }
+
         let stack = gtk::Stack::new();
         stack.set_hhomogeneous(false);
         stack.set_vhomogeneous(false);
@@ -107,6 +104,17 @@ impl TabWindow {
             drag_token: glib::uuid_string_random().to_string(),
         });
         state.strip.install_drop(&state);
+        #[cfg(windows)]
+        if crate::fahras::look::tabs_in_title_bar() {
+            crate::platform::windows_title_tabs::merge_when_shown(window);
+            // Explorer's "+" sits beside its tab once the tab row holds the title bar.
+            let weak = Rc::downgrade(&state);
+            window.connect_realize(move |_| {
+                if let Some(state) = weak.upgrade() {
+                    state.refresh_chrome();
+                }
+            });
+        }
         {
             // Explorer's look titles the window by folder alone.
             let weak = Rc::downgrade(&state);
@@ -494,7 +502,8 @@ impl TabWindow {
     }
 
     fn refresh_chrome(&self) {
-        let multiple = self.tabs.borrow().len() > 1;
+        let multiple = self.tabs.borrow().len() > 1
+            || crate::fahras::look::holds_tabs_in_title_bar(self.strip.widget());
         self.strip.refresh_visibility();
         for tab in self.tabs.borrow().iter() {
             let header = &tab.content.header;

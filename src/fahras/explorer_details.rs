@@ -53,9 +53,63 @@ pub(crate) fn size(entry: &FileEntry) -> Option<String> {
     })
 }
 
-/// The Type column for a folder with an Explorer look on.
+/// The Type column with an Explorer look on: "File folder", and on Windows
+/// in the polished looks the type names Windows itself gives files.
 pub(crate) fn kind(entry: &FileEntry) -> Option<String> {
-    (active() && entry.is_directory()).then(|| crate::i18n::tr("fahras.details.file_folder"))
+    if !active() {
+        return None;
+    }
+    if entry.is_directory() {
+        return Some(crate::i18n::tr("fahras.details.file_folder"));
+    }
+    if !is_polished() {
+        return None;
+    }
+    windows_type_name(&entry.display_name)
+}
+
+/// The name Windows gives a file's type, as File Explorer's Type column shows.
+#[cfg(windows)]
+fn windows_type_name(name: &str) -> Option<String> {
+    use windows_sys::Win32::{
+        Storage::FileSystem::FILE_ATTRIBUTE_NORMAL,
+        UI::Shell::{SHFILEINFOW, SHGFI_TYPENAME, SHGFI_USEFILEATTRIBUTES, SHGetFileInfoW},
+    };
+    thread_local! {
+        static NAMES: std::cell::RefCell<std::collections::HashMap<String, Option<String>>> =
+            std::cell::RefCell::new(std::collections::HashMap::new());
+    }
+    let key = name
+        .rsplit_once('.')
+        .map_or_else(String::new, |(_, extension)| extension.to_ascii_lowercase());
+    if let Some(known) = NAMES.with_borrow(|names| names.get(&key).cloned()) {
+        return known;
+    }
+    let path: Vec<u16> = format!("file.{key}\0").encode_utf16().collect();
+    // SAFETY: a zeroed SHFILEINFOW is valid, and its size is passed with it.
+    let named = unsafe {
+        let mut info: SHFILEINFOW = std::mem::zeroed();
+        let found = SHGetFileInfoW(
+            path.as_ptr(),
+            FILE_ATTRIBUTE_NORMAL,
+            &mut info,
+            size_of::<SHFILEINFOW>() as u32,
+            SHGFI_TYPENAME | SHGFI_USEFILEATTRIBUTES,
+        );
+        let length = info
+            .szTypeName
+            .iter()
+            .position(|unit| *unit == 0)
+            .unwrap_or(info.szTypeName.len());
+        (found != 0 && length > 0).then(|| String::from_utf16_lossy(&info.szTypeName[..length]))
+    };
+    NAMES.with_borrow_mut(|names| names.insert(key, named.clone()));
+    named
+}
+
+#[cfg(not(windows))]
+fn windows_type_name(_name: &str) -> Option<String> {
+    None
 }
 
 /// The Date modified column with an Explorer look on: the system's own short
