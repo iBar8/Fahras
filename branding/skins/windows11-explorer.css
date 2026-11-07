@@ -141,3 +141,33 @@
 .tab-strip .tab-indicator {
   opacity: 0;
 }
+
+/* Explorer's sidebar: rows indented past the tree's chevron column, and a
+   thin line between its groups. */
+.sidebar > .sidebar-row,
+.sidebar > box > .sidebar-row {
+  padding-left: 22px;
+}
+
+.sidebar > .sidebar-row:dir(rtl),
+.sidebar > box > .sidebar-row:dir(rtl) {
+  padding-left: 0;
+  padding-right: 22px;
+}
+
+.sidebar > .sidebar-row.explorer-tree-row,
+.sidebar > box > .sidebar-row.explorer-tree-row {
+  padding-left: 4px;
+}
+
+.sidebar > .sidebar-row.explorer-tree-row:dir(rtl),
+.sidebar > box > .sidebar-row.explorer-tree-row:dir(rtl) {
+  padding-left: 0;
+  padding-right: 4px;
+}
+
+.sidebar .sidebar-section-separator {
+  background: @strata_border;
+  margin: 10px 8px;
+  min-height: 1px;
+}
