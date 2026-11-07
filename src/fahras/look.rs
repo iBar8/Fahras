@@ -114,15 +114,37 @@ macro_rules! stored_by_id {
 stored_by_id!(AppIcon);
 stored_by_id!(ExplorerSkin);
 
-/// Explorer's Windows 11 look shows its tab strip even with one tab.
-pub(crate) fn shows_tabs_always() -> bool {
+/// The Windows 11 look, which takes File Explorer's measured layout.
+fn explorer_windows11() -> bool {
     crate::ui::preferences::PreferenceManager::existing()
         .is_some_and(|preferences| preferences.explorer_skin() == ExplorerSkin::Windows11)
 }
 
+/// Explorer's navigation pane is 158 pixels wide at 100% scale.
+const EXPLORER_SIDEBAR_WIDTH: i32 = 158;
+const EXPLORER_MIN_SIDEBAR_WIDTH: i32 = 150;
+
+/// The sidebar's width: Explorer's in the Windows 11 look, else Fahras's.
+pub(crate) fn sidebar_width(fahras: i32) -> i32 {
+    if explorer_windows11() {
+        EXPLORER_SIDEBAR_WIDTH
+    } else {
+        fahras
+    }
+}
+
+/// The narrowest the sidebar goes: Explorer's look allows its own width.
+pub(crate) fn min_sidebar_width(fahras: i32) -> i32 {
+    if explorer_windows11() {
+        EXPLORER_MIN_SIDEBAR_WIDTH
+    } else {
+        fahras
+    }
+}
+
 /// Explorer titles its window with the folder alone; Fahras adds its name.
 pub(crate) fn window_title(folder: &str) -> String {
-    if shows_tabs_always() {
+    if explorer_windows11() {
         folder.to_owned()
     } else {
         format!("{folder} — {}", super::branding::DISPLAY_NAME)

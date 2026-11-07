@@ -207,3 +207,38 @@ pub(super) fn grey_without_selection(
         preferences.bind_preference(&anchor, polished, move |_, _| update());
     }
 }
+
+fn find(root: &gtk::Widget, class: &str) -> Option<gtk::Widget> {
+    let mut pending = vec![root.clone()];
+    while let Some(widget) = pending.pop() {
+        if widget.has_css_class(class) {
+            return Some(widget);
+        }
+        pending.extend(std::iter::successors(
+            widget.first_child(),
+            gtk::Widget::next_sibling,
+        ));
+    }
+    None
+}
+
+/// Gives the sidebar Explorer's width in the Windows 11 look, and Fahras's
+/// back in the others, without opening a sidebar the person shrank to a rail.
+pub(super) fn fit_sidebar(window: &gtk::ApplicationWindow) {
+    use crate::ui::window::sidebar_width::{MIN_SIDEBAR_WIDTH, SIDEBAR_WIDTH};
+    let root: gtk::Widget = window.clone().upcast();
+    let width = crate::fahras::look::sidebar_width(SIDEBAR_WIDTH);
+    let minimum = crate::fahras::look::min_sidebar_width(MIN_SIDEBAR_WIDTH);
+    if let Some(scroller) = find(&root, "sidebar-scroll") {
+        scroller.set_width_request(width);
+    }
+    let Some(split) = find(&root, "sidebar-split").and_downcast::<gtk::Paned>() else {
+        return;
+    };
+    if let Some(sidebar) = split.start_child() {
+        sidebar.set_size_request(minimum, -1);
+    }
+    if split.position() >= MIN_SIDEBAR_WIDTH.min(minimum) {
+        split.set_position(width);
+    }
+}

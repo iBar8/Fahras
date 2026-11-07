@@ -110,19 +110,23 @@ pub(in crate::ui) fn bind_sidebar_text_size(paned: &gtk::Paned, sidebar: &Sideba
 }
 
 pub(in crate::ui) fn preferred_sidebar_width() -> i32 {
-    (f64::from(SIDEBAR_WIDTH) * PreferenceManager::shared().interface_scale())
+    let width = crate::fahras::look::sidebar_width(SIDEBAR_WIDTH);
+    (f64::from(width) * PreferenceManager::shared().interface_scale())
         .round()
-        .max(f64::from(SIDEBAR_WIDTH)) as i32
+        .max(f64::from(width)) as i32
 }
 
 pub(super) fn scaled_sidebar_width(paned: &gtk::Paned, scale: f64) -> i32 {
-    let preferred = (f64::from(SIDEBAR_WIDTH) * scale).round() as i32;
+    let preferred =
+        (f64::from(crate::fahras::look::sidebar_width(SIDEBAR_WIDTH)) * scale).round() as i32;
     let available = if paned.width() > 0 {
         paned.width() / 2
     } else {
         preferred
     };
-    preferred.min(available).max(MIN_SIDEBAR_WIDTH)
+    preferred
+        .min(available)
+        .max(crate::fahras::look::min_sidebar_width(MIN_SIDEBAR_WIDTH))
 }
 
 pub(super) fn sidebar_animation_target(

@@ -80,7 +80,6 @@ impl TabWindow {
         stack.set_vexpand(true);
         stack.set_transition_type(gtk::StackTransitionType::None);
         let strip = TabStrip::new();
-        strip.follow_explorer_tabs();
         let shell = gtk::Box::new(gtk::Orientation::Vertical, 0);
         shell.append(strip.widget());
         shell.append(&stack);

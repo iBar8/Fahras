@@ -214,5 +214,19 @@ fn registered_type(extension: &str) -> bool {
     !gtk::gio::content_type_is_unknown(&content_type)
 }
 
+/// Explorer lines sizes up on the right; Fahras's own look on the left.
+pub(crate) fn align_size(label: &gtk::Label) {
+    use gtk::prelude::*;
+    crate::ui::preferences::PreferenceManager::shared().bind_preference(
+        label,
+        |preferences| preferences.explorer_skin().is_polished(),
+        |label, polished| {
+            if let Some(label) = label.downcast_ref::<gtk::Label>() {
+                label.set_xalign(if polished { 1.0 } else { 0.0 });
+            }
+        },
+    );
+}
+
 #[cfg(test)]
 mod tests;

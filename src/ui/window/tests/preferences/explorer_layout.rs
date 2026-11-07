@@ -77,6 +77,12 @@ fn command_sensitive(open: &OpenWindow, name: &str) -> bool {
         .is_some_and(|button| button.is_sensitive())
 }
 
+fn sidebar_width(open: &OpenWindow) -> i32 {
+    with_class(open, "sidebar-scroll")
+        .first()
+        .map_or(0, |scroller| scroller.width_request())
+}
+
 /// The footer row's first widget, and whether its shortcuts button shows.
 fn footer_start(open: &OpenWindow) -> (gtk::Widget, bool) {
     let status = with_class(open, "explorer-status")
@@ -279,6 +285,7 @@ fn explorer_looks_swap_the_window_layout_live() {
             );
             open.content.browser.browser().clear_active_selection();
             wait_until(|| command_sensitive(&open, "Copy"));
+            assert_eq!(sidebar_width(&open), 201, "legacy keeps Fahras's sidebar");
             let (first, _) = footer_start(&open);
             assert!(
                 !first.has_css_class("explorer-status"),
@@ -308,6 +315,11 @@ fn explorer_looks_swap_the_window_layout_live() {
             browser.select(0, 0);
             wait_until(|| command_sensitive(&open, "Copy"));
             browser.clear_active_selection();
+            assert_eq!(
+                sidebar_width(&open),
+                158,
+                "Explorer's navigation pane width"
+            );
             let (first, shortcuts_shown) = footer_start(&open);
             assert!(
                 first.has_css_class("explorer-status"),

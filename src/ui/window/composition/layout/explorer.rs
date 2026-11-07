@@ -117,6 +117,7 @@ impl Layout {
         // The footer hides its own count while the Explorer one shows.
         self.footer.refresh_filter();
         if let Some(window) = self.window.upgrade() {
+            polish::fit_sidebar(&window);
             use_system_title_bar(&window, explorer);
             if let Some(header) = self.header.upgrade() {
                 crate::ui::fahras_layout::hide_window_buttons_under_system_frame(

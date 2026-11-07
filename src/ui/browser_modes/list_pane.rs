@@ -487,6 +487,7 @@ pub(super) fn assemble_list_row() -> gtk::Box {
     let name_cell = list_name_cell();
     let mode_label = list_metadata_label("list-col-mode");
     let size_label = list_metadata_label("list-col-size");
+    crate::fahras::explorer_details::align_size(&size_label);
     let kind_label = list_metadata_label("list-col-type");
     let modified_label = list_metadata_label("list-col-modified");
 

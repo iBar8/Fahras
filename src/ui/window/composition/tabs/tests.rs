@@ -1516,9 +1516,9 @@ fn open_in_new_window_presents_a_window_at_the_target() {
 }
 
 #[test]
-fn the_windows_11_look_keeps_explorers_tab_strip_and_folder_title() {
+fn the_windows_11_look_titles_the_window_by_folder_like_explorer() {
     crate::test_support::gtk_test(
-        "ui::window::composition::tabs::tests::the_windows_11_look_keeps_explorers_tab_strip_and_folder_title",
+        "ui::window::composition::tabs::tests::the_windows_11_look_titles_the_window_by_folder_like_explorer",
         || {
             use crate::fahras::look::ExplorerSkin;
             let preferences = PreferenceManager::shared();
@@ -1536,7 +1536,11 @@ fn the_windows_11_look_keeps_explorers_tab_strip_and_folder_title() {
             assert!(!tabs.strip.widget().is_visible(), "one tab, no strip");
 
             preferences.set_explorer_skin(ExplorerSkin::Windows11);
-            wait_until(|| tabs.strip.widget().is_visible());
+            settle_tabs();
+            assert!(
+                !tabs.strip.widget().is_visible(),
+                "one tab: the title bar names the folder, as Explorer's tab does"
+            );
             load(&tabs.active_browser(), Location::local(folder.path()));
             wait_until_or(
                 || window.title().as_deref() == Some(name.as_str()),
@@ -1544,8 +1548,13 @@ fn the_windows_11_look_keeps_explorers_tab_strip_and_folder_title() {
             );
 
             preferences.set_explorer_skin(ExplorerSkin::Windows11Legacy);
-            wait_until(|| !tabs.strip.widget().is_visible());
+            load(&tabs.active_browser(), Location::local(folder.path()));
             window.destroy();
         },
     );
+}
+
+fn settle_tabs() {
+    let context = glib::MainContext::default();
+    while context.iteration(false) {}
 }

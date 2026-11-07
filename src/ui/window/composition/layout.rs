@@ -386,8 +386,8 @@ fn bind_sidebar_toggle(
             if content.position() != sidebar_rail_width() {
                 content.set_position(sidebar_rail_width());
             }
-        } else if content.position() < MIN_SIDEBAR_WIDTH {
-            content.set_position(MIN_SIDEBAR_WIDTH);
+        } else if content.position() < crate::fahras::look::min_sidebar_width(MIN_SIDEBAR_WIDTH) {
+            content.set_position(crate::fahras::look::min_sidebar_width(MIN_SIDEBAR_WIDTH));
         } else if content.position()
             + crate::ui::preview::separator_width(content)
             + crate::ui::browser::COLUMN_WIDTH
