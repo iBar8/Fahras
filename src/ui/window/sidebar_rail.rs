@@ -37,7 +37,7 @@ fn shell_width(rail: bool) -> i32 {
     if rail {
         sidebar_rail_width()
     } else {
-        MIN_SIDEBAR_WIDTH
+        crate::fahras::look::min_sidebar_width(MIN_SIDEBAR_WIDTH)
     }
 }
 

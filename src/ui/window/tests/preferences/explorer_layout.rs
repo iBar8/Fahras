@@ -77,6 +77,13 @@ fn command_sensitive(open: &OpenWindow, name: &str) -> bool {
         .is_some_and(|button| button.is_sensitive())
 }
 
+fn split_position(open: &OpenWindow) -> i32 {
+    with_class(open, "sidebar-split")
+        .first()
+        .and_then(|split| split.downcast_ref::<gtk::Paned>().map(gtk::Paned::position))
+        .unwrap_or_default()
+}
+
 fn sidebar_width(open: &OpenWindow) -> i32 {
     with_class(open, "sidebar-scroll")
         .first()
@@ -320,6 +327,19 @@ fn explorer_looks_swap_the_window_layout_live() {
                 158,
                 "Explorer's navigation pane width"
             );
+            let fresh = OpenWindow::open();
+            settle();
+            assert_eq!(
+                sidebar_width(&fresh),
+                158,
+                "a window opened in the look starts at Explorer's width"
+            );
+            let position = split_position(&fresh);
+            assert!(
+                (150..=162).contains(&position),
+                "Explorer's width, give or take the divider: {position}"
+            );
+            fresh.window.destroy();
             let (first, shortcuts_shown) = footer_start(&open);
             assert!(
                 first.has_css_class("explorer-status"),

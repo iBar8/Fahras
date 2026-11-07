@@ -287,9 +287,12 @@ fn browser_split(
     content.set_wide_handle(true);
     content.set_shrink_start_child(false);
     content.set_resize_start_child(false);
-    content.set_position(SIDEBAR_WIDTH);
+    content.set_position(crate::fahras::look::sidebar_width(SIDEBAR_WIDTH));
     content.set_vexpand(true);
-    sidebar.widget.set_size_request(MIN_SIDEBAR_WIDTH, -1);
+    sidebar.widget.set_size_request(
+        crate::fahras::look::min_sidebar_width(MIN_SIDEBAR_WIDTH),
+        -1,
+    );
     browser.add_marquee_origin(
         &sidebar.widget,
         gtk::PackType::Start,

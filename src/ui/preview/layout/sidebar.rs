@@ -67,7 +67,7 @@ impl PreviewState {
                     preferred_sidebar_width()
                 }
             })
-            .max(MIN_SIDEBAR_WIDTH)
+            .max(crate::fahras::look::min_sidebar_width(MIN_SIDEBAR_WIDTH))
     }
 
     pub(in crate::ui::preview) fn sync_sidebar_without_preview(&self) {

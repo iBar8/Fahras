@@ -229,7 +229,7 @@ impl SidebarShell {
             .child(&places)
             .hscrollbar_policy(gtk::PolicyType::Never)
             .vscrollbar_policy(gtk::PolicyType::Automatic)
-            .width_request(SIDEBAR_WIDTH)
+            .width_request(crate::fahras::look::sidebar_width(SIDEBAR_WIDTH))
             .vexpand(true)
             .build();
         scroller.add_css_class("sidebar-scroll");
