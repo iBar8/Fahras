@@ -1514,3 +1514,38 @@ fn open_in_new_window_presents_a_window_at_the_target() {
         },
     );
 }
+
+#[test]
+fn the_windows_11_look_keeps_explorers_tab_strip_and_folder_title() {
+    crate::test_support::gtk_test(
+        "ui::window::composition::tabs::tests::the_windows_11_look_keeps_explorers_tab_strip_and_folder_title",
+        || {
+            use crate::fahras::look::ExplorerSkin;
+            let preferences = PreferenceManager::shared();
+            preferences.set_explorer_skin(ExplorerSkin::Windows11Legacy);
+            let (window, tabs) = open();
+            let folder = tempfile::tempdir().expect("folder");
+            load(&tabs.active_browser(), Location::local(folder.path()));
+            let name = folder
+                .path()
+                .file_name()
+                .expect("name")
+                .to_string_lossy()
+                .into_owned();
+            wait_until(|| window.title().is_some_and(|title| title.contains(" — ")));
+            assert!(!tabs.strip.widget().is_visible(), "one tab, no strip");
+
+            preferences.set_explorer_skin(ExplorerSkin::Windows11);
+            wait_until(|| tabs.strip.widget().is_visible());
+            load(&tabs.active_browser(), Location::local(folder.path()));
+            wait_until_or(
+                || window.title().as_deref() == Some(name.as_str()),
+                || format!("{:?}", window.title()),
+            );
+
+            preferences.set_explorer_skin(ExplorerSkin::Windows11Legacy);
+            wait_until(|| !tabs.strip.widget().is_visible());
+            window.destroy();
+        },
+    );
+}

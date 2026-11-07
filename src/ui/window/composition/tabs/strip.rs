@@ -249,7 +249,25 @@ impl TabStrip {
     }
 
     pub(super) fn refresh_visibility(&self) {
-        self.widget.set_visible(self.headers.borrow().len() > 1);
+        self.widget.set_visible(
+            self.headers.borrow().len() > 1 || crate::fahras::look::shows_tabs_always(),
+        );
+    }
+
+    /// Explorer's look keeps the strip even with one tab; follow it live.
+    pub(super) fn follow_explorer_tabs(&self) {
+        let headers = Rc::downgrade(&self.headers);
+        crate::ui::preferences::PreferenceManager::shared().bind_preference(
+            &self.widget,
+            crate::ui::preferences::PreferenceManager::explorer_skin,
+            move |widget, _| {
+                if let Some(headers) = headers.upgrade() {
+                    widget.set_visible(
+                        headers.borrow().len() > 1 || crate::fahras::look::shows_tabs_always(),
+                    );
+                }
+            },
+        );
     }
 
     pub(super) fn show_open_drop(&self, show: bool) {

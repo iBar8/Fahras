@@ -80,6 +80,7 @@ impl TabWindow {
         stack.set_vexpand(true);
         stack.set_transition_type(gtk::StackTransitionType::None);
         let strip = TabStrip::new();
+        strip.follow_explorer_tabs();
         let shell = gtk::Box::new(gtk::Orientation::Vertical, 0);
         shell.append(strip.widget());
         shell.append(&stack);
@@ -103,6 +104,19 @@ impl TabWindow {
             drag_token: glib::uuid_string_random().to_string(),
         });
         state.strip.install_drop(&state);
+        {
+            // Explorer's look titles the window by folder alone.
+            let weak = Rc::downgrade(&state);
+            preferences.bind_preference(
+                state.strip.widget(),
+                PreferenceManager::explorer_skin,
+                move |_, _| {
+                    if let Some(state) = weak.upgrade() {
+                        state.refresh_title();
+                    }
+                },
+            );
+        }
         state.add(None);
         state.install_actions(window);
         state.install_keys(window);
@@ -471,7 +485,7 @@ impl TabWindow {
             .and_then(|tab| tab.folder.borrow().clone())
             .map_or_else(
                 || crate::fahras::branding::DISPLAY_NAME.to_owned(),
-                |folder| format!("{folder} — {}", crate::fahras::branding::DISPLAY_NAME),
+                |folder| crate::fahras::look::window_title(&folder),
             );
         window.set_title(Some(&title));
     }

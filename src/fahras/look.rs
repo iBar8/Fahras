@@ -114,5 +114,20 @@ macro_rules! stored_by_id {
 stored_by_id!(AppIcon);
 stored_by_id!(ExplorerSkin);
 
+/// Explorer's Windows 11 look shows its tab strip even with one tab.
+pub(crate) fn shows_tabs_always() -> bool {
+    crate::ui::preferences::PreferenceManager::existing()
+        .is_some_and(|preferences| preferences.explorer_skin() == ExplorerSkin::Windows11)
+}
+
+/// Explorer titles its window with the folder alone; Fahras adds its name.
+pub(crate) fn window_title(folder: &str) -> String {
+    if shows_tabs_always() {
+        folder.to_owned()
+    } else {
+        format!("{folder} — {}", super::branding::DISPLAY_NAME)
+    }
+}
+
 #[cfg(test)]
 mod tests;
