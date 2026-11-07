@@ -1,0 +1,25 @@
+[2m2026-11-07T06:28:18.461054Z[0m [34mDEBUG[0m [2mstrata[0m[2m:[0m startup gvfs probe finished [3melapsed_ms[0m[2m=[0m106
+[2m2026-11-07T06:28:18.463766Z[0m [33m WARN[0m [2mstrata::ui::preferences::persistence[0m[2m:[0m settings file has invalid entries; keeping the valid ones [3merror[0m[2m=[0mmissing field `mode`
+
+[2m2026-11-07T06:28:18.775124Z[0m [34mDEBUG[0m [2mstrata[0m[2m:[0m startup bundled assets prepared [3melapsed_ms[0m[2m=[0m307 [3mtotal_elapsed_ms[0m[2m=[0m420
+[2m2026-11-07T06:28:18.776033Z[0m [34mDEBUG[0m [2mstrata::adapters::volume::mount_watch[0m[2m:[0m no mount table to watch [3merror[0m[2m=[0mNo such file or directory (os error 2)
+[2m2026-11-07T06:28:18.868660Z[0m [34mDEBUG[0m [2mstrata[0m[2m:[0m startup volume monitor ready [3melapsed_ms[0m[2m=[0m514
+[2m2026-11-07T06:28:18.869896Z[0m [33m WARN[0m [2mstrata::ui::preferences::persistence[0m[2m:[0m settings file has invalid entries; keeping the valid ones [3merror[0m[2m=[0mmissing field `mode`
+
+[2m2026-11-07T06:28:18.870714Z[0m [33m WARN[0m [2mstrata::ui::preferences::persistence[0m[2m:[0m settings file has invalid entries; keeping the valid ones [3merror[0m[2m=[0mmissing field `mode`
+
+[2m2026-11-07T06:28:18.927200Z[0m [34mDEBUG[0m [2mstrata::ui::window::launch[0m[2m:[0m present theme and styles ready [3melapsed_ms[0m[2m=[0m57
+[2m2026-11-07T06:28:19.067117Z[0m [32m INFO[0m [2mstrata::metrics[0m[2m:[0m application window presented [3melapsed_ms[0m[2m=[0m713
+[2m2026-11-07T06:28:19.127199Z[0m [32m INFO[0m [2mstrata::adapters::local_files[0m[2m:[0m directory load started [3mrequest_id[0m[2m=[0m1 [3mbackend[0m[2m=[0mnative
+[2m2026-11-07T06:28:19.127591Z[0m [34mDEBUG[0m [2mstrata::adapters::local_files[0m[2m:[0m directory load location [3mrequest_id[0m[2m=[0m1 [3mlocation[0m[2m=[0mC:\fahras-look
+[2m2026-11-07T06:28:19.183090Z[0m [32m INFO[0m [2mstrata::metrics[0m[2m:[0m first themed frame painted [3melapsed_ms[0m[2m=[0m828
+[2m2026-11-07T06:28:19.183612Z[0m [32m INFO[0m [2mstrata::adapters::local_files::native[0m[2m:[0m first directory batch ready [3mrequest_id[0m[2m=[0m1 [3mentries[0m[2m=[0m4 [3melapsed_ms[0m[2m=[0m56
+[2m2026-11-07T06:28:19.183897Z[0m [32m INFO[0m [2mstrata::adapters::local_files::native[0m[2m:[0m directory load finished [3mrequest_id[0m[2m=[0m1 [3mentries[0m[2m=[0m4 [3melapsed_ms[0m[2m=[0m56
+[2m2026-11-07T06:28:19.189163Z[0m [34mDEBUG[0m [2mstrata::app::browser::publication[0m[2m:[0m directory publication finished [3mdepth[0m[2m=[0m0 [3mentries[0m[2m=[0m4
+[2m2026-11-07T06:28:19.404986Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m1 [3mstale[0m[2m=[0m0
+[2m2026-11-07T06:28:19.405556Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m1 [3mstale[0m[2m=[0m0
+[2m2026-11-07T06:28:19.405880Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m2 [3mstale[0m[2m=[0m0
+[2m2026-11-07T06:28:19.406238Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m1 [3mstale[0m[2m=[0m0
+[2m2026-11-07T06:28:19.406577Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m1 [3mstale[0m[2m=[0m0
+[2m2026-11-07T06:28:19.406867Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m1 [3mstale[0m[2m=[0m0
+[2m2026-11-07T06:28:19.407166Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m1 [3mstale[0m[2m=[0m0

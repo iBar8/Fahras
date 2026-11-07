@@ -1,0 +1,20 @@
+[2m2026-11-07T06:28:25.903971Z[0m [34mDEBUG[0m [2mstrata[0m[2m:[0m startup gvfs probe finished [3melapsed_ms[0m[2m=[0m103
+[2m2026-11-07T06:28:26.289465Z[0m [34mDEBUG[0m [2mstrata[0m[2m:[0m startup bundled assets prepared [3melapsed_ms[0m[2m=[0m380 [3mtotal_elapsed_ms[0m[2m=[0m489
+[2m2026-11-07T06:28:26.290451Z[0m [34mDEBUG[0m [2mstrata::adapters::volume::mount_watch[0m[2m:[0m no mount table to watch [3merror[0m[2m=[0mNo such file or directory (os error 2)
+[2m2026-11-07T06:28:26.388358Z[0m [34mDEBUG[0m [2mstrata[0m[2m:[0m startup volume monitor ready [3melapsed_ms[0m[2m=[0m588
+[2m2026-11-07T06:28:26.444318Z[0m [34mDEBUG[0m [2mstrata::ui::window::launch[0m[2m:[0m present theme and styles ready [3melapsed_ms[0m[2m=[0m55
+[2m2026-11-07T06:28:26.606432Z[0m [32m INFO[0m [2mstrata::metrics[0m[2m:[0m application window presented [3melapsed_ms[0m[2m=[0m806
+[2m2026-11-07T06:28:26.800108Z[0m [32m INFO[0m [2mstrata::adapters::local_files[0m[2m:[0m directory load started [3mrequest_id[0m[2m=[0m1 [3mbackend[0m[2m=[0mnative
+[2m2026-11-07T06:28:26.800499Z[0m [34mDEBUG[0m [2mstrata::adapters::local_files[0m[2m:[0m directory load location [3mrequest_id[0m[2m=[0m1 [3mlocation[0m[2m=[0mC:\fahras-look
+[2m2026-11-07T06:28:26.859196Z[0m [32m INFO[0m [2mstrata::metrics[0m[2m:[0m first themed frame painted [3melapsed_ms[0m[2m=[0m1059
+[2m2026-11-07T06:28:26.860176Z[0m [32m INFO[0m [2mstrata::adapters::local_files::native[0m[2m:[0m first directory batch ready [3mrequest_id[0m[2m=[0m1 [3mentries[0m[2m=[0m4 [3melapsed_ms[0m[2m=[0m60
+[2m2026-11-07T06:28:26.860527Z[0m [32m INFO[0m [2mstrata::adapters::local_files::native[0m[2m:[0m directory load finished [3mrequest_id[0m[2m=[0m1 [3mentries[0m[2m=[0m4 [3melapsed_ms[0m[2m=[0m60
+[2m2026-11-07T06:28:26.866700Z[0m [34mDEBUG[0m [2mstrata::app::browser::publication[0m[2m:[0m directory publication finished [3mdepth[0m[2m=[0m0 [3mentries[0m[2m=[0m4
+[2m2026-11-07T06:28:27.096801Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m1 [3mstale[0m[2m=[0m0
+[2m2026-11-07T06:28:27.097341Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m1 [3mstale[0m[2m=[0m0
+[2m2026-11-07T06:28:27.097672Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m1 [3mstale[0m[2m=[0m0
+[2m2026-11-07T06:28:27.097998Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m1 [3mstale[0m[2m=[0m0
+[2m2026-11-07T06:28:27.098294Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m1 [3mstale[0m[2m=[0m0
+[2m2026-11-07T06:28:27.098592Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m1 [3mstale[0m[2m=[0m0
+[2m2026-11-07T06:28:27.098862Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m1 [3mstale[0m[2m=[0m0
+[2m2026-11-07T06:28:27.099133Z[0m [34mDEBUG[0m [2mstrata::app::browser::loading::metadata[0m[2m:[0m metadata fill applied [3mrequest_id[0m[2m=[0m2 [3mdepth[0m[2m=[0m0 [3mfilled[0m[2m=[0m1 [3mstale[0m[2m=[0m0

@@ -1,0 +1,70 @@
+Fahras look check - 2026-11-07T06:27:55.9376248+00:00
+--- Each app icon on the window and taskbar, after a restart ---
+PASS  [icon-manila] window opens
+      manila window icon: 9FCA3AD98EAAEA4C778953741A67AACF8E879ACBA3ADC17B23F9C5D35C764AAC
+PASS  [manila] the window has an icon
+PASS  [icon-forest] window opens
+      forest window icon: 93AE7014B8A0EC1BDF62F6D2BD9ED46B3AAD3B8DCE447C987FC57BEC873DC252
+PASS  [forest] the window has an icon
+PASS  [icon-ink] window opens
+      ink window icon: AFC88EFB3B8F2906519E8A51B0031BDE2A0B2D099C586546F608B4178E93B29E
+PASS  [ink] the window has an icon
+PASS  [icon-clay] window opens
+      clay window icon: 4AB9A3400ACC3D04091B87DA7B67B2199911F627B66815D60B243D3ACEE83226
+PASS  [clay] the window has an icon
+PASS  each app icon looks different on the taskbar
+--- Explorer skins, English and Arabic, light and dark ---
+PASS  [en-windows11-light] window opens
+      en-windows11-light sidebar: #ffffff
+PASS  [en-windows11-light] sidebar uses Explorer's #ffffff
+PASS  [en-windows10-light] window opens
+      en-windows10-light sidebar: #ffffff
+PASS  [en-windows10-light] sidebar uses Explorer's #ffffff
+PASS  [en-windows11-dark] window opens
+      en-windows11-dark sidebar: #191919
+PASS  [en-windows11-dark] sidebar uses Explorer's #191919
+PASS  [ar-windows11-light] window opens
+      ar-windows11-light sidebar: #ffffff
+PASS  [ar-windows11-light] sidebar uses Explorer's #ffffff
+PASS  [en-windows11-legacy-light] window opens
+      en-windows11-legacy-light sidebar: #f3f3f3
+PASS  [en-windows11-legacy-light] sidebar uses Explorer's #f3f3f3
+PASS  [ar-windows10-dark] window opens
+      ar-windows10-dark sidebar: #191919
+PASS  [ar-windows10-dark] sidebar uses Explorer's #191919
+--- Live change from Settings, then a restart ---
+PASS  [live-en] window opens
+PASS  [live-en] starts on the Manila icon
+      settings panel at 25 (shift 0)
+PASS  [live-en] Windows 11 skin is saved
+      sidebar #f6f8fa -> #ffffff
+PASS  [live-en] the open window takes the Windows 11 skin
+      settings panel at 25 (shift 0)
+PASS  [live-en] Windows 10 skin is saved
+PASS  [live-en] the open window takes the Windows 10 skin
+      settings panel at 25 (shift 0)
+PASS  [live-en] back to the Windows 11 skin
+      settings panel at 25 (shift 0)
+PASS  [live-en] Forest icon is saved
+PASS  [live-en] the window and taskbar show Forest at once
+PASS  [live-en-restart] window opens
+PASS  [live-en] Forest icon after a restart
+PASS  [live-en] Windows 11 skin after a restart
+PASS  [live-ar] window opens
+PASS  [live-ar] starts on the Manila icon
+      settings panel at 25 (shift 0)
+PASS  [live-ar] Windows 11 skin is saved
+      sidebar #f6f8fa -> #ffffff
+PASS  [live-ar] the open window takes the Windows 11 skin
+      settings panel at 25 (shift 0)
+PASS  [live-ar] Windows 10 skin is saved
+PASS  [live-ar] the open window takes the Windows 10 skin
+      settings panel at 25 (shift 0)
+PASS  [live-ar] back to the Windows 11 skin
+      settings panel at 25 (shift 0)
+PASS  [live-ar] Forest icon is saved
+PASS  [live-ar] the window and taskbar show Forest at once
+PASS  [live-ar-restart] window opens
+PASS  [live-ar] Forest icon after a restart
+PASS  [live-ar] Windows 11 skin after a restart
+Failures: 0

@@ -1,0 +1,62 @@
+
+(io.github.lgse.Strata:1728): GLib-GIO-WARNING **: 06:26:32.386: win32 session dbus binary not found
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.438: GFileInfo created without standard::type
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.438: GFileInfo created without standard::type
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.439: GFileInfo created without standard::type
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.452: file ../glib-2.90.1/gio/gfileinfo.c: line 1625 (g_file_info_get_file_type): should not be reached
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.452: file ../glib-2.90.1/gio/gfileinfo.c: line 1625 (g_file_info_get_file_type): should not be reached
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.480: GFileInfo created without standard::size
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.466: GFileInfo created without standard::size
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.466: file ../glib-2.90.1/gio/gfileinfo.c: line 1625 (g_file_info_get_file_type): should not be reached
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.481: file ../glib-2.90.1/gio/gfileinfo.c: line 1865 (g_file_info_get_size): should not be reached
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.481: file ../glib-2.90.1/gio/gfileinfo.c: line 1865 (g_file_info_get_size): should not be reached
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.481: GFileInfo created without standard::size
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.482: GFileInfo created without standard::type
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.482: GFileInfo created without standard::type
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.482: file ../glib-2.90.1/gio/gfileinfo.c: line 1865 (g_file_info_get_size): should not be reached
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.482: file ../glib-2.90.1/gio/gfileinfo.c: line 1625 (g_file_info_get_file_type): should not be reached
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.483: file ../glib-2.90.1/gio/gfileinfo.c: line 1625 (g_file_info_get_file_type): should not be reached
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.484: GFileInfo created without standard::type
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.483: GFileInfo created without standard::type
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.484: GFileInfo created without standard::type
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.484: file ../glib-2.90.1/gio/gfileinfo.c: line 1625 (g_file_info_get_file_type): should not be reached
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.485: file ../glib-2.90.1/gio/gfileinfo.c: line 1625 (g_file_info_get_file_type): should not be reached
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.485: file ../glib-2.90.1/gio/gfileinfo.c: line 1625 (g_file_info_get_file_type): should not be reached
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.485: GFileInfo created without standard::type
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.486: GFileInfo created without standard::type
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.487: GFileInfo created without standard::type
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.487: file ../glib-2.90.1/gio/gfileinfo.c: line 1625 (g_file_info_get_file_type): should not be reached
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.500: file ../glib-2.90.1/gio/gfileinfo.c: line 1625 (g_file_info_get_file_type): should not be reached
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.500: file ../glib-2.90.1/gio/gfileinfo.c: line 1625 (g_file_info_get_file_type): should not be reached
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.501: GFileInfo created without standard::type
+
+(io.github.lgse.Strata:1728): GLib-GIO-CRITICAL **: 06:26:48.502: file ../glib-2.90.1/gio/gfileinfo.c: line 1625 (g_file_info_get_file_type): should not be reached
