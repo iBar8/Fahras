@@ -176,3 +176,13 @@
   margin: 10px 8px;
   min-height: 1px;
 }
+
+/* Right to left, Arabic names run longer: give them the indent's room. */
+.sidebar > .sidebar-row:dir(rtl),
+.sidebar > box > .sidebar-row:dir(rtl) {
+  padding-right: 6px;
+}
+
+.explorer-pin:dir(rtl) {
+  margin: 0;
+}

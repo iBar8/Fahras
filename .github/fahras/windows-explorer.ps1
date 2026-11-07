@@ -161,6 +161,9 @@ function Stop-Fahras {
 }
 
 function Toml-Value($value) {
+    if ($value -is [bool]) {
+        return $value.ToString().ToLower()
+    }
     if ($value -is [array]) {
         return '[' + (($value | ForEach-Object { '"' + $_ + '"' }) -join ', ') + ']'
     }
@@ -254,6 +257,8 @@ foreach ($layout in $layouts) {
     $label = "$($layout.lang)-$($layout.skin)"
     Write-Settings @{
         language = $layout.lang; mode = 'theme'; theme = 'github'; explorer_skin = $layout.skin
+        # Choosing the Windows 11 look in Settings folds This PC, as Explorer opens.
+        sidebar_devices_collapsed = ($layout.skin -eq 'windows11')
         browser_mode = 'list'; list_column_order = @('name', 'modified', 'type', 'size', 'mode'); list_hidden_columns = @('mode')
     }
     $process = Start-Fahras $folder $label
