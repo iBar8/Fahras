@@ -130,17 +130,35 @@ def sidebar(image):
     return "#%02x%02x%02x" % image.getpixel((x(40), int(HEIGHT * 0.7)))
 
 
+def settings_top():
+    """The Settings panel's top edge: the first white row down the middle.
+    Explorer's Windows 11 look keeps a tab row above it, moving it down."""
+    image = shot("settings-top")
+    for top in range(0, 300):
+        if min(image.getpixel((WIDTH // 2, top))) >= 250:
+            return top
+    return None
+
+
+SETTINGS_BASE = []
+
+
 def choose(window, query, down, name):
     """Settings search shows the one matching row; its choice is the first in
     the page, mirrored for right to left."""
     xdotool("windowactivate", "--sync", str(window))
     key("ctrl+comma", settle=2.5)
-    click(x(170), 108, 0.6)
+    top = settings_top()
+    if not SETTINGS_BASE and top is not None:
+        SETTINGS_BASE.append(top)
+    shift = top - SETTINGS_BASE[0] if top is not None and SETTINGS_BASE else 0
+    print(f"      settings panel at {top} (shift {shift})")
+    click(x(170), 108 + shift, 0.6)
     key("ctrl+a")
     xdotool("type", "--delay", "60", query)
     time.sleep(1.5)
     shot(f"{name}-search")
-    click(x(640), 241)
+    click(x(640), 241 + shift)
     shot(f"{name}-menu")
     if down:
         key(*(["Down"] * down))
@@ -163,7 +181,7 @@ check("each app icon gives the window its own icon", None not in icons.values() 
 window = launch("live", f'language = "{args.lang}"\nmode = "theme"\ntheme = "github"\napp_icon = "manila"')
 check("starts on Manila", window_icon(window) == icons["manila"])
 default = sidebar(shot("01-start"))
-for skin, down, expected in (("windows11", 2, "#f3f3f3"), ("windows10", 1, "#ffffff"), ("off", 0, default)):
+for skin, down, expected in (("windows11", 2, "#ffffff"), ("windows10", 1, "#ffffff"), ("off", 0, default)):
     choose(window, "skin", down, f"02-skin-{skin}")
     color = sidebar(shot(f"03-skinned-{skin}"))
     check(f"live switch to {skin}: sidebar {color}, expected {expected}", color == expected)
@@ -178,7 +196,7 @@ stop()
 
 window = launch("restart", None)
 check("Forest after a restart", window_icon(window) == icons["forest"])
-check("Windows 11 skin after a restart", sidebar(shot("07-restarted")) == "#f3f3f3")
+check("Windows 11 skin after a restart", sidebar(shot("07-restarted")) == "#ffffff")
 stop()
 
 (EVIDENCE / f"linux-look-{args.lang}.txt").write_text("\n".join(results) + "\n")

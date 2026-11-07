@@ -158,10 +158,11 @@ Log '--- Explorer skins, English and Arabic, light and dark ---'
 # Sidebar colors from src/ui/theme/fahras_skin.rs: Windows 11 uses the surface,
 # Windows 10 the background.
 $skins = @(
-    @{ label = 'en-windows11-light'; lang = 'en'; skin = 'windows11'; theme = 'github'; sidebar = '#f3f3f3' },
+    @{ label = 'en-windows11-light'; lang = 'en'; skin = 'windows11'; theme = 'github'; sidebar = '#ffffff' },
     @{ label = 'en-windows10-light'; lang = 'en'; skin = 'windows10'; theme = 'github'; sidebar = '#ffffff' },
-    @{ label = 'en-windows11-dark'; lang = 'en'; skin = 'windows11'; theme = 'github-dark'; sidebar = '#202020' },
-    @{ label = 'ar-windows11-light'; lang = 'ar'; skin = 'windows11'; theme = 'github'; sidebar = '#f3f3f3' },
+    @{ label = 'en-windows11-dark'; lang = 'en'; skin = 'windows11'; theme = 'github-dark'; sidebar = '#191919' },
+    @{ label = 'ar-windows11-light'; lang = 'ar'; skin = 'windows11'; theme = 'github'; sidebar = '#ffffff' },
+    @{ label = 'en-windows11-legacy-light'; lang = 'en'; skin = 'windows11-legacy'; theme = 'github'; sidebar = '#f3f3f3' },
     @{ label = 'ar-windows10-dark'; lang = 'ar'; skin = 'windows10'; theme = 'github-dark'; sidebar = '#191919' }
 )
 foreach ($case in $skins) {
@@ -185,15 +186,33 @@ function Click([int] $x, [int] $y, [int] $settle = 1200) {
 # (see the look-live-*-search screenshots): the search field sits at the top of
 # the page list, and a search for one row shows that row's choice first in the
 # page. Right to left mirrors both across the screen.
+# The Settings panel's top edge: the first white row down the middle. Explorer's
+# Windows 11 look keeps a tab row above it, which moves the panel down.
+function Settings-Top {
+    $bitmap = Screen
+    try {
+        foreach ($y in 0..300) {
+            $pixel = $bitmap.GetPixel(512, $y)
+            if ($pixel.R -ge 250 -and $pixel.G -ge 250 -and $pixel.B -ge 250) { return $y }
+        }
+    } finally { $bitmap.Dispose() }
+    return $null
+}
+
+$script:settingsBase = $null
 function Choose-In-Settings([string] $query, [int] $down, [bool] $rightToLeft, [string] $shot) {
     $mirror = { param($x) if ($rightToLeft) { 1024 - $x } else { $x } }
     Keys '^,' 2500
-    Click (& $mirror 170) 106 600
+    $top = Settings-Top
+    if ($null -eq $script:settingsBase) { $script:settingsBase = $top }
+    $shift = if ($null -ne $top -and $null -ne $script:settingsBase) { $top - $script:settingsBase } else { 0 }
+    Log "      settings panel at $top (shift $shift)"
+    Click (& $mirror 170) (106 + $shift) 600
     Set-Clipboard -Value $query
     [System.Windows.Forms.SendKeys]::SendWait('^a'); Start-Sleep -Milliseconds 300
     [System.Windows.Forms.SendKeys]::SendWait('^v'); Start-Sleep -Milliseconds 1500
     Shot "$shot-search"
-    Click (& $mirror 646) 244
+    Click (& $mirror 646) (244 + $shift)
     Shot "$shot-menu"
     [System.Windows.Forms.SendKeys]::SendWait('{DOWN}' * $down); Start-Sleep -Milliseconds 600
     [System.Windows.Forms.SendKeys]::SendWait('{ENTER}'); Start-Sleep -Milliseconds 1500
@@ -221,7 +240,7 @@ foreach ($lang in 'en', 'ar') {
     Check "[live-$lang] Windows 11 skin is saved" (Saved 'explorer_skin = "windows11"')
     $after = Sidebar-Color $rtl
     Log "      sidebar $(Hex $before) -> $(Hex $after)"
-    Check "[live-$lang] the open window takes the Windows 11 skin" (Near $after '#f3f3f3')
+    Check "[live-$lang] the open window takes the Windows 11 skin" (Near $after '#ffffff')
     Shot "look-live-$lang-02-skinned"
 
     Choose-In-Settings 'skin' 1 $rtl "look-live-$lang-02b-skin10"
@@ -229,7 +248,7 @@ foreach ($lang in 'en', 'ar') {
     Check "[live-$lang] the open window takes the Windows 10 skin" (Near (Sidebar-Color $rtl) '#ffffff')
     Shot "look-live-$lang-02c-skinned10"
     Choose-In-Settings 'skin' 2 $rtl "look-live-$lang-02d-skin11"
-    Check "[live-$lang] back to the Windows 11 skin" (Near (Sidebar-Color $rtl) '#f3f3f3')
+    Check "[live-$lang] back to the Windows 11 skin" (Near (Sidebar-Color $rtl) '#ffffff')
 
     Choose-In-Settings 'manila' 1 $rtl "look-live-$lang-03-icon"
     Check "[live-$lang] Forest icon is saved" (Saved 'app_icon = "forest"')
@@ -239,7 +258,7 @@ foreach ($lang in 'en', 'ar') {
 
     Start-Fahras $null "live-$lang-restart"
     Check "[live-$lang] Forest icon after a restart" ((Window-Icon "live-$lang-restart") -eq $hashes['forest'])
-    Check "[live-$lang] Windows 11 skin after a restart" (Near (Sidebar-Color $rtl) '#f3f3f3')
+    Check "[live-$lang] Windows 11 skin after a restart" (Near (Sidebar-Color $rtl) '#ffffff')
     Shot "look-live-$lang-05-restarted"
     Stop-Fahras
 }
